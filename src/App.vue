@@ -59,14 +59,22 @@
     </v-navigation-drawer>
     <v-main>
       <router-view />
+      <br />
+      <v-divider></v-divider>
+      <br />
+      <Footer />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import Footer from "@/components/Footer.vue";
+
 export default {
   name: "App",
-
+  components: {
+    Footer,
+  },
   data: () => ({
     drawer: false,
     nav_link: [

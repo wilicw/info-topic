@@ -16,20 +16,12 @@
         </v-card>
       </v-col>
     </v-row>
-    <br />
-    <br />
-    <br />
-    <Footer />
   </v-container>
 </template>
 
 <script>
-import Footer from "@/components/Footer.vue";
 export default {
   name: "Teachers",
-  components: {
-    Footer,
-  },
   data: () => ({
     teachers: [
       {

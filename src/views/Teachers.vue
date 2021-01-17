@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row justify="center" class="mt-5">
-      <v-col v-for="t in teachers" :key="t.name" cols="6" xs="12">
-        <v-card class="rounded-0 pa-5">
+      <v-col v-for="t in teachers" :key="t.name" cols="12" sm="4">
+        <v-card class="rounded-0 pa-5 ma-3">
           <v-card-title class="headline font-weight-bold">
             {{ t.name }} <span class="title">老師</span>
           </v-card-title>

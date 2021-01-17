@@ -1,10 +1,8 @@
 <template>
   <v-container>
     <v-btn
-      :class="
-        'next_btn ' +
-        ($vuetify.breakpoint.mobile ? 'float_mobile_btn' : 'float_btn')
-      "
+      class="next_btn"
+      v-if="!$vuetify.breakpoint.mobile"
       icon
       fab
       small
@@ -17,10 +15,8 @@
     </v-btn>
 
     <v-btn
-      :class="
-        'pre_btn ' +
-        ($vuetify.breakpoint.mobile ? 'float_mobile_btn' : 'float_btn')
-      "
+      class="pre_btn"
+      v-if="!$vuetify.breakpoint.mobile"
       icon
       fab
       small
@@ -37,7 +33,7 @@
       class="mt-5"
       style="min-height: 80vh"
     >
-      <v-col cols="8" md="5" class="mx-10">
+      <v-col cols="10" md="5" class="mx-10">
         <p class="subtitle-1 mb-5 ml-1">{{ topic.year }} 級專題製作</p>
         <h1 class="display-3 font-weight-bold mb-7">
           {{ topic.title }}
@@ -59,6 +55,10 @@
           :src="topic.cover"
           class="cover"
           :max-height="$vuetify.breakpoint.mobile ? '20em' : '45em'"
+          v-touch="{
+            left: () => next_topic(),
+            right: () => pre_topic(),
+          }"
         />
       </v-col>
     </v-row>
@@ -143,14 +143,6 @@ export default {
 };
 </script>
 <style scoped>
-.float_btn {
-  top: 40vh !important;
-}
-
-.float_mobile_btn {
-  top: 23vh !important;
-}
-
 .next_btn {
   right: 3em;
 }

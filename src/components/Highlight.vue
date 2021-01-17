@@ -38,9 +38,10 @@
         <h1 class="display-3 font-weight-bold mb-7">
           {{ topic.title }}
         </h1>
-        <p class="subheading font-weight-regular" max-height="200">
+        <p class="subheading font-weight-regular">
           {{ text_truncate(topic.description) }}
         </p>
+        <span class="grey--text hover">檢視完整專題</span>
       </v-col>
       <v-col
         cols="12"
@@ -75,7 +76,7 @@ import _ from "lodash";
 export default {
   name: "Highlight",
   data: () => ({
-    max_text_turncate: 150,
+    max_text_turncate: 130,
     highlight_topics_id: 0,
     topic: {},
     highlight_topics: [

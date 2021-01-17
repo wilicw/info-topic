@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app flat class="mt-5 mx-3" color="white" absolute>
+    <v-app-bar app flat class="mt-5 mx-5" color="white" absolute>
       <div class="d-flex align-center" @click="$router.push('/')">
         <v-img
           alt="Logo"
@@ -21,14 +21,14 @@
       <v-spacer></v-spacer>
 
       <div v-if="!$vuetify.breakpoint.mobile">
-        <v-btn
+        <span
+          @click="$router.push(link.url)"
           v-for="link in nav_link"
           :key="link.url"
-          @click="$router.push(link.url)"
-          text
+          class="subtitle-1 font-weight-medium mx-3 hover"
         >
-          <span class="subtitle-1 font-weight-medium">{{ link.text }}</span>
-        </v-btn>
+          {{ link.text }}
+        </span>
       </div>
 
       <v-app-bar-nav-icon
@@ -94,3 +94,10 @@ export default {
   }),
 };
 </script>
+
+<style >
+.hover:hover {
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+</style>

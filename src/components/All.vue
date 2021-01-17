@@ -2,15 +2,7 @@
   <v-container id="all_topics">
     <p class="display-1 font-weight-bold">瀏覽專題</p>
     <v-row>
-      <v-col
-        v-for="topic in topics"
-        :key="topic.title"
-        cols="12"
-        sm="4"
-        md="3"
-        lg="3"
-        xl="2"
-      >
+      <v-col v-for="topic in topics" :key="topic.title" cols="12" sm="4" md="3">
         <Topic_card
           :title="topic.title"
           :year="topic.year"

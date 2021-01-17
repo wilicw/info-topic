@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-btn
-      class="next_btn"
+      class="next_btn float_btn"
       v-if="!$vuetify.breakpoint.mobile"
       icon
       fab
@@ -15,7 +15,7 @@
     </v-btn>
 
     <v-btn
-      class="pre_btn"
+      class="pre_btn float_btn"
       v-if="!$vuetify.breakpoint.mobile"
       icon
       fab
@@ -143,6 +143,10 @@ export default {
 };
 </script>
 <style scoped>
+.float_btn {
+  top: 45vh !important;
+}
+
 .next_btn {
   right: 3em;
 }

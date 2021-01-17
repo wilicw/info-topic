@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="rounded-0 mt-5">
+  <v-card flat class="rounded-0 mt-5 hover">
     <v-img :src="cover"></v-img>
     <v-chip class="mt-3 ml-3 rounded-0 font-weight-bold" label small dark>{{
       year

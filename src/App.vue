@@ -8,7 +8,7 @@
           contain
           src="/logo.svg"
           transition="scale-transition"
-          width="30"
+          width="25"
         />
         <p class="headline mt-3">
           <span class="font-weight-bold" v-if="!$vuetify.breakpoint.mobile"
@@ -25,7 +25,7 @@
           @click="$router.push(link.url)"
           v-for="link in nav_link"
           :key="link.url"
-          class="subtitle-1 font-weight-medium mx-3 hover"
+          class="subtitle-1 font-weight-medium mx-5 hover"
         >
           {{ link.text }}
         </span>

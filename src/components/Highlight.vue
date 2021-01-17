@@ -37,7 +37,7 @@
       class="mt-5"
       style="min-height: 80vh"
     >
-      <v-col col="12" md="5" class="mx-10">
+      <v-col cols="8" md="5" class="mx-10">
         <p class="subtitle-1 mb-5 ml-1">{{ topic.year }} 級專題製作</p>
         <h1 class="display-3 font-weight-bold mb-7">
           {{ topic.title }}

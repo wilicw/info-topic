@@ -5,7 +5,7 @@
       <v-col
         v-for="topic in topics"
         :key="topic.title"
-        col="12"
+        cols="12"
         sm="4"
         md="3"
         lg="3"

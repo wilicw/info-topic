@@ -1,6 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar app flat class="mt-5 mx-5" color="white" absolute>
+    <v-app-bar
+      app
+      flat
+      class="mt-5 mx-5"
+      style="background-color: transparent"
+      absolute
+    >
       <div class="d-flex align-center" @click="$router.push('/')">
         <v-img
           alt="Logo"
@@ -59,11 +65,8 @@
     </v-navigation-drawer>
     <v-main>
       <router-view />
-      <br />
-      <v-divider></v-divider>
-      <br />
-      <Footer />
     </v-main>
+    <Footer />
   </v-app>
 </template>
 
@@ -108,4 +111,15 @@ export default {
   cursor: pointer;
   transition-duration: 0.3s;
 }
+.content {
+  line-height: 2em;
+  white-space: pre-line;
+}
+
+*::selection {
+  background: rgba(104, 198, 130, 0.5);
+}
+</style>
+<style lang="scss">
+@import "@/styles/variables.scss";
 </style>

@@ -8,13 +8,18 @@
           <v-chip
             v-for="keyword in topic.keywords"
             :key="keyword"
-            class="mt-3 mr-5 rounded-0 font-weight-regular pa-3"
+            class="mt-3 mr-5 mb-5 rounded-0 font-weight-regular pa-3"
             outlined
             color="primary"
             >{{ keyword }}</v-chip
           >
+          <br />
+          <v-btn plain class="font-weight-bold"
+            ><v-icon small class="mr-3">mdi-download</v-icon> 簡報</v-btn
+          ><v-btn plain class="font-weight-bold"
+            ><v-icon small class="mr-3">mdi-download</v-icon> 報告</v-btn
+          >
         </div>
-        <br />
         <v-img :src="topic.cover_photo_link" class="ma-5"></v-img>
         <v-row>
           <v-col cols="12" sm="5" class="pt-5 pa-5 pl-10">

@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Teachers from '../views/Teachers.vue'
 import Search from '../views/Search.vue'
 import Detail from '../views/Detail.vue'
+import Edit from '../views/Edit.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/view/:id',
     name: 'Detail',
     component: Detail
+  },
+  {
+    path: '/edit/:id',
+    name: 'Edit',
+    component: Edit
   }
 ]
 

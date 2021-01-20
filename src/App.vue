@@ -53,12 +53,13 @@
       <v-list dense>
         <v-list-item v-for="link in nav_link" :key="link.url" link>
           <v-list-item-content
+            class="mt-1"
             @click="
               drawer = false;
               $router.push(link.url);
             "
           >
-            <v-list-item-title>{{ link.text }}</v-list-item-title>
+            <v-list-item-title class="py-1">{{ link.text }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

@@ -23,3 +23,5 @@ pnpm-debug.log*
 
 .env
 config.ini
+__pycache__
+.vscode

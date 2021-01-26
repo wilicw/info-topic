@@ -8,6 +8,9 @@ dev:
 	cd ui && yarn serve &
 	cd server && .env/bin/python3 main.py
 
+pip:
+	cd server && .env/bin/pip install -r ./requirements.txt
+
 init:
 	cd ui && yarn install
 	cd server && python3 -m venv ./.env

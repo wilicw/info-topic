@@ -8,7 +8,7 @@ RUN npm run build
 FROM alpine:latest
 WORKDIR /app/server
 RUN apk update
-RUN apk add --no-cache nginx gcc libc-dev linux-headers python3 py3-pip
+RUN apk add --no-cache nginx gcc libc-dev linux-headers python3-dev py3-pip
 RUN rm -rf /var/cache/apk/*
 ADD server/requirements.txt .
 RUN pip3 install --upgrade pip

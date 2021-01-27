@@ -39,6 +39,7 @@ api.add_resource(
     resources.toipcs_by_year, "/api/year", "/api/year/", "/api/year/<int:y>"
 )
 api.add_resource(resources.toipcs_by_keywords, "/api/keyword/<string:word>")
+api.add_resource(resources.search, "/api/search/<string:text>")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

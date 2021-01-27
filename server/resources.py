@@ -1,6 +1,9 @@
 # -*- encoding: utf8-*-
+from re import match
 from flask_restful import Resource
+from flask_sqlalchemy import model
 from model import *
+import entities
 
 
 class Login(Resource):
@@ -62,3 +65,26 @@ class toipcs_by_keywords(Resource):
     def get(self, word):
         results = Project.query.filter(Project.keywords.contains(word)).all()
         return list(map(lambda x: x.to_obj(), results))
+
+
+class search(Resource):
+    def get(self, text):
+        match_title = Project.query.filter(
+            db.or_(
+                Project.name.like(f"%{text}%"),
+            )
+        ).all()
+        match_motivation = Project.query.filter(
+            db.or_(
+                Project.motivation.like(f"%{text}%"),
+            )
+        ).all()
+        match_faqs = Project.query.filter(
+            db.or_(
+                Project.faqs.like(f"%{text}%"),
+            )
+        ).all()
+        results = entities.remove_duplicates_preserving_order(
+            match_title + match_motivation + match_faqs
+        )
+        return 0

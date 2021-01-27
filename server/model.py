@@ -39,6 +39,42 @@ class Teacher(db.Model):
         )
 
 
+class Score(db.Model):
+    __tablename__ = "score"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey("teachers.id"))
+    student_id = db.Column(db.Integer, db.ForeignKey("students.id"))
+    score_classification_id = db.Column(
+        db.Integer, db.ForeignKey("score_classification.id")
+    )
+    score = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<Score {self.id}>"
+
+
+class Score_classification(db.Model):
+    __tablename__ = "score_classification"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    description = db.Column(db.String)
+
+    def __repr__(self):
+        return f"<Score {self.id}>"
+
+
+class Score_weight(db.Model):
+    __tablename__ = "score_weight"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    year = db.Column(db.Integer)
+    weight = db.Column(db.Integer)
+    score_classification_id = db.Column(
+        db.Integer, db.ForeignKey("score_classification.id")
+    )
+
+    def __repr__(self):
+        return f"<Score {self.id}>"
+
+
 class Student(db.Model):
     __tablename__ = "students"
     id = db.Column(db.Integer, primary_key=True, unique=True)

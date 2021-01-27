@@ -20,13 +20,6 @@ api = Api(app)
 
 api.add_resource(resources.Login, "/api/auth")
 api.add_resource(
-    resources.teacher,
-    "/api/teacher",
-    "/api/teacher/",
-    "/api/teacher/<int:id>",
-    "/api/teacher/<string:name>",
-)
-api.add_resource(
     resources.toipcs,
     "/api/topic",
     "/api/topic/",
@@ -35,10 +28,17 @@ api.add_resource(
     "/api/topic/<int:id>",
     "/api/topic/<string:name>",
 )
-api.add_resource(resources.toipcs_by_keywords, "/api/keyword/<string:word>")
+api.add_resource(
+    resources.teacher,
+    "/api/teacher",
+    "/api/teacher/",
+    "/api/teacher/<int:id>",
+    "/api/teacher/<string:name>",
+)
 api.add_resource(
     resources.toipcs_by_year, "/api/year", "/api/year/", "/api/year/<int:y>"
 )
+api.add_resource(resources.toipcs_by_keywords, "/api/keyword/<string:word>")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

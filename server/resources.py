@@ -8,6 +8,22 @@ class Login(Resource):
         return 123
 
 
+class toipcs(Resource):
+    def get(self, id=None, name=None):
+        if id != None:
+            result = Project.query.get(id)
+            if result == None:
+                return "", 404
+            return result.to_detail()
+        elif name != None:
+            result = Project.query.filter_by(name=name).first()
+            if result == None:
+                return "", 404
+            return result.to_detail()
+        else:
+            return list(map(lambda x: x.to_obj(), Project.query.all()))
+
+
 class teacher(Resource):
     def get(self, id=None, name=None):
         t = Teacher.query
@@ -40,22 +56,6 @@ class toipcs_by_year(Resource):
         else:
             results = Project.query.filter_by(year=y)
             return list(map(lambda x: x.to_obj(), results))
-
-
-class toipcs(Resource):
-    def get(self, id=None, name=None):
-        if id != None:
-            result = Project.query.get(id)
-            if result == None:
-                return "", 404
-            return result.to_detail()
-        elif name != None:
-            result = Project.query.filter_by(name=name).first()
-            if result == None:
-                return "", 404
-            return result.to_detail()
-        else:
-            return list(map(lambda x: x.to_obj(), Project.query.all()))
 
 
 class toipcs_by_keywords(Resource):

@@ -26,6 +26,15 @@ api.add_resource(
     "/api/teacher/<int:id>",
     "/api/teacher/<string:name>",
 )
+api.add_resource(
+    resources.get_toipcs,
+    "/api/topic",
+    "/api/topic/",
+    "/api/topics",
+    "/api/topics/",
+    "/api/topic/<int:id>",
+    "/api/topic/<string:name>",
+)
 api.add_resource(resources.get_toipcs_by_keywords, "/api/keyword/<string:word>")
 api.add_resource(
     resources.get_toipcs_by_year, "/api/year", "/api/year/", "/api/year/<int:y>"

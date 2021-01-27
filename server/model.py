@@ -42,7 +42,6 @@ class Teacher(db.Model):
 class Score(db.Model):
     __tablename__ = "score"
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    teacher_id = db.Column(db.Integer, db.ForeignKey("teachers.id"))
     student_id = db.Column(db.Integer, db.ForeignKey("students.id"))
     score_classification_id = db.Column(
         db.Integer, db.ForeignKey("score_classification.id")
@@ -127,6 +126,7 @@ class Project(db.Model):
     report_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     presentation_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     program_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
+    score = db.Column(db.Integer)
 
     def __repr__(self):
         return f"<Project {self.name}>"

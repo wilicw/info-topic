@@ -3,10 +3,12 @@ from flask import Flask, render_template
 from flask_restful import Api
 import resources, model
 from entities import config
+from schema import ma
 from flask_cors import CORS
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = f"{config.db_protocol}://{config.db_user}:{config.db_pass}@{config.db_host}:{config.db_port}/{config.db_name}"
@@ -14,8 +16,9 @@ app.config[
 model.db.init_app(app)
 CORS(app)
 api = Api(app)
+ma.init_app(app)
 
-api.add_resource(resources.Login, "/api/auth")
+api.add_resource(resources.login, "/api/auth")
 api.add_resource(
     resources.toipcs,
     "/api/topic",

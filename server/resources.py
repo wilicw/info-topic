@@ -1,14 +1,28 @@
 # -*- encoding: utf8-*-
 from re import match
-from flask_restful import Resource
-from flask_sqlalchemy import model
+from flask_restful import Resource, request
 from model import *
+import schema
 import entities
+import err
 
 
-class Login(Resource):
+class login(Resource):
     def post(self):
-        return 123
+        data = request.json
+        auth_schema = schema.AuthSchema()
+        try:
+            res = auth_schema.load(data)
+        except:
+            return err.account_error
+        username = res["username"]
+        password = res["password"]
+        if (
+            Student.query.filter_by(username=username, password=password).first()
+            == None
+        ):
+            return err.account_error
+        return entities.generate_token(username)
 
 
 class toipcs(Resource):
@@ -16,12 +30,12 @@ class toipcs(Resource):
         if id != None:
             result = Project.query.get(id)
             if result == None:
-                return "", 404
+                return err.topic_not_found
             return result.to_detail()
         elif name != None:
             result = Project.query.filter_by(name=name).first()
             if result == None:
-                return "", 404
+                return err.topic_not_found
             return result.to_detail()
         else:
             return list(map(lambda x: x.to_obj(), Project.query.all()))
@@ -33,12 +47,12 @@ class teacher(Resource):
         if id != None:
             result = t.get(id)
             if result == None:
-                return "", 404
+                return err.teacher_not_found
             return result.to_detail()
         elif name != None:
             result = t.filter_by(name=name).first()
             if result == None:
-                return "", 404
+                return err.teacher_not_found
             return result.to_detail()
         else:
             return list(map(lambda x: x.to_obj(), t.filter_by(enable=True).all()))

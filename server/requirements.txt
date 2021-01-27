@@ -5,4 +5,6 @@ flask_cors
 Flask-SQLAlchemy
 PyMySQL
 configparser
+flask_marshmallow
+marshmallow-sqlalchemy
 uwsgi

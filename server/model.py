@@ -27,6 +27,17 @@ class Teacher(db.Model):
     def __repr__(self):
         return f"<Teacher {self.id} {self.name}>"
 
+    def to_obj(self):
+        return {"id": self.id, "name": self.name, "description": self.description}
+
+    def to_detail(self):
+        return dict(
+            self.to_obj(),
+            **{
+                "projects": [s.to_obj() for s in self.projects],
+            },
+        )
+
 
 class Student(db.Model):
     __tablename__ = "students"

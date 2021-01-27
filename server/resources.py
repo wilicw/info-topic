@@ -9,8 +9,20 @@ class Login(Resource):
 
 
 class get_teacher(Resource):
-    def get(self):
-        return 123
+    def get(self, id=None, name=None):
+        t = Teacher.query
+        if id != None:
+            result = t.get(id)
+            if result == None:
+                return [], 404
+            return result.to_detail()
+        elif name != None:
+            result = t.filter_by(name=name).first()
+            if result == None:
+                return [], 404
+            return result.to_detail()
+        else:
+            return list(map(lambda x: x.to_obj(), t.filter_by(enable=True).all()))
 
 
 class get_toipcs_by_year(Resource):

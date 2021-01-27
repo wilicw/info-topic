@@ -31,7 +31,7 @@ const routes = [
     component: Search
   },
   {
-    path: '/view/:id',
+    path: '/topic/:id',
     name: 'Detail',
     component: Detail
   },

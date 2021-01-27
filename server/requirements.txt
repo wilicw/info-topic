@@ -4,4 +4,5 @@ PyJWT
 flask_cors
 Flask-SQLAlchemy
 PyMySQL
+configparser
 uwsgi

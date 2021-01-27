@@ -3,4 +3,5 @@ flask_restful
 PyJWT
 flask_cors
 Flask-SQLAlchemy
+PyMySQL
 uwsgi

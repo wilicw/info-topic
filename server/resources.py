@@ -1,12 +1,25 @@
 # -*- encoding: utf8-*-
 from flask_restful import Resource, reqparse
 from flask import jsonify, request, send_from_directory
-import model
+from model import *
 
 
 class Login(Resource):
-    def get(self):
-        s = model.Student.query.filter_by(username="110b17").first()
-        mi = s.project.keywords[0]
-        print(mi)
+    def post(self):
         return 123
+
+
+class get_teacher(Resource):
+    def get(self):
+        return 123
+
+
+class get_toipcs_by_year(Resource):
+    def get(self):
+        return 123
+
+
+class get_toipcs_by_keywords(Resource):
+    def get(self, word):
+        results = Project.query.filter(Project.keywords.contains(word)).all()
+        return jsonify(list(map(lambda x: x.to_obj(), results)))

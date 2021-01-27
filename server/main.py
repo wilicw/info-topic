@@ -17,7 +17,13 @@ app.config[
 model.db.init_app(app)
 CORS(app)
 api = Api(app)
+
 api.add_resource(resources.Login, "/api/auth")
+api.add_resource(resources.get_teacher, "/api/teacher")
+api.add_resource(resources.get_toipcs_by_keywords, "/api/keyword/<string:word>")
+api.add_resource(
+    resources.get_toipcs_by_year, "/api/year", "/api/year/", "/api/year/<int:y>"
+)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

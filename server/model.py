@@ -75,6 +75,7 @@ class Project(db.Model):
     arch_imgs_id = db.Column(db.JSON)
     cover_img_id = db.Column(db.Integer, nullable=True)
     members_imgs_id = db.Column(db.JSON)
+    results_imgs_id = db.Column(db.JSON)
     videos_links = db.Column(db.JSON)
     report_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     presentation_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
@@ -82,3 +83,46 @@ class Project(db.Model):
 
     def __repr__(self):
         return f"<Project {self.name}>"
+
+    def to_obj(self):
+        return {
+            "id": self.id,
+            "uuid": self.uuid,
+            "title": self.name,
+            "year": self.year,
+            "description": self.motivation,
+            "cover": Image.query.get(self.cover_img_id).path,
+            "keywords": self.keywords,
+        }
+
+    def to_detail(self):
+        return dict(
+            self.to_obj(),
+            **{
+                "students": [s.name for s in self.students],
+                "teacher": self.teacher.name,
+                "faqs": self.faqs,
+                "report_file": File.query.get(self.report_file_id).location
+                if self.report_file_id != -1
+                else "",
+                "presentation_file": File.query.get(self.presentation_file_id).location
+                if self.presentation_file_id != -1
+                else "",
+                "program_file": File.query.get(self.program_file_id).location
+                if self.program_file_id != -1
+                else "",
+                "videos_links": [
+                    f"https://www.youtube.com/embed/{ytid}"
+                    for ytid in self.videos_links
+                ],
+                "arch_imgs": [
+                    Image.query.get(imgid).path for imgid in self.arch_imgs_id
+                ],
+                "members_imgs": [
+                    Image.query.get(imgid).path for imgid in self.members_imgs_id
+                ],
+                "results_imgs": [
+                    Image.query.get(imgid).path for imgid in self.results_imgs_id
+                ],
+            },
+        )

@@ -81,6 +81,7 @@ class Student(db.Model):
     password = db.Column(db.String, nullable=False)
     school_id = db.Column(db.String)
     name = db.Column(db.String, nullable=False)
+    score = db.relationship("Score", backref="student", lazy=True)
     project_id = db.Column(db.Integer, db.ForeignKey("projects.id"))
 
     def __repr__(self):

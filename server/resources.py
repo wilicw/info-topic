@@ -8,7 +8,7 @@ class Login(Resource):
         return 123
 
 
-class get_teacher(Resource):
+class teacher(Resource):
     def get(self, id=None, name=None):
         t = Teacher.query
         if id != None:
@@ -25,7 +25,7 @@ class get_teacher(Resource):
             return list(map(lambda x: x.to_obj(), t.filter_by(enable=True).all()))
 
 
-class get_toipcs_by_year(Resource):
+class toipcs_by_year(Resource):
     def get(self, y=None):
         if y == None:
             years = list(
@@ -42,7 +42,7 @@ class get_toipcs_by_year(Resource):
             return list(map(lambda x: x.to_obj(), results))
 
 
-class get_toipcs(Resource):
+class toipcs(Resource):
     def get(self, id=None, name=None):
         if id != None:
             result = Project.query.get(id)
@@ -58,7 +58,7 @@ class get_toipcs(Resource):
             return list(map(lambda x: x.to_obj(), Project.query.all()))
 
 
-class get_toipcs_by_keywords(Resource):
+class toipcs_by_keywords(Resource):
     def get(self, word):
         results = Project.query.filter(Project.keywords.contains(word)).all()
         return list(map(lambda x: x.to_obj(), results))

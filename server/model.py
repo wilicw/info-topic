@@ -91,7 +91,9 @@ class Project(db.Model):
             "title": self.name,
             "year": self.year,
             "description": self.motivation,
-            "cover": Image.query.get(self.cover_img_id).path,
+            "cover": Image.query.get(self.cover_img_id).path
+            if self.cover_img_id > 0
+            else "",
             "keywords": self.keywords,
         }
 
@@ -103,13 +105,13 @@ class Project(db.Model):
                 "teacher": self.teacher.name,
                 "faqs": self.faqs,
                 "report_file": File.query.get(self.report_file_id).location
-                if self.report_file_id != -1
+                if self.report_file_id > 0
                 else "",
                 "presentation_file": File.query.get(self.presentation_file_id).location
-                if self.presentation_file_id != -1
+                if self.presentation_file_id > 0
                 else "",
                 "program_file": File.query.get(self.program_file_id).location
-                if self.program_file_id != -1
+                if self.program_file_id > 0
                 else "",
                 "videos_links": [
                     f"https://www.youtube.com/embed/{ytid}"

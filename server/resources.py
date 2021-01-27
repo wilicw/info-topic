@@ -58,13 +58,13 @@ class toipcs_by_year(Resource):
             return years
         else:
             results = Project.query.filter_by(year=y)
-            return list(map(lambda x: x.to_obj(), results))
+            return entities.to_detail_obj_list(results)
 
 
 class toipcs_by_keywords(Resource):
     def get(self, word):
         results = Project.query.filter(Project.keywords.contains(word)).all()
-        return list(map(lambda x: x.to_obj(), results))
+        return entities.to_detail_obj_list(results)
 
 
 class search(Resource):
@@ -87,4 +87,4 @@ class search(Resource):
         results = entities.remove_duplicates_preserving_order(
             match_title + match_motivation + match_faqs
         )
-        return 0
+        return entities.to_detail_obj_list(results)

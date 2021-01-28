@@ -12,6 +12,7 @@ app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = f"{config.db_protocol}://{config.db_user}:{config.db_pass}@{config.db_host}:{config.db_port}/{config.db_name}"
+app.config["MAX_CONTENT_LENGTH"] = 300 * 1024 * 1024
 
 model.db.init_app(app)
 CORS(app)
@@ -40,6 +41,8 @@ api.add_resource(
 )
 api.add_resource(resources.toipcs_by_keywords, "/api/keyword/<string:word>")
 api.add_resource(resources.search, "/api/search/<string:text>")
+api.add_resource(resources.file, "/api/file/<int:id>")
+api.add_resource(resources.upload, "/api/upload", "/api/upload/")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

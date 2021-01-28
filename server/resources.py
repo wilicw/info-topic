@@ -1,10 +1,7 @@
 # -*- encoding: utf8-*-
-from re import match
-from flask_restful import Resource, request
+from flask_restful import Resource, request, reqparse
 from model import *
-import schema
-import entities
-import err
+import schema, entities, err, werkzeug, os
 
 
 class login(Resource):
@@ -102,3 +99,39 @@ class search(Resource):
             match_title + match_motivation + match_faqs
         )
         return entities.to_detail_obj_list(results)
+
+
+class file(Resource):
+    def get(self, id):
+        f = File.query.get(id)
+        if f == None:
+            return err.file_not_found
+        return id
+
+
+class upload(Resource):
+    def post(self):
+        parse = reqparse.RequestParser()
+        parse.add_argument(
+            "file", type=werkzeug.datastructures.FileStorage, location="files"
+        )
+        args = parse.parse_args()
+        if args["file"] == None:
+            return err.upload_error
+        f = args["file"]
+        fn = f.filename
+        if entities.filename_validation(fn) == False:
+            return err.upload_error
+        fn = entities.make_unique(fn)
+        fn = werkzeug.utils.secure_filename(fn)
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            entities.config.upload_path,
+            fn,
+        )
+        f.save(path)
+        db_f = File(location=fn)
+        db.session.add(db_f)
+        db.session.commit()
+        return {"status": "success", "id": db_f.id}

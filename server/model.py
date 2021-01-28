@@ -152,13 +152,11 @@ class Project(db.Model):
                 "students": [s.name for s in self.students],
                 "teacher": self.teacher.name,
                 "faqs": self.faqs,
-                "report_file": File.query.get(self.report_file_id).location
-                if self.report_file_id > 0
-                else "",
-                "presentation_file": File.query.get(self.presentation_file_id).location
+                "report_file": self.report_file_id if self.report_file_id > 0 else "",
+                "presentation_file": self.presentation_file_id
                 if self.presentation_file_id > 0
                 else "",
-                "program_file": File.query.get(self.program_file_id).location
+                "program_file": self.program_file_id
                 if self.program_file_id > 0
                 else "",
                 "videos_links": [

@@ -3,7 +3,7 @@ image: dockerfile ui/ server/
 	docker build -t="wilicw/topic-web" .
 
 run:
-	docker run --rm -p 8080:80 wilicw/topic-web
+	docker run --rm -it -p 8080:80 -v $(shell pwd)/_file:/app/_file/ wilicw/topic-web
 
 dev:
 	make ui &

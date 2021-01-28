@@ -25,3 +25,4 @@ pnpm-debug.log*
 config.ini
 __pycache__
 .vscode
+_file

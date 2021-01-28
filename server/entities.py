@@ -1,4 +1,5 @@
 from configparser import ConfigParser
+from uuid import uuid4
 import jwt
 
 conf = ConfigParser()
@@ -8,6 +9,7 @@ conf.read("config.ini", encoding="utf-8")
 class config:
     db_config = conf["db"]
     jwt_config = conf["jwt"]
+    upload_config = conf["upload"]
     db_protocol = db_config["protocol"]
     db_user = db_config["user"]
     db_pass = db_config["pass"]
@@ -15,6 +17,8 @@ class config:
     db_port = db_config["port"]
     db_name = db_config["db_name"]
     secret = jwt_config["secret"]
+    upload_path = upload_config["path"]
+    allow_file_type = upload_config["allow_file_type"].split(",")
 
 
 def remove_duplicates_preserving_order(seq):
@@ -41,3 +45,16 @@ def decode_token(token):
     except:
         user = -1
     return user
+
+
+def filename_validation(fn):
+    fn = str(fn)
+    if fn.split(".")[-1] not in config.allow_file_type:
+        return False
+    else:
+        return True
+
+
+def make_unique(fn):
+    ident = uuid4().__str__()[:8]
+    return f"{ident}-{fn}"

@@ -6,3 +6,11 @@ port = 3306
 user = root
 pass = toor
 db_name = topic
+
+[jwt]
+secret=000
+
+[upload]
+; also written in docker file
+path=_file
+allow_file_type=pdf,ppt,pptx,odp

@@ -125,7 +125,7 @@ class upload(Resource):
         fn = entities.make_unique(fn)
         fn = werkzeug.utils.secure_filename(fn)
         path = os.path.join(
-            os.path.dirname(__file__),
+            os.path.abspath(__file__+"/.."),
             "..",
             entities.config.upload_path,
             fn,

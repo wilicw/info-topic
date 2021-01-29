@@ -7,6 +7,7 @@ import Search from '../views/Search.vue'
 import Detail from '../views/Detail.vue'
 import Edit from '../views/Edit.vue'
 import Menu from '../views/Menu.vue'
+import Logout from '../views/Logout.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes = [
     path: '/menu',
     name: 'Menu',
     component: Menu
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
   }
 ]
 

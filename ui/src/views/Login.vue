@@ -53,6 +53,8 @@ export default {
         let res = await api.login(username, password);
         api.storage_token(res.data);
         this.err = null;
+        this.$root.$emit("login");
+        this.$router.push("/menu");
       } catch {
         this.err = true;
       }

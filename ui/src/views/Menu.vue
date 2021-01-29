@@ -1,18 +1,18 @@
 <template>
   <v-container>
-    <v-row justify="center" class="mt-5">
-      <v-col
-        v-for="i in options.menu"
-        :key="i.url"
-        cols="12"
-        sm="4"
-        class="hover"
-      >
-        <v-card class="rounded-0 pa-10 ma-1">
-          <v-card-title class="headline font-weight-bold">
-            <v-icon large class="mr-5">{{ i.icon }}</v-icon> {{ i.text }}
-          </v-card-title>
-        </v-card>
+    <v-row justify="" class="mt-5 fill-height" align="center">
+      <v-col v-for="i in options.menu" :key="i.url" cols="12" sm="4">
+        <v-hover v-slot="{ hover }">
+          <v-card
+            :elevation="hover ? 5 : 2"
+            class="rounded-0 pa-10 ma-1 hover"
+            @click="$router.push(i.url)"
+          >
+            <v-card-title class="headline font-weight-bold">
+              <v-icon large class="mr-5 mt-1">{{ i.icon }}</v-icon> {{ i.text }}
+            </v-card-title>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
   </v-container>

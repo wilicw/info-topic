@@ -111,6 +111,21 @@ export default {
       },
     ],
   }),
+  created() {
+    this.$root.$once("login", this.login);
+    this.$root.$once("logout", this.logout);
+  },
+  methods: {
+    logout() {
+      api.clear_token();
+      this.nav_link[4].text = "登入";
+      this.nav_link[4].url = "/login";
+    },
+    login() {
+      this.nav_link[4].text = "個人頁面";
+      this.nav_link[4].url = "/menu";
+    },
+  },
 };
 </script>
 

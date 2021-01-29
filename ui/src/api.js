@@ -46,4 +46,10 @@ export default {
   ,
   get_teachers: async () =>
     client.get("/teacher/")
+  ,
+  get_topic: async (id) =>
+    client.get(`/topic/${id}`)
+  ,
+  download: (id) =>
+      window.open(`${config.api}/file/${id}`, '_blank')
 }

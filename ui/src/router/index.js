@@ -20,7 +20,7 @@ const routes = [
   { path: '/teachers/:id', component: Teachers_topics },
   { path: '/search', component: Search },
   { path: '/search/:word', component: Search_topics },
-  { path: '/topic/:id', component: Detail },
+  { path: '/topic/:uuid', component: Detail },
   { path: '/edit/:id', component: Edit },
   { path: '/menu', component: Menu },
   { path: '/logout', component: Logout }

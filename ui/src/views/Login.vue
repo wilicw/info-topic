@@ -4,6 +4,16 @@
       <v-col cols="12" md="4">
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-card-title class="font-weight-bold">登入</v-card-title>
+          <v-alert
+            :value="err"
+            color="pink"
+            dark
+            border="top"
+            icon="mdi-close"
+            transition="scale-transition"
+          >
+            帳號或密碼錯誤
+          </v-alert>
           <v-card-text>
             帳號請輸入 畢業級別+班級+座號 ，例如108年畢業甲班55號，請輸入108a55
             <br />
@@ -26,16 +36,26 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   name: "Login",
   data: () => ({
     pass: "",
     account: "",
+    err: null,
   }),
   methods: {
-    login() {
-      console.log(this.pass);
-      console.log(this.account);
+    async login() {
+      const username = this.account,
+        password = this.pass;
+      try {
+        let res = await api.login(username, password);
+        api.storage_token(res.data);
+        this.err = null;
+      } catch {
+        this.err = true;
+      }
     },
   },
 };

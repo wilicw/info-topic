@@ -236,7 +236,7 @@
 </template>
 
 <script>
-const axios = require("axios");
+import api from "@/api";
 
 export default {
   name: "Edit",
@@ -315,20 +315,11 @@ export default {
       return return_url;
     },
     async upload_image_to_imgur(title, file) {
-      const imgur_client_id = "e41ec52ccc51322";
       let formData = new FormData();
       formData.append("image", file);
       formData.append("title", title);
-      const res = await axios({
-        method: "POST",
-        url: "https://api.imgur.com/3/image",
-        data: formData,
-        headers: {
-          Authorization: "Client-ID " + imgur_client_id,
-        },
-        mimeType: "multipart/form-data",
-      });
-      return res.data.data.link;
+      const data = await api.upload_image(formData);
+      return data.link;
     },
     submit() {
       console.log(this.topic);

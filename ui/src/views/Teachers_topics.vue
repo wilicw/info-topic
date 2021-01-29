@@ -35,7 +35,6 @@ export default {
     const res = await api.get_topics_by_tid(teacher_id);
     this.topics = res.data.projects;
     this.teacher_name = res.data.name;
-    console.log(this.topics);
     this.topics = _.shuffle(this.topics);
   },
 };

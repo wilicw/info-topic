@@ -10,6 +10,7 @@ import Menu from '../views/Menu.vue'
 import Logout from '../views/Logout.vue'
 import Teachers_topics from '../views/Teachers_topics.vue'
 import Search_topics from '../views/Search_topics.vue'
+import Keyword from '../views/Keyword.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,7 @@ const routes = [
   { path: '/search', component: Search },
   { path: '/search/:word', component: Search_topics },
   { path: '/topic/:uuid', component: Detail },
+  { path: '/keyword/:word', component: Keyword },
   { path: '/edit/:id', component: Edit },
   { path: '/menu', component: Menu },
   { path: '/logout', component: Logout }

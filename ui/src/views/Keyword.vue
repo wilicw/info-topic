@@ -1,0 +1,51 @@
+<template>
+  <v-container>
+    <p class="title font-weight-bold mt-10">關鍵字：{{ word }}</p>
+    <v-alert
+      v-if="err"
+      color="pink"
+      dark
+      border="right"
+      icon="mdi-alert"
+      transition="scale-transition"
+    >
+      沒有關鍵字為{{ word }}的專題
+    </v-alert>
+    <v-row v-if="topics.length">
+      <v-col v-for="topic in topics" :key="topic.id" cols="12" sm="4" md="3">
+        <Topic_card
+          :uuid="topic.uuid"
+          :title="topic.title"
+          :year="topic.year"
+          :description="topic.description"
+          :cover="topic.cover"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import Topic_card from "@/components/Topic_card.vue";
+import api from "@/api";
+
+export default {
+  name: "Keyword",
+  components: {
+    Topic_card,
+  },
+  data: () => ({
+    word: "",
+    err: null,
+    topics: [],
+  }),
+  async created() {
+    const word = decodeURIComponent(this.$route.params.word);
+    console.log(word);
+    const res = await api.get_topics_by_keyword(word);
+    this.topics = res.data;
+    this.word = word;
+    this.err = !this.topics.length;
+  },
+};
+</script>

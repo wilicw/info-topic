@@ -45,9 +45,19 @@
             <v-icon small class="mr-3">mdi-download</v-icon> 程式
           </v-btn>
         </div>
-        <v-img v-if="topic.cover" :src="topic.cover" class="ma-5"></v-img>
+        <v-img
+          v-if="topic.cover"
+          :src="topic.cover"
+          class="ma-5"
+          :class="$vuetify.breakpoint.mobile ? 'mx-0' : ''"
+        ></v-img>
         <v-row>
-          <v-col cols="12" sm="5" class="pt-5 pa-5 pl-10">
+          <v-col
+            cols="12"
+            sm="5"
+            class="pt-5 pl-10"
+            :class="$vuetify.breakpoint.mobile ? 'pa-3' : 'pa-8'"
+          >
             <v-card flat class="grey--text">
               <v-divider class="my-3"></v-divider>
               編號
@@ -88,7 +98,11 @@
               <v-divider class="my-3"></v-divider>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="7" class="pa-10">
+          <v-col
+            cols="12"
+            sm="7"
+            :class="$vuetify.breakpoint.mobile ? 'pa-5' : 'pa-8'"
+          >
             <p class="display-1 font-weight-medium">
               <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 動機
             </p>
@@ -98,69 +112,74 @@
             <p class="content" v-else>無資料</p>
           </v-col>
         </v-row>
-        <div class="pa-10 px-5" v-if="topic.faqs">
-          <p class="display-1 font-weight-medium">
-            <v-icon class="mb-1" color="primary">mdi-pound</v-icon>
-            問題與解決辦法
-          </p>
-          <p class="pa-5 content">{{ topic.faqs }}</p>
-        </div>
-        <div class="pa-10 px-5" v-if="topic.arch_imgs.length">
-          <p class="display-1 font-weight-medium">
-            <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 系統架構
-          </p>
-          <v-row class="pa-5">
-            <v-col
-              :cols="topic.arch_imgs.length == 1 ? 12 : 6"
-              v-for="img in topic.arch_imgs"
-              :key="img"
-            >
-              <v-img :src="img"></v-img
-            ></v-col>
-          </v-row>
-        </div>
-        <div class="pa-10 px-5" v-if="topic.results_imgs.length">
-          <p class="display-1 font-weight-medium">
-            <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 成品
-          </p>
-          <v-row class="pa-5">
-            <v-col
-              :cols="topic.results_imgs.length == 1 ? 12 : 6"
-              v-for="img in topic.results_imgs"
-              :key="img"
-            >
-              <v-img :src="img"></v-img
-            ></v-col>
-          </v-row>
-        </div>
-        <div class="pa-10 px-5" v-if="topic.members_imgs.length">
-          <p class="display-1 font-weight-medium">
-            <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 組員照片
-          </p>
-          <v-row class="pa-5">
-            <v-col
-              :cols="topic.members_imgs.length == 1 ? 12 : 6"
-              v-for="img in topic.members_imgs"
-              :key="img"
-            >
-              <v-img :src="img"></v-img
-            ></v-col>
-          </v-row>
-        </div>
-        <div class="pa-10 px-5" v-if="topic.videos_links.length">
-          <p class="display-1 font-weight-medium">
-            <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 影片
-          </p>
-          <v-card flat min-height="800">
-            <iframe
-              v-for="id in topic.videos_link"
-              :key="id"
-              style="height: 100%; width: 100%; position: absolute"
-              :src="id"
-              frameborder="0"
-              allowfullscreen
-            ></iframe>
-          </v-card>
+        <div :class="$vuetify.breakpoint.mobile ? 'pa-0' : 'pa-8'">
+          <div class="px-5" v-if="topic.faqs">
+            <p class="display-1 font-weight-medium">
+              <v-icon class="mb-1" color="primary">mdi-pound</v-icon>
+              問題與解決辦法
+            </p>
+            <p class="pa-5 content">{{ topic.faqs }}</p>
+          </div>
+          <div class="py-5" v-if="topic.arch_imgs.length">
+            <p class="display-1 font-weight-medium">
+              <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 系統架構
+            </p>
+            <v-row class="pa-5">
+              <v-col
+                cols="12"
+                :sm="topic.arch_imgs.length == 1 ? 12 : 6"
+                v-for="img in topic.arch_imgs"
+                :key="img"
+              >
+                <v-img :src="img"></v-img
+              ></v-col>
+            </v-row>
+          </div>
+          <div class="py-5" v-if="topic.results_imgs.length">
+            <p class="display-1 font-weight-medium">
+              <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 成品
+            </p>
+            <v-row class="pa-5">
+              <v-col
+                cols="12"
+                :sm="topic.results_imgs.length == 1 ? 12 : 6"
+                v-for="img in topic.results_imgs"
+                :key="img"
+              >
+                <v-img :src="img"></v-img
+              ></v-col>
+            </v-row>
+          </div>
+          <div class="py-5" v-if="topic.members_imgs.length">
+            <p class="display-1 font-weight-medium">
+              <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 組員照片
+            </p>
+            <v-row class="pa-5">
+              <v-col
+                cols="12"
+                :sm="topic.members_imgs.length == 1 ? 12 : 6"
+                v-for="img in topic.members_imgs"
+                :key="img"
+              >
+                <v-img :src="img"></v-img
+              ></v-col>
+            </v-row>
+          </div>
+          <div class="py-5" v-if="topic.videos_links.length">
+            <p class="display-1 font-weight-medium">
+              <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 影片
+            </p>
+            <v-card flat min-height="800">
+              <iframe
+                v-for="id in topic.videos_link"
+                :key="id"
+                style="height: 100%; width: 100%; position: absolute"
+                :src="id"
+                frameborder="0"
+                allowfullscreen
+              ></iframe>
+            </v-card>
+          </div>
         </div>
       </v-card>
     </v-col>

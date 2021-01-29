@@ -28,7 +28,11 @@
 
       <div v-if="!$vuetify.breakpoint.mobile">
         <span
-          @click="$router.push(link.url)"
+          @click="
+            $router.push(link.url).catch((err) => {
+              err;
+            })
+          "
           v-for="link in nav_link"
           :key="link.url"
           class="subtitle-1 font-weight-medium mx-5 hover"
@@ -56,7 +60,9 @@
             class="mt-1"
             @click="
               drawer = false;
-              $router.push(link.url);
+              $router.push(link.url).catch((err) => {
+                err;
+              });
             "
           >
             <v-list-item-title class="py-1">{{ link.text }}</v-list-item-title>

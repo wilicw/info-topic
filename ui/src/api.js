@@ -30,7 +30,7 @@ export default {
     window.localStorage.setItem("token", String(token))
   ,
   is_login: () =>
-    window.localStorage.getItem("token").length ? true : false
+    window.localStorage.getItem("token") | 0 ? true : false
   ,
   get_token: () =>
     window.localStorage.getItem("token")

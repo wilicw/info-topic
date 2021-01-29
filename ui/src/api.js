@@ -26,11 +26,13 @@ export default {
       password: password
     })
   ,
-  storage_token: (token) =>
-    window.localStorage.setItem("token", String(token))
+  storage_token: (token) => {
+    console.log(token);
+    window.localStorage.setItem("token", token);
+  }
   ,
   is_login: () =>
-    window.localStorage.getItem("token") | 0 ? true : false
+    window.localStorage.getItem("token") == null || window.localStorage.getItem("token") == undefined || window.localStorage.getItem("token") == "" ? false : true
   ,
   get_token: () =>
     window.localStorage.getItem("token")
@@ -54,5 +56,5 @@ export default {
     client.get(`/topic/${id}`)
   ,
   download: (id) =>
-      window.open(`${config.api}/file/${id}`, '_blank')
+    window.open(`${config.api}/file/${id}`, '_blank')
 }

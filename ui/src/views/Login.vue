@@ -49,15 +49,16 @@ export default {
     async login() {
       const username = this.account,
         password = this.pass;
+      let res;
       try {
-        let res = await api.login(username, password);
-        api.storage_token(res.data);
-        this.err = null;
-        this.$root.$emit("login");
-        this.$router.push("/menu");
+        res = await api.login(username, password);
       } catch {
         this.err = true;
       }
+      api.storage_token(res.data);
+      this.err = null;
+      this.$root.$emit("login");
+      this.$router.push("/menu");
     },
   },
 };

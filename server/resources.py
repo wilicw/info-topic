@@ -1,5 +1,6 @@
 # -*- encoding: utf8-*-
 from flask_restful import Resource, request, reqparse
+from flask import send_from_directory
 from model import *
 import schema, entities, err, werkzeug, os
 
@@ -113,7 +114,20 @@ class file(Resource):
         f = File.query.get(id)
         if f == None:
             return err.file_not_found
-        return id
+        path = str(
+            os.path.join(
+                os.path.abspath(__file__ + "/.."),
+                "..",
+                entities.config.upload_path,
+            )
+        )
+        print(f.location)
+        ff = send_from_directory(
+            path,
+            f.location,
+            as_attachment=True,
+        )
+        return 0
 
 
 class upload(Resource):

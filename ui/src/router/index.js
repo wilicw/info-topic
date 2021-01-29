@@ -13,51 +13,15 @@ import Teachers_topics from '../views/Teachers_topics.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/teachers',
-    name: 'Teachers',
-    component:Teachers
-  },
-  {
-    path: '/teachers/:id',
-    name: 'Teachers_topics',
-    component:Teachers_topics
-  },
-  {
-    path: '/search',
-    name: 'Search',
-    component: Search
-  },
-  {
-    path: '/topic/:id',
-    name: 'Detail',
-    component: Detail
-  },
-  {
-    path: '/edit/:id',
-    name: 'Edit',
-    component: Edit
-  },
-  {
-    path: '/menu',
-    name: 'Menu',
-    component: Menu
-  },
-  {
-    path: '/logout',
-    name: 'Logout',
-    component: Logout
-  }
+  { path: '/', component: Home },
+  { path: '/login', component: Login },
+  { path: '/teachers', component: Teachers },
+  { path: '/teachers/:id', component: Teachers_topics },
+  { path: '/search', component: Search },
+  { path: '/topic/:id', component: Detail },
+  { path: '/edit/:id', component: Edit },
+  { path: '/menu', component: Menu },
+  { path: '/logout', component: Logout }
 ]
 
 const router = new VueRouter({

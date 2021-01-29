@@ -14,6 +14,7 @@
     <v-row v-if="topics.length">
       <v-col v-for="topic in topics" :key="topic.id" cols="12" sm="4" md="3">
         <Topic_card
+          :uuid="topic.uuid"
           :title="topic.title"
           :year="topic.year"
           :description="topic.description"

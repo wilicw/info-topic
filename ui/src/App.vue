@@ -73,6 +73,7 @@
 
 <script>
 import Footer from "@/components/Footer.vue";
+import api from "@/api";
 
 export default {
   name: "App",
@@ -99,8 +100,8 @@ export default {
         url: "/reference",
       },
       {
-        text: "登入",
-        url: "/login",
+        text: api.is_login() ? "個人頁面" : "登入",
+        url: api.is_login() ? "/menu" : "/login",
       },
     ],
   }),

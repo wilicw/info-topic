@@ -6,6 +6,7 @@ import Teachers from '../views/Teachers.vue'
 import Search from '../views/Search.vue'
 import Detail from '../views/Detail.vue'
 import Edit from '../views/Edit.vue'
+import Menu from '../views/Menu.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/edit/:id',
     name: 'Edit',
     component: Edit
+  },
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: Menu
   }
 ]
 

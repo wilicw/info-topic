@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {config} from '../config'
+import { config } from '../config'
 
 const client = axios.create({
   baseURL: config.api,
@@ -28,4 +28,10 @@ export default {
   ,
   storage_token: (token) =>
     window.localStorage.setItem("token", String(token))
+  ,
+  is_login: () =>
+    Boolean(window.localStorage.getItem("token"))
+  ,
+  get_token: () =>
+    window.localStorage.getItem("token")
 }

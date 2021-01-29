@@ -42,6 +42,8 @@
 export default {
   name: "Search",
   data: () => ({
+    keywords: "",
+    columns: [],
     search_options: [
       {
         text: "專題名稱",
@@ -61,5 +63,11 @@ export default {
       },
     ],
   }),
+  methods: {
+    search() {
+      const keywords = this.keywords;
+      this.$router.push(`/search/${keywords}`);
+    },
+  },
 };
 </script>

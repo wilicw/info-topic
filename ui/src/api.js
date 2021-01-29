@@ -41,6 +41,9 @@ export default {
   get_topics_by_tid: async (id) =>
     client.get(`/teacher/${id}`)
   ,
+  get_topics_search: async (word) =>
+    client.get(`/search/${word}`)
+  ,
   get_teachers: async () =>
     client.get("/teacher/")
 }

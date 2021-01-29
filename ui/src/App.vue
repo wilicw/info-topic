@@ -3,7 +3,7 @@
     <v-app-bar
       app
       flat
-      class="mt-5 mx-5"
+      class="mt-5 mx-5 noselect"
       style="background-color: transparent"
       absolute
     >
@@ -16,7 +16,7 @@
           transition="scale-transition"
           width="25"
         />
-        <p class="headline mt-3">
+        <p class="headline mt-3 hover">
           <span class="font-weight-bold" v-if="!$vuetify.breakpoint.mobile"
             >大安資訊
           </span>
@@ -126,6 +126,14 @@ export default {
 
 *::selection {
   background: rgba(104, 198, 130, 0.5);
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 </style>
 <style lang="scss">

@@ -38,6 +38,9 @@ export default {
   clear_token: () =>
     window.localStorage.removeItem("token")
   ,
-  get_topics_by_tid: async (id) => 
+  get_topics_by_tid: async (id) =>
     client.get(`/teacher/${id}`)
+  ,
+  get_teachers: async () =>
+    client.get("/teacher/")
 }

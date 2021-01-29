@@ -30,14 +30,14 @@ class login(Resource):
 
 
 class toipcs(Resource):
-    def get(self, id=None, name=None):
+    def get(self, id=None, uuid=None):
         if id != None:
             result = Project.query.get(id)
             if result == None:
                 return err.topic_not_found
             return result.to_detail()
-        elif name != None:
-            result = Project.query.filter_by(name=name).first()
+        elif uuid != None:
+            result = Project.query.filter_by(uuid=uuid).first()
             if result == None:
                 return err.topic_not_found
             return result.to_detail()

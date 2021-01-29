@@ -27,7 +27,7 @@ api.add_resource(
     "/api/topics",
     "/api/topics/",
     "/api/topic/<int:id>",
-    "/api/topic/<string:name>",
+    "/api/topic/<string:uuid>",
 )
 api.add_resource(
     resources.teacher,

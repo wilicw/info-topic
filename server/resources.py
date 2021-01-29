@@ -16,10 +16,17 @@ class login(Resource):
         password = res["password"]
         if (
             Student.query.filter_by(username=username, password=password).first()
-            == None
+            != None
         ):
-            return err.account_error
-        return entities.generate_token(username)
+            return entities.generate_token(username, group="stu")
+        if (
+            Teacher.query.filter_by(username=username, password=password).first()
+            != None
+        ):
+            return entities.generate_token(username, group="teacher")
+        if Admin.query.filter_by(username=username, password=password).first() != None:
+            return entities.generate_token(username, group="admin")
+        return err.account_error
 
 
 class toipcs(Resource):
@@ -125,7 +132,7 @@ class upload(Resource):
         fn = entities.make_unique(fn)
         fn = werkzeug.utils.secure_filename(fn)
         path = os.path.join(
-            os.path.abspath(__file__+"/.."),
+            os.path.abspath(__file__ + "/.."),
             "..",
             entities.config.upload_path,
             fn,

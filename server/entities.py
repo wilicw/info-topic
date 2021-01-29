@@ -35,16 +35,21 @@ def to_detail_obj_list(ll):
     return list(map(lambda x: x.to_detail(), ll))
 
 
-def generate_token(username):
-    return jwt.encode({"username": str(username)}, config.secret, algorithm="HS256")
+def generate_token(username, group):
+    return jwt.encode(
+        {"username": str(username), "group": group}, config.secret, algorithm="HS256"
+    )
 
 
 def decode_token(token):
     try:
-        user = jwt.decode(token, config.secret, algorithms=["HS256"])["username"]
+        obj = jwt.decode(token, config.secret, algorithms=["HS256"])
+        user = obj["username"]
+        group = obj["group"]
     except:
         user = -1
-    return user
+        group = -1
+    return user, group
 
 
 def filename_validation(fn):

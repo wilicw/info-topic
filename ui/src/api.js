@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { api, imgur_client_id } from '../vue.config'
+import config from '../config'
 
-const config = {
-  baseURL: api,
+const client = axios.create({
+  baseURL: config.api,
   timeout: 100000
 }
-
-const client = axios.create(config)
+)
 
 export default {
   upload_image: async (formData) => {
@@ -15,7 +14,7 @@ export default {
       url: 'https://api.imgur.com/3/image',
       data: formData,
       headers: {
-        Authorization: 'Client-ID ' + imgur_client_id,
+        Authorization: 'Client-ID ' + config.imgur_client_id,
       },
       mimeType: 'multipart/form-data',
     });

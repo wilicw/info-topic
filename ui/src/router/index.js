@@ -8,6 +8,7 @@ import Detail from '../views/Detail.vue'
 import Edit from '../views/Edit.vue'
 import Menu from '../views/Menu.vue'
 import Logout from '../views/Logout.vue'
+import Teachers_topics from '../views/Teachers_topics.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/teachers',
     name: 'Teachers',
     component:Teachers
+  },
+  {
+    path: '/teachers/:id',
+    name: 'Teachers_topics',
+    component:Teachers_topics
   },
   {
     path: '/search',

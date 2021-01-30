@@ -62,7 +62,7 @@
               <v-divider class="my-3"></v-divider>
               編號
               <v-icon color="primary">mdi-slash-forward</v-icon>
-              <span class="black--text font-weight-medium">
+              <span class="black--text font-weight-medium text-uppercase">
                 {{ topic.uuid }}
               </span>
               <v-divider class="my-3"></v-divider>

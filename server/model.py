@@ -114,6 +114,7 @@ class Project(db.Model):
     name = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey("teachers.id"))
+    presentation_order = db.Column(db.Integer)
     students = db.relationship("Student", backref="project", lazy=True)
     motivation = db.Column(db.String, nullable=True)
     faqs = db.Column(db.String, nullable=True)

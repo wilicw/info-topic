@@ -68,7 +68,10 @@
               <v-divider class="my-3"></v-divider>
               指導老師
               <v-icon color="primary">mdi-slash-forward</v-icon>
-              <span class="black--text font-weight-medium">
+              <span
+                @click="$router.push(`/teachers/${topic.teacher}`)"
+                class="black--text font-weight-medium hover"
+              >
                 {{ topic.teacher }}
               </span>
               <v-divider class="my-3"></v-divider>
@@ -80,9 +83,12 @@
               <v-divider class="my-3"></v-divider>
               關鍵字
               <v-icon color="primary">mdi-slash-forward</v-icon>
-              <span class="black--text font-weight-medium"
+              <span
+                class="black--text font-weight-medium"
+                v-if="topic.keywords.length"
                 >{{ topic.keywords.join("、") }}
               </span>
+              <span class="black--text font-weight-medium" v-else>無 </span>
               <v-divider class="my-3"></v-divider>
               年度
               <v-icon color="primary">mdi-slash-forward</v-icon>

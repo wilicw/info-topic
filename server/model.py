@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import backref
+from entities import cjk_layout
 
 db = SQLAlchemy()
 
@@ -136,9 +136,9 @@ class Project(db.Model):
         return {
             "id": self.id,
             "uuid": self.uuid,
-            "title": self.name,
+            "title": cjk_layout(self.name),
             "year": self.year,
-            "description": self.motivation,
+            "description": cjk_layout(self.motivation),
             "cover": Image.query.get(self.cover_img_id).path
             if self.cover_img_id > 0
             else "",
@@ -151,7 +151,7 @@ class Project(db.Model):
             **{
                 "students": [s.name for s in self.students],
                 "teacher": self.teacher.name,
-                "faqs": self.faqs,
+                "faqs": cjk_layout(self.faqs),
                 "report_file": self.report_file_id if self.report_file_id > 0 else "",
                 "presentation_file": self.presentation_file_id
                 if self.presentation_file_id > 0

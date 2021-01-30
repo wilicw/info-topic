@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from uuid import uuid4
-import jwt
+import jwt, pangu
 
 conf = ConfigParser()
 conf.read("config.ini", encoding="utf-8")
@@ -63,3 +63,6 @@ def filename_validation(fn):
 def make_unique(fn):
     ident = uuid4().__str__()[:8]
     return f"{ident}-{fn}"
+
+def cjk_layout(text):
+    return pangu.spacing_text(text)

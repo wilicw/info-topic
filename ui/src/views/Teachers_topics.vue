@@ -3,29 +3,19 @@
     <p class="title font-weight-bold mt-10" v-if="teacher_name">
       指導老師：{{ teacher_name }}
     </p>
-    <v-row>
-      <v-col v-for="topic in topics" :key="topic.id" cols="12" sm="4" md="3">
-        <Topic_card
-          :uuid="topic.uuid"
-          :title="topic.title"
-          :year="topic.year"
-          :description="topic.description"
-          :cover="topic.cover"
-        />
-      </v-col>
-    </v-row>
+    <Multi_Topics :topics="topics" />
   </v-container>
 </template>
 
 <script>
 import _ from "lodash";
-import Topic_card from "@/components/Topic_card.vue";
+import Multi_Topics from "@/components/Multi_Topics.vue";
 import api from "@/api";
 
 export default {
   name: "Teachers_topics",
   components: {
-    Topic_card,
+    Multi_Topics,
   },
   data: () => ({
     teacher_name: "",

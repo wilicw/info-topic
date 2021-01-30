@@ -11,28 +11,18 @@
     >
       沒有關鍵字為{{ word }}的專題
     </v-alert>
-    <v-row v-if="topics.length">
-      <v-col v-for="topic in topics" :key="topic.id" cols="12" sm="4" md="3">
-        <Topic_card
-          :uuid="topic.uuid"
-          :title="topic.title"
-          :year="topic.year"
-          :description="topic.description"
-          :cover="topic.cover"
-        />
-      </v-col>
-    </v-row>
+    <Multi_Topics :topics="topics" />
   </v-container>
 </template>
 
 <script>
-import Topic_card from "@/components/Topic_card.vue";
+import Multi_Topics from "@/components/Multi_Topics.vue";
 import api from "@/api";
 
 export default {
   name: "Keyword",
   components: {
-    Topic_card,
+    Multi_Topics,
   },
   data: () => ({
     word: "",

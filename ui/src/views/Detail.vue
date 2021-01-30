@@ -113,12 +113,12 @@
           </v-col>
         </v-row>
         <div :class="$vuetify.breakpoint.mobile ? 'pa-0' : 'pa-8'">
-          <div class="px-5" v-if="topic.faqs">
+          <div class="py-5" v-if="topic.faqs">
             <p class="display-1 font-weight-medium">
               <v-icon class="mb-1" color="primary">mdi-pound</v-icon>
               問題與解決辦法
             </p>
-            <p class="pa-5 content">{{ topic.faqs }}</p>
+            <p class="py-5 content">{{ topic.faqs }}</p>
           </div>
           <div class="py-5" v-if="topic.arch_imgs.length">
             <p class="display-1 font-weight-medium">

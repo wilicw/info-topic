@@ -43,6 +43,7 @@ api.add_resource(resources.toipcs_by_keywords, "/api/keyword/<string:word>")
 api.add_resource(resources.search, "/api/search/<string:text>")
 api.add_resource(resources.file, "/api/file/<int:id>")
 api.add_resource(resources.upload, "/api/upload", "/api/upload/")
+api.add_resource(resources.change_password, "/api/change_password")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

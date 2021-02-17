@@ -11,6 +11,7 @@ import Logout from '../views/Logout.vue'
 import Teachers_topics from '../views/Teachers_topics.vue'
 import Search_topics from '../views/Search_topics.vue'
 import Keyword from '../views/Keyword.vue'
+import Change_password from '../views/Change_password.vue'
 
 Vue.use(VueRouter)
 
@@ -25,7 +26,8 @@ const routes = [
   { path: '/keyword/:word', component: Keyword },
   { path: '/edit/:id', component: Edit },
   { path: '/menu', component: Menu },
-  { path: '/logout', component: Logout }
+  { path: '/logout', component: Logout },
+  { path: '/change_password', component: Change_password }
 ]
 
 const router = new VueRouter({

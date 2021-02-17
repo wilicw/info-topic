@@ -57,4 +57,17 @@ export default {
   ,
   download: (id) =>
     window.open(`${config.api}/file/${id}`, '_blank')
+  ,
+  change_password: async function (original_pass, pass) {
+    const _token = this.get_token();
+    return client.post("/change_password", {
+      original_pass: original_pass,
+      pass: pass
+    }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  }
+  ,
 }

@@ -1,4 +1,5 @@
 # -*- encoding: utf8-*-
+from flask.globals import session
 from flask_restful import Resource, request, reqparse
 from flask import send_from_directory
 from model import *
@@ -161,3 +162,37 @@ class upload(Resource):
         db.session.add(db_f)
         db.session.commit()
         return {"status": "success", "id": db_f.id}
+
+
+class change_password(Resource):
+    def post(self):
+        data = request.json
+        try:
+            jwt_token = request.headers["Authorization"]
+            user, group = entities.decode_token(jwt_token)
+        except:
+            return err.not_allow_error
+        try:
+            o_pass = data["original_pass"]
+            password = data["pass"]
+        except:
+            return err.not_allow_error
+        if (
+            obj := Student.query.filter_by(username=user, password=o_pass).first()
+        ) != None:
+            obj.password = password
+            db.session.commit()
+            return {"status": "success"}
+        if (
+            obj := Teacher.query.filter_by(username=user, password=o_pass).first()
+        ) != None:
+            obj.password = password
+            db.session.commit()
+            return {"status": "success"}
+        if (
+            obj := Admin.query.filter_by(username=user, password=o_pass).first()
+        ) != None:
+            obj.password = password
+            db.session.commit()
+            return {"status": "success"}
+        return err.account_error

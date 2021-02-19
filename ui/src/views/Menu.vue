@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="" class="mt-5 fill-height" align="center">
+    <v-row class="mt-5 fill-height" align="center">
       <v-col v-for="i in options.menu" :key="i.url" cols="12" sm="4">
         <v-hover v-slot="{ hover }">
           <v-card

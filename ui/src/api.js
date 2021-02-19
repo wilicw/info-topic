@@ -40,6 +40,7 @@ export default {
           Authorization: _token,
         }
       })
+      return true
     } catch {
       return false
     }

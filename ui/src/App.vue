@@ -105,15 +105,15 @@ export default {
         text: "參考資料",
         url: "/reference",
       },
-      {
-        text: api.is_login() ? "個人頁面" : "登入",
-        url: api.is_login() ? "/menu" : "/login",
-      },
     ],
   }),
-  created() {
+  async created() {
     this.$root.$once("login", this.login);
     this.$root.$once("logout", this.logout);
+    this.nav_link.push({
+      text: (await api.is_login()) ? "個人頁面" : "登入",
+      url: (await api.is_login()) ? "/menu" : "/login",
+    });
   },
   methods: {
     logout() {

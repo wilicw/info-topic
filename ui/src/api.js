@@ -31,8 +31,19 @@ export default {
     window.localStorage.setItem("token", token);
   }
   ,
-  is_login: () =>
-    window.localStorage.getItem("token") == null || window.localStorage.getItem("token") == undefined || window.localStorage.getItem("token") == "" ? false : true
+  is_login: async function () {
+    if (window.localStorage.getItem("token") == null || window.localStorage.getItem("token") == undefined || window.localStorage.getItem("token") == "") return false
+    const _token = this.get_token();
+    try {
+      client.post("/is_login", {}, {
+        headers: {
+          Authorization: _token,
+        }
+      })
+    } catch {
+      return false
+    }
+  }
   ,
   get_token: () =>
     window.localStorage.getItem("token")

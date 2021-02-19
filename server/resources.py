@@ -31,6 +31,16 @@ class login(Resource):
         return err.account_error
 
 
+class is_login(Resource):
+    def post(self):
+        try:
+            jwt_token = request.headers["Authorization"]
+            user, group = entities.decode_token(jwt_token)
+        except:
+            return err.not_allow_error
+        return {"status": "success"}
+
+
 class toipcs(Resource):
     def get(self, id=None, uuid=None):
         if id != None:

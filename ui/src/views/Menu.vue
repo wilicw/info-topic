@@ -81,9 +81,10 @@ export default {
     this.load_identity();
   },
   methods: {
-    load_identity() {
-      if (!api.is_login()) {
+    async load_identity() {
+      if (!(await api.is_login())) {
         this.$router.push("logout");
+        console.log(123);
         return;
       }
       const data = JSON.parse(atob(api.get_token().split(".")[1]));

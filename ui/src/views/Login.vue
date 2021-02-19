@@ -57,8 +57,8 @@ export default {
     err: null,
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
-  created() {
-    if (api.is_login()) this.$router.push("/menu");
+  async created() {
+    if (await api.is_login()) this.$router.push("/menu");
   },
   methods: {
     async login() {

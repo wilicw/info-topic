@@ -20,6 +20,7 @@ api = Api(app)
 ma.init_app(app)
 
 api.add_resource(resources.login, "/api/auth")
+api.add_resource(resources.is_login, "/api/is_login")
 api.add_resource(
     resources.toipcs,
     "/api/topic",

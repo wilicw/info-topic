@@ -5,6 +5,10 @@ from flask import send_from_directory
 from model import *
 import schema, entities, err, werkzeug, os
 
+group_student = "stu"
+group_teacher = "teacher"
+group_admin = "admin"
+
 
 class login(Resource):
     def post(self):
@@ -20,14 +24,14 @@ class login(Resource):
             Student.query.filter_by(username=username, password=password).first()
             != None
         ):
-            return entities.generate_token(username, group="stu")
+            return entities.generate_token(username, group=group_student)
         if (
             Teacher.query.filter_by(username=username, password=password).first()
             != None
         ):
-            return entities.generate_token(username, group="teacher")
+            return entities.generate_token(username, group=group_teacher)
         if Admin.query.filter_by(username=username, password=password).first() != None:
-            return entities.generate_token(username, group="admin")
+            return entities.generate_token(username, group=group_admin)
         return err.account_error
 
 
@@ -206,3 +210,17 @@ class change_password(Resource):
             db.session.commit()
             return {"status": "success"}
         return err.account_error
+
+
+class get_topic_by_token(Resource):
+    def post(self):
+        try:
+            jwt_token = request.headers["Authorization"]
+            user, group = entities.decode_token(jwt_token)
+        except:
+            return err.not_allow_error
+        if group != group_student:
+            return err.not_allow_error
+        stu_obj = Student.query.filter_by(username=user).first()
+        project_uuid = stu_obj.project.uuid
+        return {"status": "success", "uuid": project_uuid}

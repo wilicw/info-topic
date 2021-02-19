@@ -6,7 +6,7 @@
           <v-card
             :elevation="hover ? 5 : 2"
             class="rounded-0 pa-10 ma-1 hover"
-            @click="$router.push(i.url)"
+            @click="i.url && $router.push(i.url)"
           >
             <v-card-title class="headline font-weight-bold">
               <v-icon large class="mr-5 mt-1">{{ i.icon }}</v-icon> {{ i.text }}
@@ -29,7 +29,7 @@ export default {
       common: [
         {
           text: "編輯專題",
-          url: "edit",
+          url: null,
           icon: "mdi-pen",
         },
 
@@ -47,7 +47,7 @@ export default {
       stu: [
         {
           text: "檢視專題",
-          url: "view",
+          url: null,
           icon: "mdi-book-open-page-variant",
         },
       ],
@@ -77,8 +77,16 @@ export default {
       ],
     },
   }),
-  created() {
+  async created() {
     this.load_identity();
+    try {
+      const res = await api.get_topic_by_token();
+      let uuid = res.data.uuid;
+      this.options.stu[0].url = `topic/${uuid}`;
+      this.options.common[0].url = `edit/${uuid}`;
+    } catch {
+      //nothing
+    }
   },
   methods: {
     async load_identity() {

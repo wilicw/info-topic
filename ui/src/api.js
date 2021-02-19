@@ -67,6 +67,15 @@ export default {
   get_topic: async (id) =>
     client.get(`/topic/${id}`)
   ,
+  get_topic_by_token: async function () {
+    const _token = this.get_token();
+    return client.post("/get_topic_by_token", {}, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  }
+  ,
   download: (id) =>
     window.open(`${config.api}/file/${id}`, '_blank')
   ,

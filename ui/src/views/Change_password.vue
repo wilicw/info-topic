@@ -72,8 +72,8 @@ export default {
     success: null,
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
-  created() {
-    if (!api.is_login()) this.$router.go(-1);
+  async created() {
+    if (!(await api.is_login())) this.$router.go(-1);
   },
   methods: {
     async submit() {

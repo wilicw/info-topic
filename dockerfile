@@ -19,5 +19,5 @@ RUN chown -R 99:99 /var/lib/nginx /var/log/nginx
 RUN chmod -R 755 /var/lib/nginx /var/log/nginx
 RUN rm -rf /var/cache/apk/* /tmp/*
 COPY --from=build /tmp/dist /app/cli/dist
-EXPOSE 80
+EXPOSE 8080
 CMD ["./startup.sh"]

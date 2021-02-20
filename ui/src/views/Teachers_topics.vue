@@ -1,23 +1,29 @@
 <template>
   <v-container>
-    <p class="title font-weight-bold mt-10" v-if="teacher_name">
-      指導老師：{{ teacher_name }}
-    </p>
-    <Multi_Topics :topics="topics" />
+    <Loading v-if="loading" />
+    <div v-else>
+      <p class="title font-weight-bold mt-10" v-if="teacher_name">
+        指導老師：{{ teacher_name }}
+      </p>
+      <Multi_Topics :topics="topics" />
+    </div>
   </v-container>
 </template>
 
 <script>
 import _ from "lodash";
+import Loading from "@/components/Loading-4.vue";
 import Multi_Topics from "@/components/Multi_Topics.vue";
 import api from "@/api";
 
 export default {
   name: "Teachers_topics",
   components: {
+    Loading,
     Multi_Topics,
   },
   data: () => ({
+    loading: true,
     teacher_name: "",
     topics: [],
   }),
@@ -27,6 +33,7 @@ export default {
     this.topics = res.data.projects;
     this.teacher_name = res.data.name;
     this.topics = _.shuffle(this.topics);
+    this.loading = false;
   },
 };
 </script>

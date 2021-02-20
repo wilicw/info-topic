@@ -7,7 +7,7 @@
             type="card, avatar, article, article"
           ></v-skeleton-loader>
         </div>
-        <div v-if="!loading">
+        <div v-else>
           <div class="ml-5">
             <p class="title mt-5 mb-0 ml-1">{{ topic.year }} 級畢業專題</p>
             <p class="display-2 mt-3 mb-3 font-weight-bold">

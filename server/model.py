@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from entities import cjk_layout
+from entities import cjk_layout, config
 
 db = SQLAlchemy()
 
@@ -153,11 +153,16 @@ class Project(db.Model):
                 "students": [s.name for s in self.students],
                 "teacher": self.teacher.name,
                 "faqs": cjk_layout(self.faqs),
-                "report_file": self.report_file_id if self.report_file_id > 0 else "",
-                "presentation_file": self.presentation_file_id
+                "report_file": config.url_prefix
+                + File.query.get(self.report_file_id).location
+                if self.report_file_id > 0
+                else "",
+                "presentation_file": config.url_prefix
+                + File.query.get(self.presentation_file_id).location
                 if self.presentation_file_id > 0
                 else "",
-                "program_file": self.program_file_id
+                "program_file": config.url_prefix
+                + File.query.get(self.program_file_id).location
                 if self.program_file_id > 0
                 else "",
                 "videos_links": [

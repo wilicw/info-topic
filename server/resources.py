@@ -129,27 +129,6 @@ class search(Resource):
         return entities.to_detail_obj_list(results)
 
 
-class file(Resource):
-    def get(self, id):
-        f = File.query.get(id)
-        if f == None:
-            return err.file_not_found
-        path = str(
-            os.path.join(
-                os.path.abspath(__file__ + "/.."),
-                "..",
-                entities.config.upload_path,
-            )
-        )
-        print(f.location)
-        ff = send_from_directory(
-            path,
-            f.location,
-            as_attachment=True,
-        )
-        return 0
-
-
 class upload(Resource):
     def post(self):
         parse = reqparse.RequestParser()
@@ -172,10 +151,41 @@ class upload(Resource):
             fn,
         )
         f.save(path)
+        fn = entities.config.upload_prefix + "/" + fn
         db_f = File(location=fn)
         db.session.add(db_f)
-        db.session.commit()
-        return {"status": "success", "id": db_f.id}
+        # db.session.commit()
+        return {"status": "success", "link": entities.config.url_prefix + fn}
+
+
+class upload_img(Resource):
+    def post(self):
+        parse = reqparse.RequestParser()
+        parse.add_argument(
+            "image", type=werkzeug.datastructures.FileStorage, location="files"
+        )
+        parse.add_argument("title")
+        args = parse.parse_args()
+        if args["image"] == None or args["title"] == None:
+            return err.upload_error
+        f = args["image"]
+        fn = args["title"] + f.filename
+        if entities.filename_validation(fn) == False:
+            return err.upload_error
+        fn = entities.make_unique(fn)
+        fn = werkzeug.utils.secure_filename(fn)
+        path = os.path.join(
+            os.path.abspath(__file__ + "/.."),
+            "..",
+            entities.config.upload_path,
+            fn,
+        )
+        f.save(path)
+        fn = entities.config.upload_prefix + "/" + fn
+        db_f = Image(path=fn)
+        db.session.add(db_f)
+        # db.session.commit()
+        return {"status": "success", "link": entities.config.url_prefix + fn}
 
 
 class change_password(Resource):

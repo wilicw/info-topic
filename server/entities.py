@@ -19,6 +19,8 @@ class config:
     secret = jwt_config["secret"]
     upload_path = upload_config["path"]
     allow_file_type = upload_config["allow_file_type"].split(",")
+    url_prefix = upload_config["url_prefix"]
+    upload_prefix = upload_config["upload_prefix"]
 
 
 def remove_duplicates_preserving_order(seq):
@@ -63,6 +65,7 @@ def filename_validation(fn):
 def make_unique(fn):
     ident = uuid4().__str__()[:8]
     return f"{ident}-{fn}"
+
 
 def cjk_layout(text):
     return pangu.spacing_text(text)

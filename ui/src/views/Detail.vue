@@ -240,8 +240,8 @@ export default {
     this.loading = false;
   },
   methods: {
-    download(file_id) {
-      api.download(file_id);
+    download(link) {
+      window.open(link, "_blank");
     },
   },
 };

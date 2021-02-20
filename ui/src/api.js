@@ -8,17 +8,23 @@ const client = axios.create({
 )
 
 export default {
-  upload_image: async (formData) => {
-    const res = await axios({
-      method: 'POST',
-      url: 'https://api.imgur.com/3/image',
-      data: formData,
+  upload_image: async function (formData) {
+    const _token = this.get_token();
+    return client.post("/upload_img", formData, {
       headers: {
-        Authorization: 'Client-ID ' + config.imgur_client_id,
-      },
-      mimeType: 'multipart/form-data',
+        "Authorization": _token,
+        "Content-Type": 'multipart/form-data'
+      }
     });
-    return res.data.data;
+  },
+  upload_file: async function (formData) {
+    const _token = this.get_token();
+    return client.post("/upload", formData, {
+      headers: {
+        "Authorization": _token,
+        "Content-Type": 'multipart/form-data'
+      }
+    });
   },
   login: async (username, password) =>
     client.post("/auth", {
@@ -75,6 +81,8 @@ export default {
       }
     })
   }
+  ,
+  upload: () => { }
   ,
   download: (id) =>
     window.open(`${config.api}/file/${id}`, '_blank')

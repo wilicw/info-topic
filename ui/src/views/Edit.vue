@@ -222,6 +222,7 @@
               label="簡報檔案（pptx, pdf, odp）"
               accept="application/vnd.openxmlformats-officedocument.presentationml.presentation, application/pdf, application/vnd.oasis.opendocu"
               show-size
+              @change="upload_presentation"
             ></v-file-input>
           </div>
           <div class="mt-3">
@@ -231,6 +232,7 @@
               label="報告檔案（pdf）"
               accept="application/pdf"
               show-size
+              @change="upload_report"
             ></v-file-input>
           </div>
           <v-card-actions class="mt-10">
@@ -272,19 +274,27 @@ export default {
   },
   methods: {
     async arch_upload(e) {
-      const url = await this.update_one(e, "系統架構");
+      const url = await this.update_one(e, "arch", "img");
       this.topic.arch_imgs.push(url);
     },
     async cover_upload(e) {
-      this.topic.cover = await this.update_one(e, "封面");
+      this.topic.cover = await this.update_one(e, "cover", "img");
     },
     async members_upload(e) {
-      const url = await this.update_one(e, "組員");
+      const url = await this.update_one(e, "members", "img");
       this.topic.members_imgs.push(url);
     },
     async results_upload(e) {
-      const url = await this.update_one(e, "成品");
+      const url = await this.update_one(e, "result", "img");
       this.topic.results_imgs.push(url);
+    },
+    async upload_report(e) {
+      const link = await this.update_one(e, "report", "file");
+      this.topic.report_file= link
+    },
+    async upload_presentation(e) {
+      const link = await this.update_one(e, "presentation", "file");
+      this.topic.presentation_file = link
     },
     remove_results(i) {
       this.topic.results_imgs.splice(i, 1);
@@ -295,23 +305,40 @@ export default {
     remove_members(i) {
       this.topic.members_imgs.splice(i, 1);
     },
-    async update_one(e, tag) {
+    async update_one(e, tag, type) {
       const file = e;
       if (file == null || file == undefined) {
         return;
       }
       this.files.uploading = true;
-      const title = `${this.topic.uuid} ${this.topic.name} ${tag}`;
-      let return_url = await this.upload_image_to_imgur(title, file);
+      const title = `${this.topic.uuid}-${tag}--`;
+      let return_url;
+      switch (type) {
+        case "img":
+          return_url = await this.upload_image_to_server(title, file);
+          break;
+        case "file":
+          return_url = await this.upload_file_to_server(title, file);
+          break;
+        default:
+          break;
+      }
       this.files.uploading = false;
       return return_url;
     },
-    async upload_image_to_imgur(title, file) {
+    async upload_image_to_server(title, file) {
       let formData = new FormData();
       formData.append("image", file);
       formData.append("title", title);
-      const data = await api.upload_image(formData);
-      return data.link;
+      const res = await api.upload_image(formData);
+      return res.link;
+    },
+    async upload_file_to_server(title, file) {
+      let formData = new FormData();
+      formData.append("file", file);
+      formData.append("title", title);
+      const res = await api.upload_file(formData);
+      return res.data.link;
     },
     submit() {
       console.log(this.topic);

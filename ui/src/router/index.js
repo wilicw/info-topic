@@ -1,33 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Teachers from '../views/Teachers.vue'
-import Search from '../views/Search.vue'
-import Detail from '../views/Detail.vue'
-import Edit from '../views/Edit.vue'
-import Menu from '../views/Menu.vue'
-import Logout from '../views/Logout.vue'
-import Teachers_topics from '../views/Teachers_topics.vue'
-import Search_topics from '../views/Search_topics.vue'
-import Keyword from '../views/Keyword.vue'
-import Change_password from '../views/Change_password.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/login', component: Login },
-  { path: '/teachers', component: Teachers },
-  { path: '/teachers/:id', component: Teachers_topics },
-  { path: '/search', component: Search },
-  { path: '/search/:word', component: Search_topics },
-  { path: '/topic/:uuid', component: Detail },
-  { path: '/keyword/:word', component: Keyword },
-  { path: '/edit/:uuid', component: Edit },
-  { path: '/menu', component: Menu },
-  { path: '/logout', component: Logout },
-  { path: '/change_password', component: Change_password }
+  { path: '/', component: () => import('../views/Home.vue') },
+  { path: '/login', component: () => import('../views/Login.vue') },
+  { path: '/teachers', component: () => import('../views/Teachers.vue') },
+  { path: '/teachers/:id', component: () => import('../views/Teachers_topics.vue') },
+  { path: '/search', component: () => import('../views/Search.vue') },
+  { path: '/search/:word', component: () => import('../views/Search_topics.vue') },
+  { path: '/topic/:uuid', component: () => import('../views/Detail.vue') },
+  { path: '/keyword/:word', component: () => import('../views/Keyword.vue') },
+  { path: '/edit/:uuid', component: () => import('../views/Edit.vue') },
+  { path: '/menu', component: () => import('../views/Menu.vue') },
+  { path: '/logout', component: () => import('../views/Logout.vue') },
+  { path: '/change_password', component: () => import('../views/Change_password.vue') }
 ]
 
 const router = new VueRouter({

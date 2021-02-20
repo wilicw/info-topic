@@ -24,7 +24,7 @@ const routes = [
   { path: '/search/:word', component: Search_topics },
   { path: '/topic/:uuid', component: Detail },
   { path: '/keyword/:word', component: Keyword },
-  { path: '/edit/:id', component: Edit },
+  { path: '/edit/:uuid', component: Edit },
   { path: '/menu', component: Menu },
   { path: '/logout', component: Logout },
   { path: '/change_password', component: Change_password }

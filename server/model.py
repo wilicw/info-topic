@@ -5,10 +5,11 @@ from flask_sqlalchemy import SQLAlchemy as _BaseSQLAlchemy
 class SQLAlchemy(_BaseSQLAlchemy):
     def apply_pool_defaults(self, app, options):
         super(SQLAlchemy, self).apply_pool_defaults(app, options)
-        options['pool_pre_ping'] = True
+        options["pool_pre_ping"] = True
 
 
 db = SQLAlchemy()
+
 
 class Admin(db.Model):
     __tablename__ = "admin"
@@ -66,6 +67,9 @@ class Score_classification(db.Model):
     def __repr__(self):
         return f"<Score {self.id}>"
 
+    def to_obj(self):
+        return {"id": self.id, "description": self.description}
+
 
 class Score_weight(db.Model):
     __tablename__ = "score_weight"
@@ -78,6 +82,14 @@ class Score_weight(db.Model):
 
     def __repr__(self):
         return f"<Score {self.id}>"
+
+    def to_obj(self):
+        return {
+            "id": self.id,
+            "year": self.year,
+            "weight": self.weight,
+            "score_classification_id": self.score_classification_id,
+        }
 
 
 class Student(db.Model):

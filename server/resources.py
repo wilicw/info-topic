@@ -249,3 +249,58 @@ class get_topic_by_token(Resource):
         stu_obj = Student.query.filter_by(username=user).first()
         project_uuid = stu_obj.project.uuid
         return {"status": "success", "uuid": project_uuid}
+
+
+class score_weight(Resource):
+    def get(self):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        weight_data = list(map(lambda x: x.to_obj(), Score_weight.query.all()))
+        return {"status": "success", "data": weight_data}
+
+    def post(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            changed = data["data"]
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        for c in changed:
+            year = int(c["year"])
+            classification_id = int(c["classification_id"])
+            weight = int(c["weight"])
+            score_obj = Score_weight.query.filter_by(
+                year=year, score_classification_id=classification_id
+            ).first()
+            score_obj.weight = weight
+            db.session.commit()
+        return {"status": "success"}
+
+
+class score_classification(Resource):
+    def get(self):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        classification_data = list(
+            map(lambda x: x.to_obj(), Score_classification.query.all())
+        )
+        return {"status": "success", "data": classification_data}

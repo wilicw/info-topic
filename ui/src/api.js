@@ -80,8 +80,31 @@ export default {
         Authorization: _token,
       }
     })
-  }
-  ,
+  },
+  get_score_weight: async function () {
+    const _token = this.get_token();
+    return client.get("/score_weight", {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
+  get_score_classification: async function () {
+    const _token = this.get_token();
+    return client.get("/score_classification", {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
+  set_score_weight: async function (changed_data) {
+    const _token = this.get_token();
+    return client.post("/score_weight", { data: changed_data }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
   upload: () => { }
   ,
   download: (id) =>

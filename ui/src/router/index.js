@@ -15,7 +15,8 @@ const routes = [
   { path: '/edit/:uuid', component: () => import('../views/Edit.vue') },
   { path: '/menu', component: () => import('../views/Menu.vue') },
   { path: '/logout', component: () => import('../views/Logout.vue') },
-  { path: '/change_password', component: () => import('../views/Change_password.vue') }
+  { path: '/change_password', component: () => import('../views/Change_password.vue') },
+  { path: '/change_weight', component: () => import('../views/Change_weight.vue') }
 ]
 
 const router = new VueRouter({

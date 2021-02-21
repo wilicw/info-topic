@@ -85,6 +85,7 @@ export default {
       this.options.stu[0].url = `topic/${uuid}`;
       this.options.common[0].url = `edit/${uuid}`;
     } catch {
+      this.options.common[0].url = "edit";
       //nothing
     }
   },

@@ -165,10 +165,7 @@ class Project(db.Model):
                 + File.query.get(self.program_file_id).location
                 if self.program_file_id > 0
                 else "",
-                "videos_links": [
-                    f"https://www.youtube.com/embed/{ytid}"
-                    for ytid in self.videos_links
-                ],
+                "videos_links": [ytid for ytid in self.videos_links],
                 "arch_imgs": [
                     Image.query.get(imgid).path for imgid in self.arch_imgs_id
                 ],

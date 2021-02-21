@@ -79,6 +79,7 @@ export default {
   }),
   async created() {
     this.load_identity();
+    document.title = `個人頁面 || 大安資訊專題網`;
     try {
       const res = await api.get_topic_by_token();
       let uuid = res.data.uuid;

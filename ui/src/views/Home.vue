@@ -17,5 +17,8 @@ export default {
     Highlight,
     All,
   },
+  created() {
+    document.title = `首頁 || 大安資訊專題網`;
+  },
 };
 </script>

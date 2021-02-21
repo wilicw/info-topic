@@ -32,6 +32,7 @@ export default {
     const res = await api.get_topics_by_tid(teacher_id);
     this.topics = res.data.projects;
     this.teacher_name = res.data.name;
+    document.title = `指導老師 ${this.teacher_name} || 大安資訊專題網`;
     this.topics = _.shuffle(this.topics);
     this.loading = false;
   },

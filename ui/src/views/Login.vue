@@ -58,6 +58,7 @@ export default {
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
   async created() {
+    document.title = `登入 || 大安資訊專題網`;
     if (await api.is_login()) this.$router.push("/menu");
   },
   methods: {

@@ -185,10 +185,10 @@
               </p>
               <v-card flat min-height="800">
                 <iframe
-                  v-for="id in topic.videos_link"
+                  v-for="id in topic.videos_links"
                   :key="id"
                   style="height: 100%; width: 100%; position: absolute"
-                  :src="id"
+                  :src="`https://www.youtube.com/embed/${id}`"
                   frameborder="0"
                   allowfullscreen
                 ></iframe>
@@ -233,6 +233,7 @@ export default {
     try {
       const res = await api.get_topic(uuid);
       this.topic = res.data;
+      document.title = `${this.topic.title} || 大安資訊專題網`;
     } catch (err) {
       console.log(err);
       return;

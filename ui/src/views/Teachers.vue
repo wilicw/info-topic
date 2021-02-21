@@ -30,6 +30,7 @@ export default {
     teachers: [],
   }),
   async created() {
+    document.title = `指導老師 || 大安資訊專題網`;
     const res = await api.get_teachers();
     this.teachers = res.data;
   },

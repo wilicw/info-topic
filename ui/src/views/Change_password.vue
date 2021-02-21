@@ -73,6 +73,7 @@ export default {
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
   async created() {
+    document.title = `修改密碼 || 大安資訊專題網`;
     if (!(await api.is_login())) this.$router.go(-1);
   },
   methods: {

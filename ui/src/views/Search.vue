@@ -31,6 +31,9 @@ export default {
   data: () => ({
     keywords: "",
   }),
+  created() {
+    document.title = `搜尋 || 大安資訊專題網`;
+  },
   methods: {
     search() {
       const keywords = this.keywords;

@@ -38,6 +38,7 @@ export default {
   async created() {
     const word = decodeURIComponent(this.$route.params.word);
     console.log(word);
+    document.title = `搜尋 ${word} || 大安資訊專題網`;
     const res = await api.get_topics_search(word);
     this.topics = res.data;
     this.word = word;

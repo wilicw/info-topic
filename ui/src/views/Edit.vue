@@ -290,11 +290,11 @@ export default {
     },
     async upload_report(e) {
       const link = await this.update_one(e, "report", "file");
-      this.topic.report_file= link
+      this.topic.report_file = link;
     },
     async upload_presentation(e) {
       const link = await this.update_one(e, "presentation", "file");
-      this.topic.presentation_file = link
+      this.topic.presentation_file = link;
     },
     remove_results(i) {
       this.topic.results_imgs.splice(i, 1);
@@ -331,7 +331,7 @@ export default {
       formData.append("image", file);
       formData.append("title", title);
       const res = await api.upload_image(formData);
-      return res.link;
+      return res.data.link;
     },
     async upload_file_to_server(title, file) {
       let formData = new FormData();

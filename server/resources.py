@@ -160,7 +160,7 @@ class upload(Resource):
         f.save(path)
         db_f = File(location=fn)
         db.session.add(db_f)
-        # db.session.commit()
+        db.session.commit()
         return {"status": "success", "link": entities.config.url_prefix + fn}
 
 
@@ -195,7 +195,7 @@ class upload_img(Resource):
         f.save(path)
         db_f = Image(path=fn)
         db.session.add(db_f)
-        # db.session.commit()
+        db.session.commit()
         return {"status": "success", "link": entities.config.url_prefix + fn}
 
 

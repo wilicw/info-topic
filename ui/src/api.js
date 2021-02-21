@@ -99,4 +99,10 @@ export default {
     })
   }
   ,
+  lazy_load_img: (url) => {
+    if (url.includes("http://") || url.includes("https://")) {
+      return url;
+    }
+    return url.replace(/^upload/i, "upload-lazy");
+  }
 }

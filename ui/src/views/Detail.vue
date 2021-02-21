@@ -53,12 +53,12 @@
               <v-icon small class="mr-3">mdi-download</v-icon> 程式
             </v-btn>
           </div>
-          <v-img
+          <LazyImage
             v-if="topic.cover"
             :src="topic.cover"
             class="ma-5"
             :class="$vuetify.breakpoint.mobile ? 'mx-0' : ''"
-          ></v-img>
+          ></LazyImage>
           <v-row>
             <v-col
               cols="12"
@@ -145,8 +145,8 @@
                   v-for="img in topic.arch_imgs"
                   :key="img"
                 >
-                  <v-img :src="img"></v-img
-                ></v-col>
+                  <LazyImage :src="img" />
+                </v-col>
               </v-row>
             </div>
             <div class="py-5" v-if="topic.results_imgs.length">
@@ -160,8 +160,8 @@
                   v-for="img in topic.results_imgs"
                   :key="img"
                 >
-                  <v-img :src="img"></v-img
-                ></v-col>
+                  <LazyImage :src="img" />
+                </v-col>
               </v-row>
             </div>
             <div class="py-5" v-if="topic.members_imgs.length">
@@ -175,8 +175,8 @@
                   v-for="img in topic.members_imgs"
                   :key="img"
                 >
-                  <v-img :src="img"></v-img
-                ></v-col>
+                  <LazyImage :src="img" />
+                </v-col>
               </v-row>
             </div>
             <div class="py-5" v-if="topic.videos_links.length">
@@ -203,9 +203,13 @@
 
 <script>
 import api from "@/api";
+import LazyImage from "@/components/LazyImage";
 
 export default {
   name: "Detail",
+  components: {
+    LazyImage,
+  },
   data: () => ({
     loading: true,
     topic: {
@@ -243,6 +247,9 @@ export default {
   methods: {
     download(link) {
       window.open(link, "_blank");
+    },
+    lazy_load_img(url) {
+      return api.lazy_load_img(url);
     },
   },
 };

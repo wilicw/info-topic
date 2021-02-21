@@ -2,7 +2,7 @@
   <v-container>
     <Loading v-if="loading" />
     <div v-else>
-      <p class="title font-weight-bold mt-10">關鍵字：{{ word }}</p>
+      <p class="title font-weight-bold mt-10 mb-0">關鍵字：{{ word }}</p>
       <v-alert
         v-if="err"
         color="pink"

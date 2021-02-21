@@ -1,6 +1,6 @@
 <template>
   <v-card class="rounded-0 mt-5">
-    <v-img :src="cover"></v-img>
+    <LazyImage :src="cover" />
 
     <v-card-text class="font-weight-bold black--text">{{ title }}</v-card-text>
 
@@ -17,10 +17,15 @@
 </template>
 
 <script>
+import LazyImage from "@/components/LazyImage";
 export default {
   name: "Topic_card",
+  components: {
+    LazyImage,
+  },
   props: ["uuid", "title", "cover", "year", "description", "keywords"],
   data: () => ({
+    lazy_load_cover: "",
     max_text_turncate: 100,
   }),
   methods: {

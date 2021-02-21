@@ -1,37 +1,40 @@
 <template>
-  <v-container>
+  <div>
     <v-card flat style="background-color: transparent">
-      <v-btn plain @click="expand_menu"
-        ><v-icon class="mr-2">mdi-filter-variant</v-icon> 過濾條件</v-btn
-      >
+      <v-btn plain @click="expand_menu">
+        <v-icon class="mr-2">mdi-filter-variant</v-icon> 過濾條件
+      </v-btn>
     </v-card>
     <v-expand-transition>
       <v-card v-show="filter_menu" class="mt-2" transition="scale-transition">
         <v-card-text>
           <p class="subtitle-1 mb-2 font-weight-medium">年度</p>
-          <v-row>
-            <v-col v-for="y in available.years" :key="y">
-              <Chip_checkbox
-                v-model="selected.years"
-                :label="y"
-                @click.native="update_menu"
-              />
-            </v-col>
-          </v-row>
+          <div v-for="y in available.years" :key="y" style="display: inline">
+            <Chip_checkbox
+              v-model="selected.years"
+              class="mx-1 my-1"
+              :label="y"
+              @click.native="update_menu"
+            />
+          </div>
           <br />
           <p class="subtitle-1 mb-2 font-weight-medium">關鍵字</p>
-          <v-row>
-            <v-col v-for="word in available.keywords" :key="word">
-              <Chip_checkbox
-                v-model="selected.keywords"
-                :label="word"
-                @click.native="update_menu"
-              />
-            </v-col>
-          </v-row>
+          <div
+            v-for="word in available.keywords"
+            :key="word"
+            style="display: inline"
+          >
+            <Chip_checkbox
+              v-model="selected.keywords"
+              class="mx-1 my-1"
+              :label="word"
+              @click.native="update_menu"
+            />
+          </div>
         </v-card-text>
       </v-card>
     </v-expand-transition>
+    <br />
     <v-row v-if="topics.length">
       <v-col
         v-for="topic in compinent_topics"
@@ -49,7 +52,7 @@
         />
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>

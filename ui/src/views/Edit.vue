@@ -275,6 +275,8 @@ export default {
     const uuid = this.$route.params.uuid;
     try {
       const res = await api.get_topic(uuid);
+      const __ = await api.get_topic_by_token();
+      if (__.data.uuid != uuid) this.$router.go(-1);
       this.topic = res.data;
       this.topic._keywords = this.topic.keywords;
     } catch (err) {

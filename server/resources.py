@@ -38,8 +38,9 @@ class login(Resource):
 class is_login(Resource):
     def post(self):
         try:
-            jwt_token = request.headers["Authorization"]
-            user, group = entities.decode_token(jwt_token)
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
         except:
             return err.not_allow_error
         return {"status": "success"}
@@ -131,6 +132,12 @@ class search(Resource):
 
 class upload(Resource):
     def post(self):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
         parse = reqparse.RequestParser()
         parse.add_argument(
             "file", type=werkzeug.datastructures.FileStorage, location="files"
@@ -159,6 +166,12 @@ class upload(Resource):
 
 class upload_img(Resource):
     def post(self):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
         parse = reqparse.RequestParser()
         parse.add_argument(
             "image", type=werkzeug.datastructures.FileStorage, location="files"
@@ -190,10 +203,12 @@ class change_password(Resource):
     def post(self):
         data = request.json
         try:
-            jwt_token = request.headers["Authorization"]
-            user, group = entities.decode_token(jwt_token)
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
         except:
             return err.not_allow_error
+        user, _ = res
         try:
             o_pass = data["original_pass"]
             password = data["pass"]
@@ -223,10 +238,12 @@ class change_password(Resource):
 class get_topic_by_token(Resource):
     def post(self):
         try:
-            jwt_token = request.headers["Authorization"]
-            user, group = entities.decode_token(jwt_token)
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
         except:
             return err.not_allow_error
+        user, group = res
         if group != group_student:
             return err.not_allow_error
         stu_obj = Student.query.filter_by(username=user).first()

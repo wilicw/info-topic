@@ -41,7 +41,7 @@ export default {
     if (window.localStorage.getItem("token") == null || window.localStorage.getItem("token") == undefined || window.localStorage.getItem("token") == "") return false
     const _token = this.get_token();
     try {
-      client.post("/is_login", {}, {
+      await client.post("/is_login", {}, {
         headers: {
           Authorization: _token,
         }

@@ -68,3 +68,13 @@ def make_unique(fn):
 
 def cjk_layout(text):
     return pangu.spacing_text(text)
+
+
+def check_token(token):
+    try:
+        user, group = decode_token(token)
+        if user == -1:
+            return None
+    except:
+        return None
+    return user, group

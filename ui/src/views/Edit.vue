@@ -270,6 +270,7 @@ export default {
     topic: {},
   }),
   async created() {
+    if (!(await api.is_login())) this.$router.go(-1);
     document.title = `編輯專題 || 大安資訊專題網`;
     const uuid = this.$route.params.uuid;
     try {

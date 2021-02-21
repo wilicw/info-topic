@@ -105,8 +105,6 @@ export default {
       }
     })
   },
-  upload: () => { }
-  ,
   download: (id) =>
     window.open(`${config.api}/file/${id}`, '_blank')
   ,

@@ -235,6 +235,16 @@
               @change="upload_report"
             ></v-file-input>
           </div>
+          <div class="mt-3">
+            <p class="title">程式</p>
+            <v-file-input
+              small-chips
+              label="程式檔案（zip）"
+              accept="application/zip"
+              show-size
+              @change="upload_program"
+            ></v-file-input>
+          </div>
           <v-card-actions class="mt-10">
             <v-spacer></v-spacer>
             <v-btn @click="submit" class="primary">儲存</v-btn>
@@ -295,6 +305,10 @@ export default {
     async upload_presentation(e) {
       const link = await this.update_one(e, "presentation", "file");
       this.topic.presentation_file = link;
+    },
+    async upload_program(e) {
+      const link = await this.update_one(e, "program", "file");
+      this.topic.program_file = link;
     },
     remove_results(i) {
       this.topic.results_imgs.splice(i, 1);

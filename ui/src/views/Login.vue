@@ -73,7 +73,7 @@ export default {
       }
       api.storage_token(res.data);
       this.err = null;
-      this.$root.$emit("login");
+      this.$store.commit("login");
       this.$router.push("/menu");
     },
   },

@@ -105,15 +105,32 @@ export default {
         text: "參考資料",
         url: "/reference",
       },
+      {
+        text: "",
+        url: "",
+      },
     ],
   }),
+  computed: {
+    is_login: function () {
+      return this.$store.state.is_login;
+    },
+  },
+  watch: {
+    is_login: function (value) {
+      if (value) {
+        this.login();
+      } else {
+        this.logout();
+      }
+    },
+  },
   async created() {
-    this.$root.$once("login", this.login);
-    this.$root.$once("logout", this.logout);
-    this.nav_link.push({
-      text: (await api.is_login()) ? "個人頁面" : "登入",
-      url: (await api.is_login()) ? "/menu" : "/login",
-    });
+    if (await api.is_login()) {
+      this.$store.commit("login");
+    } else {
+      this.$store.commit("logout");
+    }
   },
   methods: {
     logout() {

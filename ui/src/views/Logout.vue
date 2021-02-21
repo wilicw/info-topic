@@ -7,7 +7,7 @@ import api from "@/api";
 export default {
   name: "Logout",
   created() {
-    this.$root.$emit("logout");
+    this.$store.commit("logout");
     this.$router.push("/");
     api.clear_token();
   },

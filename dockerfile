@@ -17,5 +17,5 @@ RUN chmod +x ./startup.sh
 RUN usermod -u 99 nginx
 RUN rm -rf /var/cache/apk/* /tmp/*
 COPY --from=build /tmp/dist /app/cli/dist
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["./startup.sh"]

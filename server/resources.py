@@ -151,7 +151,6 @@ class upload(Resource):
             fn,
         )
         f.save(path)
-        fn = entities.config.upload_prefix + "/" + fn
         db_f = File(location=fn)
         db.session.add(db_f)
         # db.session.commit()
@@ -181,7 +180,6 @@ class upload_img(Resource):
             fn,
         )
         f.save(path)
-        fn = entities.config.upload_prefix + "/" + fn
         db_f = Image(path=fn)
         db.session.add(db_f)
         # db.session.commit()

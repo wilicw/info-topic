@@ -3,7 +3,7 @@ from flask.globals import session
 from flask_restful import Resource, request, reqparse
 from flask import send_from_directory
 from model import *
-import schema, entities, err, werkzeug, os, json
+import schema, entities, err, werkzeug, os
 
 group_student = "stu"
 group_teacher = "teacher"
@@ -83,7 +83,9 @@ class toipcs(Resource):
                 return err.topic_not_found
             try:
                 result.name = data["title"]
-                result.keywords = data["keywords"]
+                result.keywords = [
+                    f"{entities.utf8_str_to_normal(k)}" for k in data["keywords"]
+                ]
                 result.motivation = data["description"]
                 result.faqs = data["faqs"]
                 result.videos_links = data["videos_links"]
@@ -151,7 +153,8 @@ class toipcs_by_year(Resource):
 
 class toipcs_by_keywords(Resource):
     def get(self, word):
-        results = Project.query.filter(Project.keywords.contains(word)).all()
+        word = "".join(["\\u%04x" % (ord(c)) for c in word])
+        results = Project.query.filter(Project.keywords.match(word)).all()
         return entities.to_detail_obj_list(results)
 
 

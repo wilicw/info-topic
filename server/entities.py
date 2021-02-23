@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from uuid import uuid4
-import jwt, pangu
+import jwt, pangu, json
 
 conf = ConfigParser()
 conf.read("config.ini", encoding="utf-8")
@@ -90,3 +90,7 @@ def links_to_files(links):
     from model import File
 
     return [File.query.filter_by(location=link).first().id for link in links]
+
+
+def utf8_str_to_normal(a):
+    return json.loads(json.dumps({"a": a}))["a"]

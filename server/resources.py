@@ -304,7 +304,10 @@ class get_topic_by_token(Resource):
         user, group = res
         if group == group_student:
             stu_obj = Student.query.filter_by(username=user).first()
-            project_uuid = stu_obj.project.uuid
+            if stu_obj.project == None:
+                project_uuid = -1
+            else:
+                project_uuid = stu_obj.project.uuid
             return {"status": "success", "uuid": project_uuid}
         elif group == group_teacher:
             topics = list(

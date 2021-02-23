@@ -108,6 +108,14 @@ export default {
       }
     })
   },
+  get_classmates_by_token: async function () {
+    const _token = this.get_token();
+    return client.get("/get_classmates_by_token", {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
   get_all_year: async () =>
     client.get(`/year/`)
   ,
@@ -129,14 +137,22 @@ export default {
   },
   set_topic: async function (uuid, topic_data) {
     const _token = this.get_token();
-    return client.post(`/topic/${uuid}`, { data: topic_data }, {
+    return client.put(`/topic/${uuid}`, { data: topic_data }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
+  new_topic: async function (topic_data) {
+    const _token = this.get_token();
+    return client.post(`/topic`, { data: topic_data }, {
       headers: {
         Authorization: _token,
       }
     })
   },
   download: (id) =>
-    window.open(`${config.api}/file/${id}`, '_blank')
+    window.open(`${config.api} / file / ${id}`, '_blank')
   ,
   change_password: async function (original_pass, pass) {
     const _token = this.get_token();

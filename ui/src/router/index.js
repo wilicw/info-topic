@@ -17,6 +17,7 @@ const routes = [
   { path: '/logout', component: () => import('../views/Logout.vue') },
   { path: '/change_password', component: () => import('../views/Change_password.vue') },
   { path: '/change_weight', component: () => import('../views/Change_weight.vue') },
+  { path: '/new', component: () => import('../views/New_topic.vue') },
   { path: '/score', component: () => import('../views/Score.vue') }
 ]
 

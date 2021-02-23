@@ -48,6 +48,7 @@ api.add_resource(resources.change_password, "/api/change_password")
 api.add_resource(resources.get_topic_by_token, "/api/get_topic_by_token")
 api.add_resource(resources.score_weight, "/api/score_weight")
 api.add_resource(resources.score_classification, "/api/score_classification")
+api.add_resource(resources.get_classmates_by_token, "/api/get_classmates_by_token")
 api.add_resource(
     resources.get_students_by_topic, "/api/get_students_by_topic/<string:uuid>"
 )

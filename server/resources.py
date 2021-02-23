@@ -73,6 +73,67 @@ class toipcs(Resource):
         user, group = res
         if group != group_student:
             return err.account_error
+        if uuid != None or id != None:
+            return err.not_allow_error
+        stu = Student.query.filter_by(username=user).first()
+        stu_class = stu.username[:-2]
+        if stu.project_id != -1:
+            return err.not_allow_error
+        try:
+            uuid = data["uuid"]
+            name = data["title"]
+            if uuid == "" or name == "":
+                return err.not_allow_error
+            teacher = Teacher.query.filter_by(name=data["teacher"]).first()
+            if teacher == None:
+                return err.not_allow_error
+            students = data["students"]
+            teacher_id = teacher.id
+        except:
+            return err.not_allow_error
+        new_project = Project(
+            uuid=uuid,
+            name=name,
+            teacher_id=teacher_id,
+            year=int(stu_class[:-1]),
+            presentation_order=0,
+            motivation="",
+            faqs="",
+            keywords=[],
+            classification="",
+            arch_imgs_id=[],
+            cover_img_id=-1,
+            members_imgs_id=[],
+            results_imgs_id=[],
+            videos_links=[],
+            report_file_id=-1,
+            presentation_file_id=-1,
+            program_file_id=-1,
+            score=0,
+        )
+        db.session.add(new_project)
+        db.session.commit()
+        print(new_project.id)
+        for s in students:
+            student = Student.query.filter(
+                db.and_(Student.username.ilike(f"{stu_class}%"), Student.name.ilike(s))
+            ).first()
+            student.project_id = new_project.id
+            db.session.commit()
+        return {"status": "success"}
+
+    def put(self, id=None, uuid=None):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            data = data["data"]
+        except:
+            return err.not_allow_error
+        user, group = res
+        if group != group_student:
+            return err.account_error
         if uuid != None:
             return err.not_allow_error
         elif id != None:
@@ -319,6 +380,27 @@ class get_topic_by_token(Resource):
             return err.not_allow_error
 
 
+class get_classmates_by_token(Resource):
+    def get(self):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
+        user, group = res
+        if group != group_student:
+            return err.not_allow_error
+        student_prefix = Student.query.filter_by(username=user).first().username[:-2]
+        classmates = Student.query.filter(
+            db.or_(
+                Student.username.ilike(f"{student_prefix}%"),
+            )
+        ).all()
+        classmates = list(map(lambda x: x.to_obj(), classmates))
+        return {"status": "success", "data": classmates}
+
+
 class get_students_by_topic(Resource):
     def get(self, uuid):
         try:
@@ -332,7 +414,7 @@ class get_students_by_topic(Resource):
             return err.not_allow_error
         stu_obj = list(
             map(
-                lambda x: x.to_obj(),
+                lambda x: x.to_detail(),
                 Project.query.filter_by(uuid=uuid).first().students,
             )
         )

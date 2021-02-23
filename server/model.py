@@ -116,8 +116,15 @@ class Student(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "scores": [i.to_obj() for i in self.score],
         }
+
+    def to_detail(self):
+        return dict(
+            self.to_obj(),
+            **{
+                "scores": [i.to_obj() for i in self.score],
+            },
+        )
 
 
 class Image(db.Model):

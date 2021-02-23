@@ -78,3 +78,15 @@ def check_token(token):
     except:
         return None
     return user, group
+
+
+def links_to_imgs(links):
+    from model import Image
+
+    return [Image.query.filter_by(path=link).first().id for link in links]
+
+
+def links_to_files(links):
+    from model import File
+
+    return [File.query.filter_by(location=link).first().id for link in links]

@@ -261,6 +261,7 @@ import api from "@/api";
 export default {
   name: "Edit",
   data: () => ({
+    uuid: "",
     loading: true,
     files: {
       uploading: false,
@@ -273,6 +274,7 @@ export default {
     if (!(await api.is_login())) this.$router.go(-1);
     document.title = `編輯專題 || 大安資訊專題網`;
     const uuid = this.$route.params.uuid;
+    this.uuid = uuid;
     try {
       const res = await api.get_topic(uuid);
       const __ = await api.get_topic_by_token();
@@ -357,8 +359,9 @@ export default {
       const res = await api.upload_file(formData);
       return res.data.link;
     },
-    submit() {
-      console.log(this.topic);
+    async submit() {
+      const res = await api.set_topic(this.uuid, this.topic);
+      console.log(res.data);
     },
   },
 };

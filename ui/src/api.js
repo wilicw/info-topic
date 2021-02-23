@@ -127,6 +127,14 @@ export default {
       }
     })
   },
+  set_topic: async function (uuid, topic_data) {
+    const _token = this.get_token();
+    return client.post(`/topic/${uuid}`, { data: topic_data }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
   download: (id) =>
     window.open(`${config.api}/file/${id}`, '_blank')
   ,

@@ -3,7 +3,7 @@ from flask.globals import session
 from flask_restful import Resource, request, reqparse
 from flask import send_from_directory
 from model import *
-import schema, entities, err, werkzeug, os
+import schema, entities, err, werkzeug, os, json
 
 group_student = "stu"
 group_teacher = "teacher"
@@ -60,6 +60,59 @@ class toipcs(Resource):
             return result.to_detail()
         else:
             return list(map(lambda x: x.to_obj(), Project.query.all()))
+
+    def post(self, id=None, uuid=None):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            data = data["data"]
+        except:
+            return err.not_allow_error
+        user, group = res
+        if group != group_student:
+            return err.account_error
+        if id != None:
+            return err.not_allow_error
+        elif uuid != None:
+            if Student.query.filter_by(username=user).first().project.uuid != uuid:
+                return err.not_allow_error
+            result = Project.query.filter_by(uuid=uuid).first()
+            if result == None:
+                return err.topic_not_found
+            try:
+                result.name = data["title"]
+                result.keywords = data["keywords"]
+                result.motivation = data["description"]
+                result.faqs = data["faqs"]
+                result.videos_links = data["videos_links"]
+                result.cover_img_id = entities.links_to_imgs([data["cover"]])[0]
+                result.arch_imgs_id = entities.links_to_imgs(data["arch_imgs"])
+                result.results_imgs_id = entities.links_to_imgs(data["results_imgs"])
+                result.members_imgs_id = entities.links_to_imgs(data["members_imgs"])
+                result.report_file_id = (
+                    entities.links_to_files([data["report_file"]])[0]
+                    if data["report_file"] != ""
+                    else -1
+                )
+                result.presentation_file_id = (
+                    entities.links_to_files([data["presentation_file"]])[0]
+                    if data["presentation_file"] != ""
+                    else -1
+                )
+                result.program_file_id = (
+                    entities.links_to_files([data["program_file"]])[0]
+                    if data["program_file"] != ""
+                    else -1
+                )
+                db.session.commit()
+            except Exception as e:
+                print(e)
+                return err.not_allow_error
+            return {"status": "success"}
+        else:
+            return err.not_allow_error
 
 
 class teacher(Resource):

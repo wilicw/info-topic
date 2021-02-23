@@ -158,10 +158,11 @@ class upload(Resource):
             fn,
         )
         f.save(path)
+        fn = entities.config.url_prefix + fn
         db_f = File(location=fn)
         db.session.add(db_f)
         db.session.commit()
-        return {"status": "success", "link": entities.config.url_prefix + fn}
+        return {"status": "success", "link": fn}
 
 
 class upload_img(Resource):
@@ -193,10 +194,11 @@ class upload_img(Resource):
             fn,
         )
         f.save(path)
-        db_f = Image(path=fn)
+        fn = entities.config.url_prefix + fn
+        db_f = Image(path=fn, description="")
         db.session.add(db_f)
         db.session.commit()
-        return {"status": "success", "link": entities.config.url_prefix + fn}
+        return {"status": "success", "link": fn}
 
 
 class change_password(Resource):

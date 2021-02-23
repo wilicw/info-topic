@@ -128,8 +128,10 @@ export default {
   async created() {
     if (await api.is_login()) {
       this.$store.commit("login");
+      this.login();
     } else {
       this.$store.commit("logout");
+      this.logout();
     }
   },
   methods: {

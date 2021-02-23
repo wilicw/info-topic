@@ -58,6 +58,13 @@ class Score(db.Model):
     def __repr__(self):
         return f"<Score {self.id}>"
 
+    def to_obj(self):
+        return {
+            "id": self.id,
+            "score_classification_id": self.score_classification_id,
+            "score": self.score,
+        }
+
 
 class Score_classification(db.Model):
     __tablename__ = "score_classification"
@@ -104,6 +111,13 @@ class Student(db.Model):
 
     def __repr__(self):
         return f"<Stu {self.id} {self.name}>"
+
+    def to_obj(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "scores": [i.to_obj() for i in self.score],
+        }
 
 
 class Image(db.Model):
@@ -162,6 +176,15 @@ class Project(db.Model):
             if self.cover_img_id > 0
             else "",
             "keywords": self.keywords,
+            "report_file": File.query.get(self.report_file_id).location
+            if self.report_file_id > 0
+            else "",
+            "presentation_file": File.query.get(self.presentation_file_id).location
+            if self.presentation_file_id > 0
+            else "",
+            "program_file": File.query.get(self.program_file_id).location
+            if self.program_file_id > 0
+            else "",
         }
 
     def to_detail(self):
@@ -171,15 +194,6 @@ class Project(db.Model):
                 "students": [s.name for s in self.students],
                 "teacher": self.teacher.name,
                 "faqs": cjk_layout(self.faqs),
-                "report_file": File.query.get(self.report_file_id).location
-                if self.report_file_id > 0
-                else "",
-                "presentation_file": File.query.get(self.presentation_file_id).location
-                if self.presentation_file_id > 0
-                else "",
-                "program_file": File.query.get(self.program_file_id).location
-                if self.program_file_id > 0
-                else "",
                 "videos_links": [ytid for ytid in self.videos_links],
                 "arch_imgs": [
                     Image.query.get(imgid).path for imgid in self.arch_imgs_id

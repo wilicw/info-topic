@@ -244,11 +244,42 @@ class get_topic_by_token(Resource):
         except:
             return err.not_allow_error
         user, group = res
-        if group != group_student:
+        if group == group_student:
+            stu_obj = Student.query.filter_by(username=user).first()
+            project_uuid = stu_obj.project.uuid
+            return {"status": "success", "uuid": project_uuid}
+        elif group == group_teacher:
+            topics = list(
+                map(
+                    lambda x: x.to_obj(),
+                    Project.query.filter_by(
+                        teacher_id=Teacher.query.filter_by(username=user).first().id
+                    ).all(),
+                )
+            )
+            return {"status": "success", "data": topics}
+        else:
             return err.not_allow_error
-        stu_obj = Student.query.filter_by(username=user).first()
-        project_uuid = stu_obj.project.uuid
-        return {"status": "success", "uuid": project_uuid}
+
+
+class get_students_by_topic(Resource):
+    def get(self, uuid):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
+        user, group = res
+        if group != group_teacher:
+            return err.not_allow_error
+        stu_obj = list(
+            map(
+                lambda x: x.to_obj(),
+                Project.query.filter_by(uuid=uuid).first().students,
+            )
+        )
+        return {"status": "success", "data": stu_obj}
 
 
 class score_weight(Resource):
@@ -298,9 +329,39 @@ class score_classification(Resource):
         except:
             return err.not_allow_error
         _, group = res
-        if group != group_admin:
+        if group != group_admin and group != group_teacher:
             return err.not_allow_error
         classification_data = list(
             map(lambda x: x.to_obj(), Score_classification.query.all())
         )
         return {"status": "success", "data": classification_data}
+
+
+class set_score(Resource):
+    def post(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            changed = data["data"]
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_teacher:
+            return err.not_allow_error
+        for c in changed:
+            student_id = int(c["student_id"])
+            classification_id = int(c["classification_id"])
+            score = int(c["score"])
+            Score.query.filter_by(
+                student_id=student_id, score_classification_id=classification_id
+            ).delete()
+            new_score = Score(
+                student_id=student_id,
+                score_classification_id=classification_id,
+                score=score,
+            )
+            db.session.add(new_score)
+        db.session.commit()
+        return {"status": "success"}

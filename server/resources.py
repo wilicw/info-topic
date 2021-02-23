@@ -73,12 +73,12 @@ class toipcs(Resource):
         user, group = res
         if group != group_student:
             return err.account_error
-        if id != None:
+        if uuid != None:
             return err.not_allow_error
-        elif uuid != None:
-            if Student.query.filter_by(username=user).first().project.uuid != uuid:
+        elif id != None:
+            if Student.query.filter_by(username=user).first().project_id != id:
                 return err.not_allow_error
-            result = Project.query.filter_by(uuid=uuid).first()
+            result = Project.query.get(id)
             if result == None:
                 return err.topic_not_found
             try:
@@ -304,11 +304,7 @@ class get_topic_by_token(Resource):
         user, group = res
         if group == group_student:
             stu_obj = Student.query.filter_by(username=user).first()
-            if stu_obj.project_id == -1:
-                project_uuid = -1
-            else:
-                project_uuid = stu_obj.project.uuid
-            return {"status": "success", "uuid": project_uuid}
+            return {"status": "success", "id": stu_obj.project_id}
         elif group == group_teacher:
             topics = list(
                 map(

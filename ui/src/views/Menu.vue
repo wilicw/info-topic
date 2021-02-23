@@ -84,14 +84,14 @@ export default {
     document.title = `個人頁面 || 大安資訊專題網`;
     try {
       const res = await api.get_topic_by_token();
-      let uuid = res.data.uuid;
-      if (uuid == -1) {
+      let id = res.data.id;
+      if (id == -1) {
         this.options.stu[0].url = "new";
         this.options.stu[0].text = "建立專題";
         this.options.stu[0].icon = "mdi-plus";
       } else {
-        this.options.stu[0].url = `topic/${uuid}`;
-        this.options.common[0].url = `edit/${uuid}`;
+        this.options.stu[0].url = `topic/${id}`;
+        this.options.common[0].url = `edit/${id}`;
       }
     } catch {
       this.options.common[0].url = "edit";

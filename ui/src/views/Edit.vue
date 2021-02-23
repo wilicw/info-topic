@@ -261,7 +261,7 @@ import api from "@/api";
 export default {
   name: "Edit",
   data: () => ({
-    uuid: "",
+    id: "",
     loading: true,
     files: {
       uploading: false,
@@ -273,12 +273,12 @@ export default {
   async created() {
     if (!(await api.is_login())) this.$router.go(-1);
     document.title = `編輯專題 || 大安資訊專題網`;
-    const uuid = this.$route.params.uuid;
-    this.uuid = uuid;
+    const id = this.$route.params.id;
+    this.id = id;
     try {
-      const res = await api.get_topic(uuid);
+      const res = await api.get_topic(id);
       const __ = await api.get_topic_by_token();
-      if (__.data.uuid != uuid) this.$router.go(-1);
+      if (__.data.id != id) this.$router.go(-1);
       this.topic = res.data;
       this.topic._keywords = this.topic.keywords;
     } catch (err) {
@@ -360,7 +360,7 @@ export default {
       return res.data.link;
     },
     async submit() {
-      const res = await api.set_topic(this.uuid, this.topic);
+      const res = await api.set_topic(this.id, this.topic);
       console.log(res.data);
     },
   },

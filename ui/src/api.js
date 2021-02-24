@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 import { config } from '../config'
 
 const client = axios.create({
@@ -116,14 +117,6 @@ export default {
       }
     })
   },
-  get_classmates_by_token: async function () {
-    const _token = this.get_token();
-    return client.get("/get_classmates_by_token", {
-      headers: {
-        Authorization: _token,
-      }
-    })
-  },
   get_all_year: async () =>
     client.get(`/year/`)
   ,
@@ -179,5 +172,13 @@ export default {
       return url;
     }
     return url.replace(/^upload/i, "upload-lazy");
-  }
+  },
+  get_username: function () {
+    const _token = this.get_token();
+    return jwt_decode(_token).username;
+  },
+  get_group: function () {
+    const _token = this.get_token();
+    return jwt_decode(_token).group;
+  },
 }

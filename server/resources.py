@@ -115,9 +115,7 @@ class toipcs(Resource):
         db.session.commit()
         print(new_project.id)
         for s in students:
-            student = Student.query.filter(
-                db.and_(Student.username.ilike(f"{stu_class}%"), Student.name.ilike(s))
-            ).first()
+            student = Student.query.get(s)
             student.project_id = new_project.id
             db.session.commit()
         return {"status": "success"}
@@ -380,27 +378,6 @@ class get_topic_by_token(Resource):
             return err.not_allow_error
 
 
-class get_classmates_by_token(Resource):
-    def get(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        user, group = res
-        if group != group_student:
-            return err.not_allow_error
-        student_prefix = Student.query.filter_by(username=user).first().username[:-2]
-        classmates = Student.query.filter(
-            db.or_(
-                Student.username.ilike(f"{student_prefix}%"),
-            )
-        ).all()
-        classmates = list(map(lambda x: x.to_obj(), classmates))
-        return {"status": "success", "data": classmates}
-
-
 class get_students_by_topic(Resource):
     def get(self, uuid):
         try:
@@ -418,6 +395,20 @@ class get_students_by_topic(Resource):
                 Project.query.filter_by(uuid=uuid).first().students,
             )
         )
+        return {"status": "success", "data": stu_obj}
+
+
+class get_students_by_year(Resource):
+    def get(self, year):
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+        except:
+            return err.not_allow_error
+        __, _ = res
+        students = Student.query.filter(Student.username.ilike(f"{year}%")).all()
+        stu_obj = list(map(lambda x: x.to_obj(), students))
         return {"status": "success", "data": stu_obj}
 
 

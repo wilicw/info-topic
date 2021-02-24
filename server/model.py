@@ -116,15 +116,15 @@ class Student(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "username": self.username,
         }
 
     def to_detail(self):
         return dict(
             self.to_obj(),
             **{
-                "school_id": self.school_id,
                 "project_id": self.project_id,
-                "username": self.username,
+                "school_id": self.school_id,
             },
         )
 

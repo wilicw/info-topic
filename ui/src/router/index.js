@@ -4,21 +4,22 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: () => import('../views/Home.vue') },
-  { path: '/login', component: () => import('../views/Login.vue') },
-  { path: '/teachers', component: () => import('../views/Teachers.vue') },
-  { path: '/teachers/:id', component: () => import('../views/Teachers_topics.vue') },
-  { path: '/search', component: () => import('../views/Search.vue') },
-  { path: '/search/:word', component: () => import('../views/Search_topics.vue') },
-  { path: '/topic/:uuid', component: () => import('../views/Detail.vue') },
-  { path: '/keyword/:word', component: () => import('../views/Keyword.vue') },
-  { path: '/edit/:id', component: () => import('../views/Edit.vue') },
-  { path: '/menu', component: () => import('../views/Menu.vue') },
-  { path: '/logout', component: () => import('../views/Logout.vue') },
-  { path: '/change_password', component: () => import('../views/Change_password.vue') },
-  { path: '/change_weight', component: () => import('../views/Change_weight.vue') },
-  { path: '/new', component: () => import('../views/New_topic.vue') },
-  { path: '/score', component: () => import('../views/Score.vue') }
+  { path: '/', component: () => import('../views/Public/Home.vue') },
+  { path: '/login', component: () => import('../views/Public/Login.vue') },
+  { path: '/teachers', component: () => import('../views/Public/Teachers.vue') },
+  { path: '/teachers/:id', component: () => import('../views/Public/Teachers_topics.vue') },
+  { path: '/search', component: () => import('../views/Public/Search.vue') },
+  { path: '/search/:word', component: () => import('../views/Public/Search_topics.vue') },
+  { path: '/topic/:uuid', component: () => import('../views/Public/Detail.vue') },
+  { path: '/keyword/:word', component: () => import('../views/Public/Keyword.vue') },
+  { path: '/edit/:id', component: () => import('../views/Manager/Edit.vue') },
+  { path: '/menu', component: () => import('../views/Manager/Menu.vue') },
+  { path: '/logout', component: () => import('../views/Public/Logout.vue') },
+  { path: '/change_password', component: () => import('../views/Manager/Change_password.vue') },
+  { path: '/change_weight', component: () => import('../views/Manager/Teacher/Change_weight.vue') },
+  { path: '/new', component: () => import('../views/Manager/Student/New_topic.vue') },
+  { path: '/edit_topics', component: () => import('../views/Manager/Teacher/All_topics.vue') },
+  { path: '/score', component: () => import('../views/Manager/Teacher/Score.vue') }
 ]
 
 const router = new VueRouter({

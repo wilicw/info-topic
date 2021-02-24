@@ -59,11 +59,6 @@ export default {
           url: "score",
           icon: "mdi-check-all",
         },
-        {
-          text: "編輯學生",
-          url: "edit_stu",
-          icon: "mdi-account-lock",
-        },
       ],
       admin: [
         {
@@ -85,7 +80,9 @@ export default {
     try {
       const res = await api.get_topic_by_token();
       let id = res.data.id;
-      if (id == -1) {
+      if (id == undefined) {
+        this.options.common[0].url = "edit_topics";
+      } else if (id == -1) {
         this.options.stu[0].url = "new";
         this.options.stu[0].text = "建立專題";
         this.options.stu[0].icon = "mdi-plus";
@@ -94,8 +91,7 @@ export default {
         this.options.common[0].url = `edit/${id}`;
       }
     } catch {
-      this.options.common[0].url = "edit";
-      //nothing
+      this.options.common[0].url = "edit_topics";
     }
   },
   methods: {

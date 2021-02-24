@@ -132,12 +132,12 @@ class toipcs(Resource):
         except:
             return err.not_allow_error
         user, group = res
-        if group != group_student:
-            return err.account_error
         if uuid != None:
             return err.not_allow_error
         elif id != None:
-            if Student.query.filter_by(username=user).first().project_id != id:
+            if group == group_teacher or group == group_admin:
+                pass
+            elif Student.query.filter_by(username=user).first().project_id != id:
                 return err.not_allow_error
             result = Project.query.get(id)
             if result == None:
@@ -414,7 +414,7 @@ class get_students_by_topic(Resource):
             return err.not_allow_error
         stu_obj = list(
             map(
-                lambda x: x.to_detail(),
+                lambda x: x.to_detail_scores(),
                 Project.query.filter_by(uuid=uuid).first().students,
             )
         )

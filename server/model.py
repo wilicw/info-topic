@@ -122,6 +122,16 @@ class Student(db.Model):
         return dict(
             self.to_obj(),
             **{
+                "school_id": self.school_id,
+                "project_id": self.project_id,
+                "username": self.username,
+            },
+        )
+
+    def to_detail_scores(self):
+        return dict(
+            self.to_detail(),
+            **{
                 "scores": [i.to_obj() for i in self.score],
             },
         )

@@ -277,8 +277,6 @@ export default {
     this.id = id;
     try {
       const res = await api.get_topic(id);
-      const __ = await api.get_topic_by_token();
-      if (__.data.id != id) this.$router.go(-1);
       this.topic = res.data;
       this.topic._keywords = this.topic.keywords;
     } catch (err) {

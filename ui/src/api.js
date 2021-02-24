@@ -100,6 +100,14 @@ export default {
       }
     })
   },
+  get_students_by_year: async function (y) {
+    const _token = this.get_token();
+    return client.get(`/get_students_by_year/${y}`, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
   get_score_classification: async function () {
     const _token = this.get_token();
     return client.get("/score_classification", {

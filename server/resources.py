@@ -212,8 +212,14 @@ class toipcs_by_year(Resource):
 
 class toipcs_by_keywords(Resource):
     def get(self, word):
-        word = "".join(["\\u%04x" % (ord(c)) for c in word])
-        results = Project.query.filter(Project.keywords.match(word)).all()
+        utf8_word = "".join(["\\u%04x" % (ord(c)) for c in word])
+        print(word, utf8_word)
+        results = Project.query.filter(
+            db.or_(
+                Project.keywords.ilike(f"%{word}%"),
+                Project.keywords.ilike(f"%{utf8_word}%"),
+            )
+        ).all()
         return entities.to_detail_obj_list(results)
 
 

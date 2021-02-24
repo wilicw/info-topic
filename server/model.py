@@ -66,16 +66,42 @@ class Score(db.Model):
         }
 
 
+class Project_score(db.Model):
+    __tablename__ = "project_score"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.id"))
+    score_classification_id = db.Column(
+        db.Integer, db.ForeignKey("score_classification.id")
+    )
+    score = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<P_Score {self.id}>"
+
+    def to_obj(self):
+        return {
+            "id": self.id,
+            "project_id": self.project_id,
+            "score_classification_id": self.score_classification_id,
+            "score": self.score,
+        }
+
+
 class Score_classification(db.Model):
     __tablename__ = "score_classification"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     description = db.Column(db.String)
+    is_global = db.Column(db.Boolean)
 
     def __repr__(self):
         return f"<Score {self.id}>"
 
     def to_obj(self):
-        return {"id": self.id, "description": self.description}
+        return {
+            "id": self.id,
+            "description": self.description,
+            "global": self.is_global,
+        }
 
 
 class Score_weight(db.Model):
@@ -177,7 +203,7 @@ class Project(db.Model):
     report_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     presentation_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     program_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
-    score = db.Column(db.Integer)
+    score = db.relationship("Project_score", backref="project", lazy=True)
 
     def __repr__(self):
         return f"<Project {self.name}>"
@@ -202,6 +228,7 @@ class Project(db.Model):
             "program_file": File.query.get(self.program_file_id).location
             if self.program_file_id > 0
             else "",
+            "score": list(map(lambda x: x.to_obj(), self.score)),
         }
 
     def to_detail(self):

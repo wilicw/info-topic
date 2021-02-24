@@ -487,17 +487,35 @@ class set_score(Resource):
         if group != group_teacher:
             return err.not_allow_error
         for c in changed:
-            student_id = int(c["student_id"])
-            classification_id = int(c["classification_id"])
-            score = int(c["score"])
-            Score.query.filter_by(
-                student_id=student_id, score_classification_id=classification_id
-            ).delete()
-            new_score = Score(
-                student_id=student_id,
-                score_classification_id=classification_id,
-                score=score,
-            )
-            db.session.add(new_score)
-        db.session.commit()
+            if c["student_id"] != -1:
+                student_id = int(c["student_id"])
+                classification_id = int(c["classification_id"])
+                score = int(c["score"])
+                Score.query.filter_by(
+                    student_id=student_id, score_classification_id=classification_id
+                ).delete()
+                new_score = Score(
+                    student_id=student_id,
+                    score_classification_id=classification_id,
+                    score=score,
+                )
+                db.session.add(new_score)
+                db.session.commit()
+            elif c["uuid"] != -1:
+                uuid = c["uuid"]
+                classification_id = int(c["classification_id"])
+                score = int(c["score"])
+                project_id = Project.query.filter_by(uuid=uuid).first().id
+                Project_score.query.filter_by(
+                    project_id=project_id, score_classification_id=classification_id
+                ).delete()
+                new_score = Project_score(
+                    project_id=project_id,
+                    score_classification_id=classification_id,
+                    score=score,
+                )
+                db.session.add(new_score)
+                db.session.commit()
+            else:
+                return err.not_allow_error
         return {"status": "success"}

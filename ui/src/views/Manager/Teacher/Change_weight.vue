@@ -89,7 +89,8 @@ export default {
   },
   methods: {
     classification_id_to_text(id) {
-      return _.find(this.classification, { id: id }).description;
+      const item = _.find(this.classification, { id: id });
+      return item.description + (item.global ? "（組）" : "");
     },
     push_change(year, classification_id, weight) {
       if (this.rules[0](weight) != true) {

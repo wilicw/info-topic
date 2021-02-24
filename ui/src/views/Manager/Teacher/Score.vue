@@ -30,6 +30,21 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <br />
+                    <v-row>
+                      <v-col
+                        v-for="score in project_classification"
+                        :key="score.id"
+                      >
+                        <v-text-field
+                          @change="
+                            push_changed($event, score.id, -1, topic.uuid)
+                          "
+                          :value="get_topic_score(topic.uuid, score.id)"
+                          :label="score.description"
+                          :rules="rules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
                     <v-row class="text-right">
                       <v-col>
                         <v-text-field
@@ -127,6 +142,7 @@ export default {
     topics: [],
     students: [],
     changed: [],
+    project_classification: [],
     rules: [
       (value) =>
         (!!value && !isNaN(value) && parseInt(value) >= 0) ||
@@ -139,7 +155,13 @@ export default {
     let res;
     try {
       res = await api.get_score_classification();
-      this.classification = res.data.data;
+      const all_classification = res.data.data;
+      this.project_classification = _.filter(all_classification, {
+        global: true,
+      });
+      this.classification = _.filter(all_classification, {
+        global: false,
+      });
       this.classification = _.sortBy(this.classification, ["id"]);
       res = await api.get_topic_by_token();
       this.topics = res.data.data;
@@ -203,7 +225,7 @@ export default {
       console.log(link);
       window.open(link, "_blank");
     },
-    push_changed(score, classification_id, student_id) {
+    push_changed(score, classification_id, student_id, uuid = null) {
       if (this.rules[0](score) != true) return;
       _.remove(this.changed, {
         classification_id: classification_id,
@@ -213,7 +235,16 @@ export default {
         student_id: student_id,
         score: parseInt(score),
         classification_id: classification_id,
+        uuid: uuid === null ? -1 : uuid,
       });
+      console.log(this.changed);
+    },
+    get_topic_score(uuid, classification_id) {
+      const topic = _.head(_.filter(this.topics, { uuid: uuid }));
+      const score = _.head(
+        _.filter(topic.score, { score_classification_id: classification_id })
+      );
+      return score.score;
     },
   },
 };

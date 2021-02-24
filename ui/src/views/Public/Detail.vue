@@ -145,7 +145,13 @@
                   v-for="img in topic.arch_imgs"
                   :key="img"
                 >
-                  <LazyImage :src="img" />
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <LazyImage :src="img" />
+                  </v-row>
                 </v-col>
               </v-row>
             </div>
@@ -160,7 +166,13 @@
                   v-for="img in topic.results_imgs"
                   :key="img"
                 >
-                  <LazyImage :src="img" />
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <LazyImage :src="img" />
+                  </v-row>
                 </v-col>
               </v-row>
             </div>
@@ -175,7 +187,13 @@
                   v-for="img in topic.members_imgs"
                   :key="img"
                 >
-                  <LazyImage :src="img" />
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <LazyImage :src="img" />
+                  </v-row>
                 </v-col>
               </v-row>
             </div>

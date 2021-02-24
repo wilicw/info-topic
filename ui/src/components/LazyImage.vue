@@ -1,5 +1,10 @@
 <template>
-  <v-img :src="src" :lazy-src="lazy_load_src" class="grey lighten-2">
+  <v-img
+    :src="src"
+    :lazy-src="lazy_load_src"
+    class="grey lighten-2"
+    max-width="800px"
+  >
     <template v-slot:placeholder>
       <v-row class="fill-height ma-0" align="center" justify="center">
         <v-progress-circular

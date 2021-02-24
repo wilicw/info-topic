@@ -100,8 +100,7 @@ export default {
         this.$router.push("logout");
         return;
       }
-      const data = JSON.parse(atob(api.get_token().split(".")[1]));
-      switch (data.group) {
+      switch (api.get_group()) {
         case "stu":
           this.options.menu = this.options.stu.concat(this.options.common);
           break;

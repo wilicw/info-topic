@@ -19,7 +19,8 @@ const routes = [
   { path: '/change_weight', component: () => import('../views/Manager/Teacher/Change_weight.vue') },
   { path: '/new', component: () => import('../views/Manager/Student/New_topic.vue') },
   { path: '/edit_topics', component: () => import('../views/Manager/Teacher/All_topics.vue') },
-  { path: '/score', component: () => import('../views/Manager/Teacher/Score.vue') }
+  { path: '/score', component: () => import('../views/Manager/Teacher/Score.vue') },
+  { path: '/reference', component: () => import('../views/Public/Reference.vue') }
 ]
 
 const router = new VueRouter({

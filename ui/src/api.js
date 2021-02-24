@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import { config } from '../config'
+import vue_conf from "@/../vue.config.js"
 
 const client = axios.create({
   baseURL: config.api,
@@ -181,4 +182,7 @@ export default {
     const _token = this.get_token();
     return jwt_decode(_token).group;
   },
+  get_reference: async () =>
+    axios.get(`${vue_conf.publicPath}upload/etc/reference.html`)
+
 }

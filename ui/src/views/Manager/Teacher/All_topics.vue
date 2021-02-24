@@ -5,26 +5,12 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form>
             <v-card-title class="font-weight-bold">編輯專題</v-card-title>
-            <v-alert
-              :value="err"
-              color="pink"
-              dark
-              border="right"
-              icon="mdi-close"
-              transition="scale-transition"
-            >
+            <v-snackbar v-model="err" timeout="2000" color="pink">
               發生錯誤
-            </v-alert>
-            <v-alert
-              :value="success"
-              color="green"
-              dark
-              border="right"
-              icon="mdi-check"
-              transition="scale-transition"
-            >
+            </v-snackbar>
+            <v-snackbar v-model="success" timeout="2000" color="success">
               儲存成功
-            </v-alert>
+            </v-snackbar>
             <v-card-text>
               <v-select
                 :items="year_list"

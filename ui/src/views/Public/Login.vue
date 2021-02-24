@@ -5,16 +5,9 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form @submit.prevent="login">
             <v-card-title class="font-weight-bold">登入</v-card-title>
-            <v-alert
-              :value="err"
-              color="pink"
-              dark
-              border="right"
-              icon="mdi-close"
-              transition="scale-transition"
-            >
+            <v-snackbar v-model="err" timeout="2000" color="pink">
               帳號或密碼錯誤
-            </v-alert>
+            </v-snackbar>
             <v-card-text>
               <p class="text--secondary">
                 帳號請輸入 畢業級別+班級+座號

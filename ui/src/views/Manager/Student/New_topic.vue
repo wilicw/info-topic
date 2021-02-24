@@ -2,6 +2,9 @@
   <v-row justify="center" class="mt-2">
     <v-col cols="12" lg="10" sm="10">
       <v-card class="rounded-0 mt-5 pa-10">
+        <v-snackbar v-model="success" timeout="2000" color="success">
+          新增成功
+        </v-snackbar>
         <div v-if="loading">
           <v-skeleton-loader
             type="article, article, article"
@@ -13,6 +16,7 @@
             <v-col cols="12" sm="6">
               <v-text-field
                 v-model="topic.uuid"
+                :rules="rules"
                 label="編號"
                 required
               ></v-text-field>
@@ -21,6 +25,7 @@
               <v-text-field
                 v-model="topic.title"
                 :counter="20"
+                :rules="rules"
                 label="專題名稱"
                 required
               ></v-text-field>
@@ -29,6 +34,7 @@
               <v-select
                 v-model="topic.teacher"
                 :items="all_teachers"
+                :rules="rules"
                 label="指導老師"
               ></v-select>
             </v-col>
@@ -55,7 +61,6 @@
                   <div v-for="item in classmates" :key="item.id">
                     <v-checkbox
                       v-model="topic.students"
-                      @click="t"
                       :label="item.name"
                       :value="item.id"
                       v-if="
@@ -96,6 +101,8 @@ export default {
     },
     selected_stu: null,
     selected_class: "A",
+    success: false,
+    rules: [(value) => !!value || "此欄位不可空白！"],
   }),
   async created() {
     if (!(await api.is_login())) this.$router.go(-1);
@@ -125,11 +132,12 @@ export default {
       }
     },
     async submit() {
-      await api.new_topic(this.topic);
-      console.log(this.topic);
-    },
-    t() {
-      console.log(this.topic.students);
+      try {
+        await api.new_topic(this.topic);
+        this.success = true;
+      } catch (error) {
+        this.success = false;
+      }
     },
   },
 };

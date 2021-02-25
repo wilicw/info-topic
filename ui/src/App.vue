@@ -106,6 +106,10 @@ export default {
         url: "/reference",
       },
       {
+        text: "維護",
+        url: "/author",
+      },
+      {
         text: "",
         url: "",
       },
@@ -137,12 +141,12 @@ export default {
   methods: {
     logout() {
       api.clear_token();
-      this.nav_link[4].text = "登入";
-      this.nav_link[4].url = "/login";
+      this.nav_link[5].text = "登入";
+      this.nav_link[5].url = "/login";
     },
     login() {
-      this.nav_link[4].text = "個人頁面";
-      this.nav_link[4].url = "/menu";
+      this.nav_link[5].text = "個人頁面";
+      this.nav_link[5].url = "/menu";
     },
   },
 };

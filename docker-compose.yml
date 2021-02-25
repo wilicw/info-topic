@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  app:
+    image: 'wilicw/topic-web:latest'
+    ports:
+      - '83:80'
+    volumes:
+      - /share/Web/topic-data/:/app/_file/
+      - /share/Container/config.ini:/app/server/config.ini
+
+networks:
+ default:
+  external:
+   name: info_container_internal

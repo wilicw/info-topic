@@ -117,7 +117,7 @@
               sm="7"
               :class="$vuetify.breakpoint.mobile ? 'pa-5' : 'pa-8'"
             >
-              <p class="display-1 font-weight-medium">
+              <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 動機
               </p>
               <p class="content" v-if="topic.description">
@@ -128,14 +128,14 @@
           </v-row>
           <div :class="$vuetify.breakpoint.mobile ? 'pa-0' : 'pa-8'">
             <div class="py-5" v-if="topic.faqs">
-              <p class="display-1 font-weight-medium">
+              <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon>
                 問題與解決辦法
               </p>
               <p class="py-5 content">{{ topic.faqs }}</p>
             </div>
             <div class="py-5" v-if="topic.arch_imgs.length">
-              <p class="display-1 font-weight-medium">
+              <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 系統架構
               </p>
               <v-row class="pa-5">
@@ -156,7 +156,7 @@
               </v-row>
             </div>
             <div class="py-5" v-if="topic.results_imgs.length">
-              <p class="display-1 font-weight-medium">
+              <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 成品
               </p>
               <v-row class="pa-5">
@@ -177,7 +177,7 @@
               </v-row>
             </div>
             <div class="py-5" v-if="topic.members_imgs.length">
-              <p class="display-1 font-weight-medium">
+              <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 組員照片
               </p>
               <v-row class="pa-5">
@@ -198,7 +198,7 @@
               </v-row>
             </div>
             <div class="py-5" v-if="topic.videos_links.length">
-              <p class="display-1 font-weight-medium">
+              <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 影片
               </p>
               <v-card flat min-height="800">

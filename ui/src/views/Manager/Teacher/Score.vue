@@ -30,6 +30,7 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <br />
+
                     <v-row>
                       <v-col
                         v-for="score in project_classification"
@@ -42,42 +43,37 @@
                           :value="get_topic_score(topic.uuid, score.id)"
                           :label="score.description"
                           :rules="rules"
+                          disabled
                         ></v-text-field>
                       </v-col>
                     </v-row>
-                    <v-row class="text-right">
+
+                    <v-row>
                       <v-col>
-                        <v-text-field
-                          value="姓名"
-                          solo
-                          readonly
-                          flat
-                        ></v-text-field>
-                        <v-text-field
-                          v-for="stu in students"
-                          :key="stu.id"
-                          :value="stu.name"
-                          solo
-                          readonly
-                          flat
-                        ></v-text-field>
+                        <p class="mt-4 ml-4 subtitle-1">姓名</p>
                       </v-col>
-                      <v-col v-for="score in classification" :key="score.id">
+                      <v-col v-for="c in classification" :key="c.id">
+                        <p class="mt-4 ml-4 subtitle-1">
+                          {{ c.description }}
+                        </p>
+                      </v-col>
+                    </v-row>
+                    <v-row
+                      v-for="(s, i) in students"
+                      :key="s.id"
+                      :class="{
+                        'grey lighten-2': i % 2 == 0,
+                        'grey lighten-3': i % 2,
+                      }"
+                    >
+                      <v-col>
+                        <p class="mt-4 ml-4 subtitle-1">{{ s.name }}</p>
+                      </v-col>
+                      <v-col v-for="c in classification" :key="c.id">
                         <v-text-field
-                          :value="score.description"
-                          solo
-                          readonly
-                          flat
-                        ></v-text-field>
-                        <v-text-field
-                          v-for="s in get_score_by_classification(score.id)"
-                          :key="s.student_id"
-                          v-model="s.score"
-                          class="mt-2"
+                          @change="push_changed($event, c.id, s.id)"
+                          :value="get_score_by_classification(s.scores, c.id)"
                           :rules="rules"
-                          @change="
-                            push_changed(s.score, score.id, s.student_id)
-                          "
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -146,7 +142,7 @@ export default {
     rules: [
       (value) =>
         (!!value && !isNaN(value) && parseInt(value) >= 0) ||
-        "此欄位不可空白且需為 0 或正整數！",
+        "此欄位不可空白！",
     ],
   }),
   async created() {
@@ -199,27 +195,10 @@ export default {
       this.students = res.data.data;
       this.students = _.sortBy(this.students, ["id"]);
     },
-    get_score_by_classification(id) {
-      let result = [];
-      this.students.forEach((i) => {
-        let o;
-        let s = _.head(_.filter(i.scores, { score_classification_id: id }));
-        if (s == undefined) {
-          o = {
-            student_id: i.id,
-            score: 0,
-            classification_id: id,
-          };
-        } else {
-          o = {
-            student_id: i.id,
-            score: s.score,
-            classification_id: id,
-          };
-        }
-        result.push(o);
-      });
-      return result;
+    get_score_by_classification(scores, id) {
+      console.log(scores);
+      const s = _.head(_.filter(scores, { score_classification_id: id }));
+      return s == undefined ? "" : s.score;
     },
     download(link) {
       console.log(link);

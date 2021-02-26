@@ -53,6 +53,7 @@ api.add_resource(
 )
 api.add_resource(resources.get_students_by_year, "/api/get_students_by_year/<int:year>")
 api.add_resource(resources.set_score, "/api/score", "/api/score/")
+api.add_resource(resources.import_score, "/api/import_score")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

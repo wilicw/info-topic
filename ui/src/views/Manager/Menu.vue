@@ -67,6 +67,11 @@ export default {
           icon: "mdi-math-integral-box",
         },
         {
+          text: "匯入成績",
+          url: "import",
+          icon: "mdi-application-import",
+        },
+        {
           text: "編輯帳號",
           url: "edit_account",
           icon: "mdi-account-lock",

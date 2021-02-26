@@ -184,5 +184,13 @@ export default {
   },
   get_reference: async () =>
     axios.get(`${vue_conf.publicPath}upload/etc/reference.html`)
-
+  ,
+  import_score: async function (classification_id, group, score) {
+    const _token = this.get_token();
+    return client.post(`/import_score`, { id: classification_id, group_data: group, score_data: score }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
 }

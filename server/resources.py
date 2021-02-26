@@ -519,3 +519,36 @@ class set_score(Resource):
             else:
                 return err.not_allow_error
         return {"status": "success"}
+
+
+class import_score(Resource):
+    def post(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            classification_id = data["id"]
+            group_data = data["group_data"]
+            score_data = data["score_data"]
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        for item in zip(group_data, score_data):
+            __group, __score = item
+            if len(__group) * len(__score) == 0:
+                continue
+            project_id = Project.query.filter_by(uuid=__group).first().id
+            Project_score.query.filter_by(
+                project_id=project_id, score_classification_id=classification_id
+            ).delete()
+            new_score = Project_score(
+                project_id=project_id,
+                score_classification_id=classification_id,
+                score=__score,
+            )
+            db.session.add(new_score)
+            db.session.commit()
+        return {"status": "success"}

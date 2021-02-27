@@ -10,13 +10,6 @@
         ></v-select>
         <div v-if="selected_year != ''">
           <v-divider></v-divider>
-          <p class="my-5">
-            <a
-              @click="add_classification_to_year(selected_year)"
-              class="text-decoration-none"
-              >+ 增加分數欄位</a
-            >
-          </p>
           <v-text-field
             v-for="c in classification"
             :key="c.id"

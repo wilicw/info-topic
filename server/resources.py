@@ -432,7 +432,7 @@ class score_weight(Resource):
         weight_data = list(map(lambda x: x.to_obj(), Score_weight.query.all()))
         return {"status": "success", "data": weight_data}
 
-    def post(self):
+    def put(self):
         data = request.json
         try:
             res = entities.check_token(request.headers["Authorization"])
@@ -468,9 +468,68 @@ class score_classification(Resource):
         if group != group_admin and group != group_teacher:
             return err.not_allow_error
         classification_data = list(
-            map(lambda x: x.to_obj(), Score_classification.query.all())
+            map(
+                lambda x: x.to_obj(),
+                Score_classification.query.filter_by(enabled=True).all(),
+            )
         )
         return {"status": "success", "data": classification_data}
+
+    def post(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            description = data["description"]
+            is_global = bool(data["global"])
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        score_classification_obj = Score_classification(
+            description=description, is_global=is_global, enabled=True
+        )
+        db.session.add(score_classification_obj)
+        db.session.commit()
+        return {"status": "success"}
+
+    def put(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            id = data["id"]
+            description = data["description"]
+            is_global = data["global"]
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        score_classification_obj = Score_classification.query.get(id)
+        score_classification_obj.description = description
+        score_classification_obj.is_global = is_global
+        db.session.commit()
+        return {"status": "success"}
+
+    def delete(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            id = data["id"]
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        Score_classification.query.filter_by(id=id).first().enabled = False
+        db.session.commit()
+        return {"status": "success"}
 
 
 class set_score(Resource):

@@ -62,7 +62,7 @@ export default {
       ],
       admin: [
         {
-          text: "修改分數權重",
+          text: "修改分數選項",
           url: "change_weight",
           icon: "mdi-math-integral-box",
         },

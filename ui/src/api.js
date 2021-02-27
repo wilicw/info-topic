@@ -110,6 +110,17 @@ export default {
       }
     })
   },
+  get_all_year: async () =>
+    client.get(`/year/`)
+  ,
+  set_score_weight: async function (changed_data) {
+    const _token = this.get_token();
+    return client.put("/score_weight", { data: changed_data }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
   get_score_classification: async function () {
     const _token = this.get_token();
     return client.get("/score_classification", {
@@ -118,15 +129,29 @@ export default {
       }
     })
   },
-  get_all_year: async () =>
-    client.get(`/year/`)
-  ,
-  set_score_weight: async function (changed_data) {
+  create_score_classification: async function (description, global) {
     const _token = this.get_token();
-    return client.post("/score_weight", { data: changed_data }, {
+    return client.post("/score_classification", { description: description, global: global }, {
       headers: {
         Authorization: _token,
       }
+    })
+  },
+  update_score_classification: async function (id, description, global) {
+    const _token = this.get_token();
+    return client.put("/score_classification", { id: id, description: description, global: global }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
+  delete_score_classification: async function (id) {
+    const _token = this.get_token();
+    return client.delete("/score_classification", {
+      headers: {
+        Authorization: _token,
+      },
+      data: { id: id },
     })
   },
   set_score: async function (changed_data) {

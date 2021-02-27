@@ -92,6 +92,7 @@ class Score_classification(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     description = db.Column(db.String)
     is_global = db.Column(db.Boolean)
+    enabled = db.Column(db.Boolean)
 
     def __repr__(self):
         return f"<Score {self.id}>"

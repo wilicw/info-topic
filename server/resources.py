@@ -1,9 +1,7 @@
 # -*- encoding: utf8-*-
-from flask.globals import session
 from flask_restful import Resource, request, reqparse
-from flask import send_from_directory
 from model import *
-import schema, entities, err, werkzeug, os
+import entities, err, werkzeug, os
 
 group_student = "stu"
 group_teacher = "teacher"
@@ -13,13 +11,11 @@ group_admin = "admin"
 class login(Resource):
     def post(self):
         data = request.json
-        auth_schema = schema.AuthSchema()
         try:
-            res = auth_schema.load(data)
+            username = data["username"]
+            password = data["password"]
         except:
             return err.account_error
-        username = res["username"]
-        password = res["password"]
         if (
             Student.query.filter_by(username=username, password=password).first()
             != None

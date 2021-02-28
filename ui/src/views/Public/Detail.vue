@@ -57,8 +57,9 @@
             v-if="topic.cover"
             :src="topic.cover"
             class="ma-5"
+            :full="true"
             :class="$vuetify.breakpoint.mobile ? 'mx-0' : ''"
-          ></LazyImage>
+          />
           <v-row>
             <v-col
               cols="12"

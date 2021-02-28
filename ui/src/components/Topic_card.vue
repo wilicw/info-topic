@@ -1,6 +1,6 @@
 <template>
   <v-card class="rounded-0 mt-5">
-    <LazyImage :src="cover" />
+    <LazyImage :src="cover" :full="true" />
 
     <v-card-text class="font-weight-bold black--text">{{ title }}</v-card-text>
 

@@ -209,7 +209,7 @@ class Project(db.Model):
     def __repr__(self):
         return f"<Project {self.name}>"
 
-    def to_obj(self):
+    def to_simple(self):
         return {
             "id": self.id,
             "uuid": self.uuid,
@@ -218,19 +218,30 @@ class Project(db.Model):
             "description": cjk_layout(self.motivation),
             "cover": Image.query.get(self.cover_img_id).path
             if self.cover_img_id > 0
-            else "",
-            "keywords": self.keywords,
-            "report_file": File.query.get(self.report_file_id).location
-            if self.report_file_id > 0
-            else "",
-            "presentation_file": File.query.get(self.presentation_file_id).location
-            if self.presentation_file_id > 0
-            else "",
-            "program_file": File.query.get(self.program_file_id).location
-            if self.program_file_id > 0
-            else "",
-            "score": list(map(lambda x: x.to_obj(), self.score)),
+            else (
+                Image.query.get(self.members_imgs_id[0]).path
+                if self.members_imgs_id != "[]"
+                else ""
+            ),
         }
+
+    def to_obj(self):
+        return dict(
+            self.to_simple(),
+            **{
+                "keywords": self.keywords,
+                "report_file": File.query.get(self.report_file_id).location
+                if self.report_file_id > 0
+                else "",
+                "presentation_file": File.query.get(self.presentation_file_id).location
+                if self.presentation_file_id > 0
+                else "",
+                "program_file": File.query.get(self.program_file_id).location
+                if self.program_file_id > 0
+                else "",
+                "score": list(map(lambda x: x.to_obj(), self.score)),
+            },
+        )
 
     def to_detail(self):
         return dict(

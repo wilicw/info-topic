@@ -12,14 +12,12 @@ group_admin = "admin"
 class get_highlight_topics(Resource):
     def get(self):
         highlight = (
-            Project.query.filter(
-                db.and_(~Project.name.ilike(""), ~Project.cover_img_id.ilike(""))
-            )
+            Project.query.filter(~Project.name.ilike(""), ~Project.motivation.ilike(""))
             .order_by(func.rand())
             .limit(5)
             .all()
         )
-        return list(map(lambda x: x.to_obj(), highlight))
+        return list(map(lambda x: x.to_simple(), highlight))
 
 
 class login(Resource):

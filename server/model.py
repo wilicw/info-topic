@@ -204,6 +204,7 @@ class Project(db.Model):
     report_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     presentation_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
     program_file_id = db.Column(db.Integer, db.ForeignKey("files.id"))
+    rank = db.Column(db.Integer)
     score = db.relationship("Project_score", backref="project", lazy=True)
 
     def __repr__(self):
@@ -223,6 +224,7 @@ class Project(db.Model):
                 if len(self.members_imgs_id) != 0
                 else ""
             ),
+            "rank": self.rank if self.rank <= 10 else -1,
         }
 
     def to_obj(self):

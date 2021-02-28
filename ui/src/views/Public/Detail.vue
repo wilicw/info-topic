@@ -108,7 +108,7 @@
                 成績
                 <v-icon color="primary">mdi-slash-forward</v-icon>
                 <span class="black--text font-weight-medium"
-                  >{{ topic.score }}
+                  >{{ topic.rank != -1 ? `第 ${topic.rank} 名` : "佳作" }}
                 </span>
                 <v-divider class="my-3"></v-divider>
               </v-card>

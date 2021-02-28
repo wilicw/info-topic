@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 from uuid import uuid4
 import jwt, pangu, json
+import threading
 
 conf = ConfigParser()
 conf.read("config.ini", encoding="utf-8")
@@ -98,3 +99,47 @@ def links_to_files(links):
 
 def utf8_str_to_normal(a):
     return json.loads(json.dumps({"a": a}))["a"]
+
+
+def calcuate_ranking():
+    t = threading.Thread(target=_calcuate_ranking)
+    t.start()
+
+
+def _calcuate_ranking():
+    from model import Project, Score_weight, db
+
+    year = Project.query.with_entities(Project.year).group_by(Project.year).all()
+    for y in year:
+        y = y[0]
+        projects = to_obj_list(Project.query.filter_by(year=y).all())
+        score_weight = to_obj_list(Score_weight.query.filter_by(year=y).all())
+        score_weight = list(
+            map(
+                lambda x: ({str(x["score_classification_id"]): x["weight"]}),
+                score_weight,
+            )
+        )
+        score_weight = {k: v for d in score_weight for k, v in d.items()}
+        projects = list(
+            map(
+                lambda x: {
+                    "id": x["id"],
+                    "score": sum(
+                        [
+                            (
+                                i["score"]
+                                * score_weight[str(i["score_classification_id"])]
+                            )
+                            for i in x["score"]
+                        ]
+                    ),
+                },
+                projects,
+            )
+        )
+        projects = sorted(projects, key=lambda x: x["score"], reverse=True)
+        for i, p in enumerate(projects):
+            Project.query.get(p["id"]).rank = i + 1
+            db.session.commit()
+    print("Ranking complete")

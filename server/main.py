@@ -3,7 +3,6 @@ from flask import Flask, render_template
 from flask_restful import Api
 import resources, model
 from entities import config
-from schema import ma
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -17,7 +16,6 @@ app.config["MAX_CONTENT_LENGTH"] = 300 * 1024 * 1024
 model.db.init_app(app)
 CORS(app)
 api = Api(app)
-ma.init_app(app)
 
 api.add_resource(resources.login, "/api/auth")
 api.add_resource(resources.is_login, "/api/is_login")

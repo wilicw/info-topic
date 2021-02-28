@@ -1,16 +1,35 @@
 <template>
   <v-card flat class="text-center ma-10" style="background-color: transparent">
     <v-card-text>
-      <br />
-      Copyright © {{ new Date().getFullYear() }} —
-      <strong>大安高工資訊科</strong>
+      Made with <span style="color: #e25555">&#9829;</span> by
+      <a
+        v-for="author in authors"
+        :key="author.name"
+        :href="author.link"
+        target="_blank"
+        >{{ author.name }}</a
+      >
+      <p></p>
+      © {{ new Date().getFullYear() }}
+      <strong v-for="o in org" :key="o.name"
+        ><a :href="o.link" target="_blank">{{ o.name }}</a></strong
+      >
+      - All rights reserved.
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import { config } from "@/../config";
 export default {
   name: "Footer",
-  data: () => ({}),
+  data: () => ({
+    authors: [],
+    org: [],
+  }),
+  created() {
+    this.authors = config.authors;
+    this.org = config.org;
+  },
 };
 </script>

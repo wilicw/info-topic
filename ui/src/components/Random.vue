@@ -1,0 +1,42 @@
+<template>
+  <v-container id="all_topics">
+    <p class="display-1 font-weight-bold">瀏覽專題</p>
+    <Loading v-if="loading" />
+    <v-row v-else>
+      <v-col v-for="topic in topics" :key="topic.title" cols="12" sm="4" md="3">
+        <Topic_card
+          :uuid="topic.uuid"
+          :title="topic.title"
+          :year="topic.year"
+          :description="topic.description"
+          :cover="topic.cover"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import _ from "lodash";
+import api from "@/api";
+import Topic_card from "@/components/Topic_card.vue";
+import Loading from "@/components/Loading-4.vue";
+
+export default {
+  name: "Random",
+  components: {
+    Topic_card,
+    Loading,
+  },
+  data: () => ({
+    loading: true,
+    topics: [],
+  }),
+  async created() {
+    const res = await api.get_random();
+    this.topics = res.data;
+    this.topics = _.shuffle(this.topics);
+    this.loading = false;
+  },
+};
+</script>

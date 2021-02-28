@@ -67,12 +67,12 @@
         />
       </v-col>
     </v-row>
-    <div style="text-align: right" class="floating mx-0">
+    <div style="text-align: center" class="floating mx-0">
       <span
         class="mt-3 hover body-2 grey--text"
         @click="$vuetify.goTo('#all_topics')"
       >
-        更多專題 <v-icon>mdi-chevron-double-down</v-icon>
+        更多專題 <v-icon small>mdi-chevron-double-down</v-icon>
       </span>
     </div>
   </v-container>

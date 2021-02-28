@@ -54,8 +54,11 @@ export default {
     }
   }
   ,
-  get_highlight: () =>
+  get_highlight: async () =>
     client.get("/highlight")
+  ,
+  get_random: async () =>
+    client.get("/random")
   ,
   get_token: () =>
     window.localStorage.getItem("token")

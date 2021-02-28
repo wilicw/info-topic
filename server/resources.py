@@ -9,6 +9,20 @@ group_teacher = "teacher"
 group_admin = "admin"
 
 
+class get_random_topics(Resource):
+    def get(self):
+        random_topics = (
+            Project.query.filter(
+                ~Project.name.ilike(""),
+                ~Project.motivation.ilike(""),
+            )
+            .order_by(func.rand())
+            .limit(12)
+            .all()
+        )
+        return list(map(lambda x: x.to_simple(), random_topics))
+
+
 class get_highlight_topics(Resource):
     def get(self):
         highlight = (

@@ -1,11 +1,5 @@
 <template>
   <v-container>
-    <v-snackbar v-model="err" timeout="2000" color="pink">
-      發生錯誤
-    </v-snackbar>
-    <v-snackbar v-model="success" timeout="2000" color="success">
-      儲存成功
-    </v-snackbar>
     <v-row justify="center" class="mt-5">
       <v-col cols="12" md="5">
         <Score_classification
@@ -38,8 +32,6 @@ export default {
     Score_weight,
   },
   data: () => ({
-    err: null,
-    success: null,
     classification: [],
     score_data: [],
     year_list: [],
@@ -72,50 +64,6 @@ export default {
       this.score_data = _.groupBy(this.score_data, "year");
       this.year_list = _.keys(this.score_data);
       this.year_list = _.reverse(this.year_list.sort());
-    },
-    classification_id_to_text(id) {
-      const item = _.find(this.classification, { id: id });
-      return item.description + (item.global ? "（組）" : "");
-    },
-    push_change(year, classification_id, weight) {
-      if (this.rules[0](weight) != true) {
-        return;
-      }
-      _.remove(this.changed, {
-        year: year,
-        classification_id: classification_id,
-      });
-      this.changed.push({
-        year: year,
-        classification_id: classification_id,
-        weight: weight,
-      });
-    },
-    async new_classification(text, global) {
-      if (text == "") return;
-      await api.create_score_classification(text, global);
-      this.init();
-    },
-    async edit_classification(id, text, global) {
-      if (text == "") return;
-      await api.update_score_classification(id, text, global);
-      this.init();
-    },
-    async delete_classification(id) {
-      await api.delete_score_classification(id);
-      this.init();
-    },
-    async submit() {
-      console.log(this.changed);
-      try {
-        await api.set_score_weight(this.changed);
-        this.success = true;
-        this.err = false;
-        this.changed = [];
-      } catch (error) {
-        this.success = false;
-        this.err = true;
-      }
     },
   },
 };

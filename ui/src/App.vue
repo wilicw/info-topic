@@ -74,17 +74,20 @@
       <router-view />
     </v-main>
     <Footer />
+    <Popup />
   </v-app>
 </template>
 
 <script>
 import Footer from "@/components/Footer.vue";
+import Popup from "@/components/Popup.vue";
 import api from "@/api";
 
 export default {
   name: "App",
   components: {
     Footer,
+    Popup,
   },
   data: () => ({
     drawer: false,

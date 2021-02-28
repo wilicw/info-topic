@@ -5,9 +5,6 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form @submit.prevent="login">
             <v-card-title class="font-weight-bold">登入</v-card-title>
-            <v-snackbar v-model="err" timeout="2000" color="pink">
-              帳號或密碼錯誤
-            </v-snackbar>
             <v-card-text>
               <p class="text--secondary">
                 帳號請輸入 畢業級別+班級+座號
@@ -48,7 +45,6 @@ export default {
   data: () => ({
     pass: "",
     account: "",
-    err: null,
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
   async created() {
@@ -59,16 +55,14 @@ export default {
     async login() {
       const username = this.account,
         password = this.pass;
-      let res;
       try {
-        res = await api.login(username, password);
+        const res = await api.login(username, password);
+        api.storage_token(res.data);
+        this.$store.commit("login");
+        this.$router.push("/menu");
       } catch {
-        this.err = true;
+        this.$store.commit("show_popup", { s: "err", msg: "帳號或密碼錯誤" });
       }
-      api.storage_token(res.data);
-      this.err = null;
-      this.$store.commit("login");
-      this.$router.push("/menu");
     },
   },
 };

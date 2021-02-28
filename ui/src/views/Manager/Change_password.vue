@@ -5,12 +5,6 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form @submit.prevent="submit">
             <v-card-title class="font-weight-bold">修改密碼</v-card-title>
-            <v-snackbar v-model="err" timeout="2000" color="pink">
-              密碼錯誤
-            </v-snackbar>
-            <v-snackbar v-model="success" timeout="2000" color="success">
-              修改成功
-            </v-snackbar>
             <v-card-text>
               <v-text-field
                 v-model="original_pass"
@@ -55,8 +49,6 @@ export default {
     original_pass: "",
     pass: "",
     pass_rep: "",
-    err: null,
-    success: null,
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
   async created() {
@@ -69,20 +61,14 @@ export default {
         !(this.pass.length && this.pass_rep.length && this.original_pass) ||
         this.pass != this.pass_rep
       ) {
-        this.err = true;
-        this.success = null;
+        this.$store.commit("show_popup", { s: "err", msg: "輸入密碼不一致" });
         return false;
       }
-      let res;
       try {
-        res = await api.change_password(this.original_pass, this.pass);
-        if (res.status == 200) {
-          this.err = null;
-          this.success = true;
-        }
+        await api.change_password(this.original_pass, this.pass);
+        this.$store.commit("show_popup", { s: "success", msg: "修改成功" });
       } catch {
-        this.err = true;
-        this.success = null;
+        this.$store.commit("show_popup", { s: "err", msg: "密碼錯誤" });
       }
     },
   },

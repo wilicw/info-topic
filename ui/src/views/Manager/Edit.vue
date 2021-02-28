@@ -2,9 +2,6 @@
   <v-row justify="center" class="mt-2">
     <v-col cols="12" lg="10" sm="10">
       <v-card class="rounded-0 mt-5 pa-10">
-        <v-snackbar v-model="success" timeout="2000" color="success">
-          編輯成功
-        </v-snackbar>
         <div v-if="loading">
           <v-skeleton-loader
             type="article, article, article"
@@ -274,7 +271,6 @@ export default {
     },
     topic: {},
     rules: [(value) => !!value || "此欄位不可空白！"],
-    success: false,
   }),
   async created() {
     if (!(await api.is_login())) this.$router.go(-1);
@@ -366,9 +362,9 @@ export default {
     async submit() {
       try {
         await api.set_topic(this.id, this.topic);
-        this.success = true;
+        this.$store.commit("show_popup", { s: "success", msg: "儲存成功" });
       } catch (error) {
-        this.success = false;
+        this.$store.commit("show_popup", { s: "err", msg: "發生錯誤" });
       }
     },
   },

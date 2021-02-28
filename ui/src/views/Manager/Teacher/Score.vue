@@ -5,12 +5,6 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form>
             <v-card-title class="font-weight-bold">評分</v-card-title>
-            <v-snackbar v-model="err" timeout="2000" color="pink">
-              發生錯誤
-            </v-snackbar>
-            <v-snackbar v-model="success" timeout="2000" color="success">
-              儲存成功
-            </v-snackbar>
             <v-card-text>
               <v-select
                 :items="year_list"
@@ -131,8 +125,6 @@ import { config } from "@/../config";
 export default {
   name: "Score",
   data: () => ({
-    err: null,
-    success: null,
     classification: [],
     year_list: [],
     selected_projects: [],
@@ -178,12 +170,9 @@ export default {
     async submit() {
       try {
         await api.set_score(this.changed);
-        this.err = false;
-        this.success = true;
+        this.$store.commit("show_popup", { s: "success", msg: "儲存成功" });
       } catch (error) {
-        this.err = true;
-        this.success = false;
-        console.log(error);
+        this.$store.commit("show_popup", { s: "err", msg: "發生錯誤" });
       }
       this.$vuetify.goTo(0);
     },

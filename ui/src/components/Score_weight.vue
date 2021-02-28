@@ -73,12 +73,10 @@ export default {
       console.log(this.changed);
       try {
         await api.set_score_weight(this.changed);
-        this.success = true;
-        this.err = false;
+        this.$store.commit("show_popup", { s: "success", msg: "修改成功" });
         this.changed = [];
       } catch (error) {
-        this.success = false;
-        this.err = true;
+        this.$store.commit("show_popup", { s: "err", msg: "修改失敗" });
       }
     },
   },

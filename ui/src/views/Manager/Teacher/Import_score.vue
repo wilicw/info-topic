@@ -5,12 +5,6 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form>
             <v-card-title class="font-weight-bold">匯入專題分數</v-card-title>
-            <v-snackbar v-model="err" timeout="2000" color="pink">
-              發生錯誤
-            </v-snackbar>
-            <v-snackbar v-model="success" timeout="2000" color="success">
-              儲存成功
-            </v-snackbar>
             <v-card-text>
               <v-select
                 :items="items"
@@ -59,8 +53,6 @@ import { config } from "@/../config";
 export default {
   name: "Change_weight",
   data: () => ({
-    err: null,
-    success: null,
     classification: [],
     score: "",
     group: "",
@@ -113,11 +105,9 @@ export default {
           this.split_line(group_data),
           this.split_line(score_data)
         );
-        this.success = true;
-        this.err = false;
+        this.$store.commit("show_popup", { s: "success", msg: "匯入成功" });
       } catch (error) {
-        this.success = false;
-        this.err = true;
+        this.$store.commit("show_popup", { s: "err", msg: "匯入失敗" });
       }
     },
   },

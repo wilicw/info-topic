@@ -5,12 +5,6 @@
         <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
           <v-form>
             <v-card-title class="font-weight-bold">編輯專題</v-card-title>
-            <v-snackbar v-model="err" timeout="2000" color="pink">
-              發生錯誤
-            </v-snackbar>
-            <v-snackbar v-model="success" timeout="2000" color="success">
-              儲存成功
-            </v-snackbar>
             <v-card-text>
               <v-select
                 :items="year_list"

@@ -461,7 +461,7 @@ class score_weight(Resource):
             ).first()
             score_obj.weight = weight
             db.session.commit()
-        entities.calcuate_ranking()
+        entities.calculate_ranking()
         return {"status": "success"}
 
 
@@ -616,5 +616,5 @@ class import_score(Resource):
             )
             db.session.add(new_score)
             db.session.commit()
-        entities.calcuate_ranking()
+        entities.calculate_ranking()
         return {"status": "success"}

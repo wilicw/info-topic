@@ -23,6 +23,7 @@
 
 <script>
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Teachers",
@@ -30,7 +31,7 @@ export default {
     teachers: [],
   }),
   async created() {
-    document.title = `指導老師 || 大安資訊專題網`;
+    document.title = `指導老師 || ${config.title}`;
     const res = await api.get_teachers();
     this.teachers = res.data;
   },

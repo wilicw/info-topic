@@ -21,6 +21,7 @@
 
 <script>
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Menu",
@@ -81,7 +82,7 @@ export default {
   }),
   async created() {
     this.load_identity();
-    document.title = `個人頁面 || 大安資訊專題網`;
+    document.title = `個人頁面 || ${config.title}`;
     try {
       const res = await api.get_topic_by_token();
       let id = res.data.id;

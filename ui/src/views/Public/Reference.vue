@@ -13,6 +13,7 @@
 
 <script>
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Detail",
@@ -21,6 +22,7 @@ export default {
     ref: "",
   }),
   async created() {
+    document.title = `參考資料 || ${config.title}`;
     try {
       const res = await api.get_reference();
       this.ref = res.data;

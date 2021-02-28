@@ -47,6 +47,7 @@
 
 <script>
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Change_password",
@@ -59,7 +60,7 @@ export default {
     rules: [(value) => !!value || "此欄位不可空白！"],
   }),
   async created() {
-    document.title = `修改密碼 || 大安資訊專題網`;
+    document.title = `修改密碼 || ${config.title}`;
     if (!(await api.is_login())) this.$router.go(-1);
   },
   methods: {

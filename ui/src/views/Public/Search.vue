@@ -26,13 +26,15 @@
 </template>
 
 <script>
+import { config } from "@/../config";
+
 export default {
   name: "Search",
   data: () => ({
     keywords: "",
   }),
   created() {
-    document.title = `搜尋 || 大安資訊專題網`;
+    document.title = `搜尋 || ${config.title}`;
   },
   methods: {
     search() {

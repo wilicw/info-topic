@@ -94,7 +94,7 @@ export default {
         url: "/",
       },
       {
-        text: "搜尋專題",
+        text: "搜尋",
         url: "/search",
       },
       {

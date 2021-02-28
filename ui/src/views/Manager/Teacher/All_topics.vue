@@ -46,6 +46,7 @@
 <script>
 import _ from "lodash";
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Score",
@@ -63,7 +64,7 @@ export default {
     ],
   }),
   async created() {
-    document.title = `編輯所有專題 || 大安資訊專題網`;
+    document.title = `編輯所有專題 || ${config.title}`;
     if (!(await api.is_login())) this.$router.go(-1);
     let res;
     try {

@@ -87,6 +87,7 @@
 <script>
 import _ from "lodash";
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "New",
@@ -106,7 +107,7 @@ export default {
   }),
   async created() {
     if (!(await api.is_login())) this.$router.go(-1);
-    document.title = `建立專題 || 大安資訊專題網`;
+    document.title = `建立專題 || ${config.title}`;
     let res = await api.get_teachers();
     this.all_teachers = _.flatMap(res.data, (i) => {
       return [i.name];

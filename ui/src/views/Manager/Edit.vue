@@ -260,6 +260,7 @@
 
 <script>
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Edit",
@@ -277,7 +278,7 @@ export default {
   }),
   async created() {
     if (!(await api.is_login())) this.$router.go(-1);
-    document.title = `編輯專題 || 大安資訊專題網`;
+    document.title = `編輯專題 || ${config.title}`;
     const id = this.$route.params.id;
     this.id = id;
     try {

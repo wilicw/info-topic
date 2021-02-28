@@ -22,6 +22,7 @@
 import Multi_Topics from "@/components/Multi_Topics.vue";
 import Loading from "@/components/Loading-4.vue";
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Search_topics",
@@ -38,7 +39,7 @@ export default {
   async created() {
     const word = decodeURIComponent(this.$route.params.word);
     console.log(word);
-    document.title = `搜尋 ${word} || 大安資訊專題網`;
+    document.title = `搜尋 ${word} || ${config.title}`;
     const res = await api.get_topics_search(word);
     this.topics = res.data;
     this.word = word;

@@ -222,6 +222,7 @@
 <script>
 import api from "@/api";
 import LazyImage from "@/components/LazyImage";
+import { config } from "@/../config";
 
 export default {
   name: "Detail",
@@ -255,7 +256,7 @@ export default {
     try {
       const res = await api.get_topic(uuid);
       this.topic = res.data;
-      document.title = `${this.topic.title} || 大安資訊專題網`;
+      document.title = `${this.topic.title} || ${config.title}`;
     } catch (err) {
       console.log(err);
       return;

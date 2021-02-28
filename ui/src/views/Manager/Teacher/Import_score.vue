@@ -54,6 +54,7 @@
 <script>
 import _ from "lodash";
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Change_weight",
@@ -74,7 +75,7 @@ export default {
     },
   },
   async created() {
-    document.title = `匯入專題分數 || 大安資訊專題網`;
+    document.title = `匯入專題分數 || ${config.title}`;
     if (!(await api.is_login())) this.$router.go(-1);
     if (api.get_group() != "admin") this.$router.go(-1);
     let res;

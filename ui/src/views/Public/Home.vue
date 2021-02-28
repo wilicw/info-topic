@@ -11,6 +11,8 @@
 <script>
 import Highlight from "@/components/Highlight.vue";
 import All from "@/components/All.vue";
+import { config } from "@/../config";
+
 export default {
   name: "Home",
   components: {
@@ -18,7 +20,7 @@ export default {
     All,
   },
   created() {
-    document.title = `首頁 || 大安資訊專題網`;
+    document.title = `首頁 || ${config.title}`;
   },
 };
 </script>

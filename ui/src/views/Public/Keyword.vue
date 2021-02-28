@@ -22,6 +22,7 @@
 import Loading from "@/components/Loading-4.vue";
 import Multi_Topics from "@/components/Multi_Topics.vue";
 import api from "@/api";
+import { config } from "@/../config";
 
 export default {
   name: "Keyword",
@@ -38,7 +39,7 @@ export default {
   async created() {
     const word = decodeURIComponent(this.$route.params.word);
     console.log(word);
-    document.title = `關鍵字 ${word} || 大安資訊專題網`;
+    document.title = `關鍵字 ${word} || ${config.title}`;
     const res = await api.get_topics_by_keyword(word);
     this.topics = res.data;
     this.word = word;

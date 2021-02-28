@@ -27,6 +27,7 @@
 <script>
 import _ from "lodash";
 import api from "@/api";
+import { config } from "@/../config";
 import Score_classification from "@/components/Score_classification.vue";
 import Score_weight from "@/components/Score_weight.vue";
 
@@ -51,7 +52,7 @@ export default {
     ],
   }),
   async created() {
-    document.title = `修改分數選項 || 大安資訊專題網`;
+    document.title = `修改分數選項 || ${config.title}`;
     if (!(await api.is_login())) this.$router.go(-1);
     this.init();
   },

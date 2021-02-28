@@ -29,6 +29,10 @@ def remove_duplicates_preserving_order(seq):
 
 
 def to_simple_obj_list(ll):
+    return list(map(lambda x: x.to_simple(), ll))
+
+
+def to_obj_list(ll):
     return list(map(lambda x: x.to_obj(), ll))
 
 

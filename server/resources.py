@@ -12,7 +12,11 @@ group_admin = "admin"
 class get_highlight_topics(Resource):
     def get(self):
         highlight = (
-            Project.query.filter(~Project.name.ilike(""), ~Project.motivation.ilike(""))
+            Project.query.filter(
+                ~Project.name.ilike(""),
+                ~Project.motivation.ilike(""),
+                Project.cover_img_id != 0,
+            )
             .order_by(func.rand())
             .limit(5)
             .all()
@@ -198,7 +202,7 @@ class teacher(Resource):
                 return err.teacher_not_found
             return result.to_detail()
         else:
-            return list(map(lambda x: x.to_obj(), t.filter_by(enable=True).all()))
+            return entities.to_obj_list(t.filter_by(enable=True).all())
 
 
 class toipcs_by_year(Resource):
@@ -228,7 +232,7 @@ class toipcs_by_keywords(Resource):
                 Project.keywords.ilike(f"%{utf8_word}%"),
             )
         ).all()
-        return entities.to_detail_obj_list(results)
+        return entities.to_simple_obj_list(results)
 
 
 class search(Resource):
@@ -256,7 +260,7 @@ class search(Resource):
         results = entities.remove_duplicates_preserving_order(
             match_uuid + match_title + match_motivation + match_faqs
         )
-        return entities.to_detail_obj_list(results)
+        return entities.to_simple_obj_list(results)
 
 
 class upload(Resource):
@@ -379,14 +383,10 @@ class get_topic_by_token(Resource):
             stu_obj = Student.query.filter_by(username=user).first()
             return {"status": "success", "id": stu_obj.project_id}
         elif group == group_teacher:
-            topics = list(
-                map(
-                    lambda x: x.to_obj(),
-                    Project.query.filter_by(
-                        teacher_id=Teacher.query.filter_by(username=user).first().id
-                    ).all(),
-                )
-            )
+            topics = Project.query.filter_by(
+                teacher_id=Teacher.query.filter_by(username=user).first().id
+            ).all()
+            topics = entities.to_detail_obj_list(topics)
             return {"status": "success", "data": topics}
         else:
             return err.not_allow_error
@@ -422,7 +422,7 @@ class get_students_by_year(Resource):
             return err.not_allow_error
         __, _ = res
         students = Student.query.filter(Student.username.ilike(f"{year}%")).all()
-        stu_obj = list(map(lambda x: x.to_obj(), students))
+        stu_obj = entities.to_obj_list(students)
         return {"status": "success", "data": stu_obj}
 
 
@@ -437,7 +437,7 @@ class score_weight(Resource):
         _, group = res
         if group != group_admin:
             return err.not_allow_error
-        weight_data = list(map(lambda x: x.to_obj(), Score_weight.query.all()))
+        weight_data = entities.to_obj_list(Score_weight.query.all())
         return {"status": "success", "data": weight_data}
 
     def put(self):
@@ -475,11 +475,8 @@ class score_classification(Resource):
         _, group = res
         if group != group_admin and group != group_teacher:
             return err.not_allow_error
-        classification_data = list(
-            map(
-                lambda x: x.to_obj(),
-                Score_classification.query.filter_by(enabled=True).all(),
-            )
+        classification_data = entities.to_obj_list(
+            Score_classification.query.filter_by(enabled=True).all()
         )
         return {"status": "success", "data": classification_data}
 

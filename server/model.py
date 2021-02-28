@@ -220,7 +220,7 @@ class Project(db.Model):
             if self.cover_img_id > 0
             else (
                 Image.query.get(self.members_imgs_id[0]).path
-                if self.members_imgs_id != "[]"
+                if len(self.members_imgs_id) != 0
                 else ""
             ),
         }

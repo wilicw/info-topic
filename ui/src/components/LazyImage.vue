@@ -3,7 +3,7 @@
     :src="src"
     :lazy-src="lazy_load_src"
     class="grey lighten-2"
-    max-width="800px"
+    :max-width="{ '800px': full }"
   >
     <template v-slot:placeholder>
       <v-row class="fill-height ma-0" align="center" justify="center">
@@ -18,7 +18,7 @@
 <script>
 import api from "@/api";
 export default {
-  props: ["src"],
+  props: ["src", "full"],
   data: () => ({
     lazy_load_src: "",
   }),

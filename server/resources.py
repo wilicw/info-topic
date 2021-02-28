@@ -2,10 +2,24 @@
 from flask_restful import Resource, request, reqparse
 from model import *
 import entities, err, werkzeug, os
+from sqlalchemy.sql.expression import func
 
 group_student = "stu"
 group_teacher = "teacher"
 group_admin = "admin"
+
+
+class get_highlight_topics(Resource):
+    def get(self):
+        highlight = (
+            Project.query.filter(
+                db.and_(~Project.name.ilike(""), ~Project.cover_img_id.ilike(""))
+            )
+            .order_by(func.rand())
+            .limit(5)
+            .all()
+        )
+        return list(map(lambda x: x.to_obj(), highlight))
 
 
 class login(Resource):

@@ -19,6 +19,7 @@ api = Api(app)
 
 api.add_resource(resources.login, "/api/auth")
 api.add_resource(resources.is_login, "/api/is_login")
+api.add_resource(resources.get_highlight_topics, "/api/highlight")
 api.add_resource(
     resources.toipcs,
     "/api/topic",

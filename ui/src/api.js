@@ -54,6 +54,9 @@ export default {
     }
   }
   ,
+  get_highlight: () =>
+    client.get("/highlight")
+  ,
   get_token: () =>
     window.localStorage.getItem("token")
   ,

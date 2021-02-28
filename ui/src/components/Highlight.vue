@@ -109,6 +109,7 @@ export default {
       this.topic = this.highlight_topics[this.highlight_topics_id];
     },
     text_truncate(text) {
+      text = text || "";
       if (text.length > this.max_text_turncate) {
         return text.slice(0, this.max_text_turncate) + "...";
       }

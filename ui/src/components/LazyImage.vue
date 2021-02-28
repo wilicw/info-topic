@@ -1,10 +1,5 @@
 <template>
-  <v-img
-    :src="src"
-    :lazy-src="lazy_load_src"
-    class="grey lighten-2"
-    :max-width="full ? '100%' : '800px'"
-  >
+  <v-img :src="src" :lazy-src="lazy_load_src" class="grey lighten-2">
     <template v-slot:placeholder>
       <v-row class="fill-height ma-0" align="center" justify="center">
         <v-progress-circular
@@ -18,7 +13,7 @@
 <script>
 import api from "@/api";
 export default {
-  props: ["src", "full"],
+  props: ["src"],
   data: () => ({
     lazy_load_src: "",
   }),

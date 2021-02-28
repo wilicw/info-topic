@@ -8,22 +8,24 @@
           ></v-skeleton-loader>
         </div>
         <div v-else>
-          <div class="ml-5">
-            <p class="title mt-5 mb-0 ml-1">{{ topic.year }} 級畢業專題</p>
-            <p class="display-2 mt-3 mb-3 font-weight-bold">
-              {{ topic.title }}
-            </p>
+          <div>
+            <div :class="$vuetify.breakpoint.mobile ? 'ml-0' : 'ml-3'">
+              <p class="title mt-5 mb-0">{{ topic.year }} 級畢業專題</p>
+              <p class="display-2 mt-3 mb-3 font-weight-bold">
+                {{ topic.title }}
+              </p>
 
-            <div v-if="topic.keywords">
-              <v-chip
-                v-for="keyword in topic.keywords"
-                :key="keyword"
-                class="mt-3 mr-5 mb-5 rounded-0 font-weight-regular pa-3"
-                outlined
-                color="primary"
-                @click="$router.push(`/keyword/${keyword}`)"
-                >{{ keyword }}</v-chip
-              >
+              <div v-if="topic.keywords">
+                <v-chip
+                  v-for="keyword in topic.keywords"
+                  :key="keyword"
+                  class="mt-3 mr-5 mb-5 rounded-0 font-weight-regular pa-3"
+                  outlined
+                  color="primary"
+                  @click="$router.push(`/keyword/${keyword}`)"
+                  >{{ keyword }}</v-chip
+                >
+              </div>
             </div>
 
             <v-btn
@@ -64,7 +66,6 @@
             <v-col
               cols="12"
               sm="5"
-              class="pt-5 pl-10"
               :class="$vuetify.breakpoint.mobile ? 'pa-3' : 'pa-8'"
             >
               <v-card flat class="grey--text">

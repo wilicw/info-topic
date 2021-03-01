@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <Loading v-if="loading" />
-    <div v-else>
-      <p class="title font-weight-bold mt-10 mb-0">關鍵字：{{ word }}</p>
+    <div v-else class="mt-5">
       <v-alert
         v-if="err"
         color="pink"
@@ -13,7 +12,7 @@
       >
         沒有關鍵字為{{ word }}的專題
       </v-alert>
-      <Multi_Topics :topics="topics" />
+      <Multi_Topics :title="`關鍵字：${word}`" :topics="topics" />
     </div>
   </v-container>
 </template>

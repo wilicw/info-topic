@@ -1,11 +1,8 @@
 <template>
   <v-container>
     <Loading v-if="loading" />
-    <div v-else>
-      <p class="title font-weight-bold mt-10 mb-0" v-if="teacher_name">
-        指導老師：{{ teacher_name }}
-      </p>
-      <Multi_Topics :topics="topics" />
+    <div v-else class="mt-5">
+      <Multi_Topics :title="`指導老師：${teacher_name}`" :topics="topics" />
     </div>
   </v-container>
 </template>

@@ -1,39 +1,53 @@
 <template>
   <div>
-    <v-card flat style="background-color: transparent">
-      <v-btn plain @click="expand_menu">
-        <v-icon class="mr-2">mdi-filter-variant</v-icon> 過濾條件
+    <div>
+      <span class="title font-weight-bold mt-10 mb-0">{{ title }}</span>
+      <v-btn
+        style="float: right"
+        plain
+        @click="expand_menu"
+        :icon="$vuetify.breakpoint.mobile"
+      >
+        <v-icon>mdi-filter-variant</v-icon>
+        <span v-if="!$vuetify.breakpoint.mobile">過濾條件</span>
       </v-btn>
-    </v-card>
-    <v-expand-transition>
-      <v-card v-show="filter_menu" class="mt-2" transition="scale-transition">
-        <v-card-text>
-          <p class="subtitle-1 mb-2 font-weight-medium">年度</p>
-          <div v-for="y in available.years" :key="y" style="display: inline">
-            <Chip_checkbox
-              v-model="selected.years"
-              class="mx-1 my-1"
-              :label="y"
-              @click.native="update_menu"
-            />
-          </div>
-          <br />
-          <p class="subtitle-1 mb-2 font-weight-medium">關鍵字</p>
-          <div
-            v-for="word in available.keywords"
-            :key="word"
-            style="display: inline"
-          >
-            <Chip_checkbox
-              v-model="selected.keywords"
-              class="mx-1 my-1"
-              :label="word"
-              @click.native="update_menu"
-            />
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-expand-transition>
+      <p v-if="filter_menu"></p>
+      <v-expand-transition class="mt-2">
+        <v-card v-show="filter_menu" width="100%">
+          <v-card-text>
+            <div v-if="available.years.length > 1">
+              <p class="subtitle-1 mb-2 font-weight-medium">年度</p>
+              <div
+                v-for="y in available.years"
+                :key="y"
+                style="display: inline"
+              >
+                <Chip_checkbox
+                  v-model="selected.years"
+                  class="mx-1 my-1"
+                  :label="y"
+                  @click.native="update_menu"
+                />
+              </div>
+              <br />
+            </div>
+            <p class="subtitle-1 mb-2 font-weight-medium">關鍵字</p>
+            <div
+              v-for="word in available.keywords"
+              :key="word"
+              style="display: inline"
+            >
+              <Chip_checkbox
+                class="mx-1 my-1"
+                v-model="selected.keywords"
+                :label="word"
+                @click.native="update_menu"
+              />
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-expand-transition>
+    </div>
     <br />
     <v-row v-if="topics.length">
       <v-col
@@ -62,7 +76,7 @@ import Chip_checkbox from "@/components/Chip_checkbox.vue";
 
 export default {
   name: "Search_topics",
-  props: ["topics"],
+  props: ["title", "topics"],
   components: {
     Topic_card,
     Chip_checkbox,

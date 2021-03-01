@@ -35,7 +35,10 @@ export default {
   async created() {
     let res = await api.get_all_year();
     this.year_list = _.reverse(res.data);
-    const year = this.$route.params.y;
+    let year = this.$route.params.y;
+    if (year == "latest") {
+      year = this.year_list[0];
+    }
     this.change_year(year);
   },
   methods: {

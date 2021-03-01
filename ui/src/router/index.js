@@ -22,7 +22,8 @@ const routes = [
   { path: '/score', component: () => import('../views/Manager/Teacher/Score.vue') },
   { path: '/import', component: () => import('../views/Manager/Teacher/Import_score.vue') },
   { path: '/reference', component: () => import('../views/Public/Reference.vue') },
-  { path: '/year/:y', component: () => import('../views/Public/Year_topics.vue') }
+  { path: '/year/:y', component: () => import('../views/Public/Year_topics.vue') },
+  { path: '/year/latest', component: () => import('../views/Public/Year_topics.vue') }
 ]
 
 const router = new VueRouter({

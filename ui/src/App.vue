@@ -3,7 +3,8 @@
     <v-app-bar
       app
       flat
-      class="mt-5 mx-5 noselect"
+      class="mt-5 noselect"
+      :class="{ 'mx-5': !$vuetify.breakpoint.mobile }"
       style="background-color: transparent"
       absolute
     >

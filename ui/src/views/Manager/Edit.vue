@@ -280,7 +280,7 @@ export default {
   },
   methods: {
     is_student() {
-      return api.get_group() == "student";
+      return api.get_group() == "stu";
     },
     async arch_upload(e) {
       const url = await this.update_one(e, "arch", "img");

@@ -15,13 +15,12 @@ export default {
   name: "Popup",
   data: () => ({
     trigger: false,
-    err: false,
-    success: false,
   }),
   watch: {
-    "$store.state.popup.state": function () {
-      this.err = this.$store.state.popup.state == "err";
-      this.success = this.$store.state.popup.state == "success";
+    success: function () {
+      this.trigger = this.err || this.success;
+    },
+    err: function () {
       this.trigger = this.err || this.success;
     },
     trigger: function () {
@@ -30,13 +29,19 @@ export default {
   },
   methods: {
     init() {
-      if (!this.err && !this.success)
+      if (!this.trigger)
         this.$store.commit("show_popup", { s: "none", msg: "" });
     },
   },
   computed: {
     msg: function () {
       return this.$store.state.popup.msg;
+    },
+    err: function () {
+      return this.$store.state.popup.state == "err";
+    },
+    success: function () {
+      return this.$store.state.popup.state == "success";
     },
   },
 };

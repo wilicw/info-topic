@@ -70,7 +70,6 @@ export default {
       });
     },
     async submit() {
-      console.log(this.changed);
       try {
         await api.set_score_weight(this.changed);
         this.$store.commit("show_popup", { s: "success", msg: "修改成功" });

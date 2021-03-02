@@ -5,6 +5,10 @@
     <v-divider></v-divider>
     <br />
     <Random />
+    <br />
+    <div class="text-center">
+      <v-btn @click="$router.push('/year/latest')" class="primary" >瀏覽更多</v-btn>
+    </div>
   </v-container>
 </template>
 

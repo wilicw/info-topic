@@ -167,6 +167,8 @@ class toipcs(Resource):
             if result == None:
                 return err.topic_not_found
             try:
+                if group != group_student:
+                    result.uuid = data["uuid"]
                 result.name = data["title"]
                 result.keywords = [
                     f"{entities.utf8_str_to_normal(k)}" for k in data["keywords"]

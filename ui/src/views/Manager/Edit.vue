@@ -15,7 +15,7 @@
                 v-model="topic.uuid"
                 label="編號"
                 required
-                disabled
+                :disabled="is_student()"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -58,15 +58,6 @@
                 multiple
                 small-chips
               ></v-combobox>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="topic._class"
-                :counter="20"
-                label="專題類別"
-                disabled
-                required
-              ></v-text-field>
             </v-col>
           </v-row>
           <div class="mt-5">
@@ -288,6 +279,9 @@ export default {
     this.loading = false;
   },
   methods: {
+    is_student() {
+      return api.get_group() == "student";
+    },
     async arch_upload(e) {
       const url = await this.update_one(e, "arch", "img");
       this.topic.arch_imgs.push(url);

@@ -44,6 +44,7 @@
 
       <v-app-bar-nav-icon
         v-if="$vuetify.breakpoint.mobile"
+        class="ml-2"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
     </v-app-bar>

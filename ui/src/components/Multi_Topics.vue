@@ -130,14 +130,14 @@ export default {
       }
     },
     update_menu() {
-      if (this.selected.keywords.length == 0) {
-        this.compinent_topics = this.original_data;
-      } else {
+      this.compinent_topics = _.filter(
+        this.original_data,
+        (i) => _.intersection(this.selected.years, [i.year]).length != 0
+      );
+      if (this.selected.keywords.length != 0) {
         this.compinent_topics = _.filter(
-          this.original_data,
-          (i) =>
-            _.intersection(this.selected.years, [i.year]).length != 0 &&
-            _.intersection(this.selected.keywords, i.keywords).length != 0
+          this.compinent_topics,
+          (i) => _.intersection(this.selected.keywords, i.keywords).length != 0
         );
       }
     },

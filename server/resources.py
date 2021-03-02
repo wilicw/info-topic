@@ -233,13 +233,12 @@ class toipcs_by_year(Resource):
             return years
         else:
             results = Project.query.filter_by(year=y)
-            return entities.to_detail_obj_list(results)
+            return entities.to_obj_list(results)
 
 
 class toipcs_by_keywords(Resource):
     def get(self, word):
-        utf8_word = "".join(["\\u%04x" % (ord(c)) for c in word])
-        print(word, utf8_word)
+        utf8_word = "".join(["\\\\u%04x" % (ord(c)) for c in word])
         results = Project.query.filter(
             db.or_(
                 Project.keywords.ilike(f"%{word}%"),

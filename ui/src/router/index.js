@@ -23,6 +23,7 @@ const routes = [
   { path: '/import', component: () => import('../views/Manager/Teacher/Import_score.vue') },
   { path: '/reference', component: () => import('../views/Public/Reference.vue') },
   { path: '/year/:y', component: () => import('../views/Public/Year_topics.vue') },
+  { path: '/import_student', component: () => import('../views/Manager/Teacher/Import_students.vue') },
   { path: '/year/latest', component: () => import('../views/Public/Year_topics.vue') }
 ]
 

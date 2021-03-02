@@ -73,8 +73,8 @@ export default {
           icon: "mdi-application-import",
         },
         {
-          text: "編輯帳號",
-          url: "edit_account",
+          text: "匯入學生資料",
+          url: "import_student",
           icon: "mdi-account-lock",
         },
       ],

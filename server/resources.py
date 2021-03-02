@@ -601,6 +601,36 @@ class set_score(Resource):
         return {"status": "success"}
 
 
+class import_student(Resource):
+    def post(self):
+        data = request.json
+        try:
+            res = entities.check_token(request.headers["Authorization"])
+            if res == None:
+                raise Exception("invalid token")
+            name = data["name"]
+            account = data["account"]
+            school_id = data["school_id"]
+        except:
+            return err.not_allow_error
+        _, group = res
+        if group != group_admin:
+            return err.not_allow_error
+        for item in zip(name, account, school_id):
+            __name, __account, __school_id= item
+            if len(__name) * len(__account) * len(__school_id) == 0:
+                continue
+            new_stu = Student(
+                username=__account,
+                password=__school_id,
+                school_id=__school_id,
+                name=__name,
+                project_id=-1,
+            )
+            db.session.add(new_stu)
+            db.session.commit()
+        return {"status": "success"}
+
 class import_score(Resource):
     def post(self):
         data = request.json

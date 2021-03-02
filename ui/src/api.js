@@ -224,4 +224,12 @@ export default {
       }
     })
   },
+  import_student: async function (name, account, school_id) {
+    const _token = this.get_token();
+    return client.post(`/import_student`, { name: name, account: account, school_id: school_id }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  },
 }

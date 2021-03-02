@@ -1,7 +1,7 @@
 <template>
   <v-card flat class="text-center ma-10 transparent">
     <v-card-text>
-      Made with <span style="color: #e25555">&#9829;</span> by
+      Made with Liver by
       <a
         v-for="author in authors"
         :key="author.name"

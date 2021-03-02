@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="overflow-x: hidden">
     <v-app-bar
       app
       flat

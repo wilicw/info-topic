@@ -115,7 +115,8 @@ export default {
         (i) => (keywords = _.concat(keywords, i.keywords))
       );
       this.available.keywords = _.uniq(keywords).sort();
-      this.selected.keywords = _.cloneDeep(this.available.keywords);
+      // this.selected.keywords = _.cloneDeep(this.available.keywords);
+      this.selected.keywords = [];
     },
     expand_menu() {
       this.filter_menu = !this.filter_menu;
@@ -129,13 +130,16 @@ export default {
       }
     },
     update_menu() {
-      console.log("update");
-      this.compinent_topics = _.filter(
-        this.original_data,
-        (i) =>
-          _.intersection(this.selected.years, [i.year]).length != 0 &&
-          _.intersection(this.selected.keywords, i.keywords).length != 0
-      );
+      if (this.selected.keywords.length == 0) {
+        this.compinent_topics = this.original_data;
+      } else {
+        this.compinent_topics = _.filter(
+          this.original_data,
+          (i) =>
+            _.intersection(this.selected.years, [i.year]).length != 0 &&
+            _.intersection(this.selected.keywords, i.keywords).length != 0
+        );
+      }
     },
   },
 };

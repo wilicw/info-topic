@@ -4,7 +4,7 @@
     class="rounded-0 mx-0 my-0"
     :outlined="!is_selected"
     :color="is_selected ? 'primary' : 'grey'"
-    >{{ label.toString().length ? label : "無標籤" }}</v-chip
+    >{{ label.toString() || "無標籤" }}</v-chip
   >
 </template>
 
@@ -14,20 +14,20 @@ import _ from "lodash";
 export default {
   name: "chip_checkbox",
   props: ["value", "label"],
-  data: () => ({
-    is_selected: true,
-  }),
+  data: () => ({}),
+  computed: {
+    is_selected () {
+      return _.indexOf(this.value, this.label) != -1;
+    },
+  },
   methods: {
     select() {
-      let now_value = this.value;
+      let now_value = _.cloneDeep(this.value);
       if (_.indexOf(now_value, this.label) == -1) {
         now_value = _.concat(now_value, this.label);
-        this.is_selected = true;
       } else {
         _.remove(now_value, (i) => i == this.label);
-        this.is_selected = false;
       }
-      console.log(now_value.length);
       this.$emit("input", now_value);
     },
   },

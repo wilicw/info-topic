@@ -10,7 +10,12 @@
         <div v-else>
           <div>
             <div :class="$vuetify.breakpoint.mobile ? 'ml-0' : 'ml-3'">
-              <p class="title mt-5 mb-0">{{ topic.year }} 級畢業專題</p>
+              <p
+                class="title mt-5 mb-0 hover"
+                @click="$router.push(`/year/${topic.year}`)"
+              >
+                {{ topic.year }} 級畢業專題
+              </p>
               <p class="display-2 mt-3 mb-3 font-weight-bold">
                 {{ topic.title }}
               </p>

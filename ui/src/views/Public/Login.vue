@@ -2,7 +2,11 @@
   <v-container>
     <v-row justify="center" class="mt-5">
       <v-col cols="12" md="4">
-        <v-card :flat="$vuetify.breakpoint.mobile" class="pa-5">
+        <v-card
+          :flat="$vuetify.breakpoint.mobile"
+          class="pa-5"
+          :class="{ transparent: $vuetify.breakpoint.mobile }"
+        >
           <v-form @submit.prevent="login">
             <v-card-title class="font-weight-bold">登入</v-card-title>
             <v-card-text>

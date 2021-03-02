@@ -8,7 +8,15 @@
 
     <v-card-actions class="pa-3">
       <v-spacer></v-spacer>
-      <v-btn @click="$router.push(`/topic/${uuid}`)" plain> 檢視專題 </v-btn>
+      <v-btn
+        @click="
+          $router.push(`/topic/${uuid}`);
+          $vuetify.goTo(0);
+        "
+        plain
+      >
+        檢視專題
+      </v-btn>
       <!-- <v-chip class="mt-3 ml-3 rounded-0 font-weight-bold" label small dark>{{
         year
       }}</v-chip> -->

@@ -160,6 +160,9 @@ export default {
 </script>
 
 <style >
+.transparent {
+  background-color: transparent;
+}
 .hover:hover {
   cursor: pointer;
   transition-duration: 0.3s;

@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" class="mt-3">
     <v-col cols="12" lg="8" sm="10">
-      <v-card class="rounded-0 mt-5 pa-3">
+      <v-card class="rounded-0 mt-2 pa-3">
         <div v-if="loading">
           <v-skeleton-loader
             type="card, avatar, article, article"

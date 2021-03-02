@@ -2,7 +2,11 @@
   <v-container>
     <v-row justify="center" class="mt-5">
       <v-col cols="12" md="6">
-        <v-card class="rounded-0 pa-5" :flat="$vuetify.breakpoint.mobile">
+        <v-card
+          class="rounded-0 pa-5"
+          :flat="$vuetify.breakpoint.mobile"
+          :class="{ transparent: $vuetify.breakpoint.mobile }"
+        >
           <v-card-title class="font-weight-bold">搜尋專題</v-card-title>
           <v-form @submit.prevent="search">
             <v-card-text>

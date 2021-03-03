@@ -60,8 +60,8 @@ export default {
     if (_.indexOf(this.year_list, year) == -1) {
       year = this.year_list[0];
     }
+    this.year = year;
     this.change_classification(this.classification_list[0]);
-    this.change_year(year);
   },
   methods: {
     change_year: async function (year) {
@@ -73,6 +73,17 @@ export default {
         this.classification_id
       );
       this.topics = res.data;
+      let i = 1;
+      this.topics = _.reduce(
+        this.topics,
+        function (result, obj) {
+          obj.title = `第 ${i} 名 - ${obj.title}`;
+          i++;
+          result.push(obj)
+          return result;
+        },
+        []
+      );
       document.title = `${year} 年度專題排名 || ${config.title}`;
       this.loading = false;
     },

@@ -84,6 +84,9 @@ export default {
   get_topic: async (id) =>
     client.get(`/topic/${id}`)
   ,
+  get_topics_by_classification: async (year, cid) =>
+    client.get(`/get_topics_by_classification/${year}/${cid}`)
+  ,
   get_topic_by_token: async function () {
     const _token = this.get_token();
     return client.post("/get_topic_by_token", {}, {
@@ -127,14 +130,9 @@ export default {
       }
     })
   },
-  get_score_classification: async function () {
-    const _token = this.get_token();
-    return client.get("/score_classification", {
-      headers: {
-        Authorization: _token,
-      }
-    })
-  },
+  get_score_classification: async () =>
+    client.get("/score_classification")
+  ,
   create_score_classification: async function (description, global) {
     const _token = this.get_token();
     return client.post("/score_classification", { description: description, global: global }, {

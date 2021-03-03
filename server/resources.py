@@ -37,6 +37,12 @@ class get_highlight_topics(Resource):
         )
         return list(map(lambda x: x.to_simple(), highlight))
 
+class get_topics_by_classification(Resource):
+    def get(self, year, cid):
+        projects = Project.query.filter_by(year=year).all()
+        projects = sorted(projects, key=lambda x: list(filter(lambda s: s.score_classification_id == cid ,x.score))[0].score, reverse=True)
+        return entities.to_obj_list(projects)[:8]
+
 
 class login(Resource):
     def post(self):
@@ -482,15 +488,6 @@ class score_weight(Resource):
 
 class score_classification(Resource):
     def get(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        _, group = res
-        if group != group_admin and group != group_teacher:
-            return err.not_allow_error
         classification_data = entities.to_obj_list(
             Score_classification.query.filter_by(enabled=True).all()
         )

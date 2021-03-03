@@ -105,6 +105,10 @@ export default {
         url: "/year/latest",
       },
       {
+        text: "排名",
+        url: "/rank/latest",
+      },
+      {
         text: "搜尋",
         url: "/search",
       },
@@ -149,12 +153,12 @@ export default {
   methods: {
     logout() {
       api.clear_token();
-      this.nav_link[5].text = "登入";
-      this.nav_link[5].url = "/login";
+      this.nav_link[6].text = "登入";
+      this.nav_link[6].url = "/login";
     },
     login() {
-      this.nav_link[5].text = "個人頁面";
-      this.nav_link[5].url = "/menu";
+      this.nav_link[6].text = "個人頁面";
+      this.nav_link[6].url = "/menu";
     },
   },
 };

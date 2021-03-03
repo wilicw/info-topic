@@ -40,6 +40,9 @@ class get_highlight_topics(Resource):
 class get_topics_by_classification(Resource):
     def get(self, year, cid):
         projects = Project.query.filter_by(year=year).all()
+        projects = list(filter(lambda x: list(filter(lambda s: s.score_classification_id == cid ,x.score))[0].score != 0, projects))
+        if len(projects) == 0:
+            return []
         projects = sorted(projects, key=lambda x: list(filter(lambda s: s.score_classification_id == cid ,x.score))[0].score, reverse=True)
         return entities.to_obj_list(projects)[:8]
 

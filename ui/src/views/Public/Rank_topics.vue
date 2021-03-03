@@ -17,6 +17,16 @@
         ></v-select>
       </v-col>
     </v-row>
+    <v-alert
+      v-if="topics.length == 0 && !loading"
+      color="pink"
+      dark
+      border="right"
+      icon="mdi-alert"
+      transition="scale-transition"
+    >
+      沒有關於 {{ year }} 級{{ classification_description }}的專題排名
+    </v-alert>
     <Loading v-if="loading" />
     <div v-else class="mt-5">
       <Multi_Topics
@@ -79,7 +89,7 @@ export default {
         function (result, obj) {
           obj.title = `第 ${i} 名 - ${obj.title}`;
           i++;
-          result.push(obj)
+          result.push(obj);
           return result;
         },
         []

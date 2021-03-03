@@ -57,7 +57,7 @@ export default {
     this.classifications = _.filter(res.data.data, { global: true });
     this.classification_list = _.map(this.classifications, "description");
     let year = this.$route.params.y;
-    if (year == "latest") {
+    if (_.indexOf(this.year_list, year) == -1) {
       year = this.year_list[0];
     }
     this.change_classification(this.classification_list[0]);

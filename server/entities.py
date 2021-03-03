@@ -2,6 +2,7 @@ from configparser import ConfigParser
 from uuid import uuid4
 import jwt, pangu, json
 import threading
+import scipy.stats as ss
 
 conf = ConfigParser()
 conf.read("config.ini", encoding="utf-8")
@@ -124,11 +125,10 @@ def _calculate_ranking():
                 )
             )
             score_weight = {k: v for d in score_weight for k, v in d.items()}
-            projects = list(
+            score = list(
                 map(
-                    lambda x: {
-                        "id": x["id"],
-                        "score": sum(
+                    lambda x: 
+                        sum(
                             [
                                 (
                                     i["score"]
@@ -137,12 +137,12 @@ def _calculate_ranking():
                                 for i in x["score"]
                             ]
                         ),
-                    },
                     projects,
                 )
             )
-            projects = sorted(projects, key=lambda x: x["score"], reverse=True)
-            for i, p in enumerate(projects):
-                Project.query.get(p["id"]).rank = i + 1
+            score = list(map(lambda x: max(score)-x, score))
+            rank = ss.rankdata(score, method="min")
+            for i, r in enumerate(rank):
+                Project.query.get(projects[i]["id"]).rank = r
                 db.session.commit()
     print("Ranking complete")

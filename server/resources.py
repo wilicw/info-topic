@@ -3,6 +3,7 @@ from flask_restful import Resource, request, reqparse
 from model import *
 import entities, err, werkzeug, os
 from sqlalchemy.sql.expression import func
+import scipy.stats as ss
 
 group_student = "stu"
 group_teacher = "teacher"
@@ -43,9 +44,15 @@ class get_topics_by_classification(Resource):
         projects = list(filter(lambda x: list(filter(lambda s: s.score_classification_id == cid ,x.score))[0].score != 0, projects))
         if len(projects) == 0:
             return []
-        projects = sorted(projects, key=lambda x: list(filter(lambda s: s.score_classification_id == cid ,x.score))[0].score, reverse=True)
-        return entities.to_obj_list(projects)[:8]
-
+        score = [ list(filter(lambda s: s.score_classification_id == cid ,p.score))[0].score for p in projects  ]
+        score = list(map(lambda x: max(score)-x, score))
+        projects = entities.to_simple_obj_list(projects)
+        result = []
+        for i, rank in enumerate(ss.rankdata(score, method='min')):
+            if rank <= 8:
+                projects[i]["rank"] = int(rank)
+                result.append(projects[i])
+        return result
 
 class login(Resource):
     def post(self):

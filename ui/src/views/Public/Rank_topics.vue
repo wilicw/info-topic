@@ -83,17 +83,16 @@ export default {
         this.classification_id
       );
       this.topics = res.data;
-      let i = 1;
       this.topics = _.reduce(
         this.topics,
         function (result, obj) {
-          obj.title = `第 ${i} 名 - ${obj.title}`;
-          i++;
+          obj.title = `第 ${obj.rank} 名 - ${obj.title}`;
           result.push(obj);
           return result;
         },
         []
       );
+      this.topics = _.sortBy(this.topics, ["rank"])
       document.title = `${year} 年度專題排名 || ${config.title}`;
       this.loading = false;
     },

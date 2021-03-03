@@ -36,7 +36,7 @@ export default {
     let res = await api.get_all_year();
     this.year_list = _.reverse(res.data);
     let year = this.$route.params.y;
-    if (_.indexOf(this.year_list, year) == -1) {
+    if (_.indexOf(this.year_list, parseInt(year)) == -1) {
       year = this.year_list[0];
     }
     this.change_year(year);

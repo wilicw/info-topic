@@ -40,7 +40,8 @@
 <script>
 import _ from "lodash";
 import Loading from "@/components/Loading-4.vue";
-import Multi_Topics from "@/components/Multi_Topics.vue";
+// import Multi_Topics from "@/components/Multi_Topics.vue";
+import Multi_Topics from "@/components/List_topics.vue"
 import api from "@/api";
 import { config } from "@/../config";
 

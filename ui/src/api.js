@@ -222,9 +222,9 @@ export default {
       }
     })
   },
-  import_student: async function (name, account, school_id) {
+  import_student: async function (year, selected_class, name, seat_num, school_id) {
     const _token = this.get_token();
-    return client.post(`/import_student`, { name: name, account: account, school_id: school_id }, {
+    return client.post(`/import_student`, { year: year, selected_class: selected_class, name: name, seat_num: seat_num, school_id: school_id }, {
       headers: {
         Authorization: _token,
       }

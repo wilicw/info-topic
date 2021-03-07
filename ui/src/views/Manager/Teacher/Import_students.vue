@@ -11,11 +11,26 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <p class="mb-1">帳號</p>
+                  <v-select
+                    :items="class_list"
+                    v-model="selected_class"
+                    label="班級"
+                  ></v-select>
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    v-model="year"
+                    label="學生畢業年度（110、111...）"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <p class="mb-1">座號</p>
                   <p class="text--secondary mb-0">
-                    已輸入 {{ calculate_num(account) }} 筆
+                    已輸入 {{ calculate_num(seat_num) }} 筆
                   </p>
-                  <v-textarea auto-grow v-model="account"></v-textarea>
+                  <v-textarea auto-grow v-model="seat_num"></v-textarea>
                 </v-col>
                 <v-col>
                   <p class="mb-1">學號</p>
@@ -35,7 +50,9 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="submit()">送出</v-btn>
+              <v-btn :disabled="!is_valid()" color="primary" @click="submit()"
+                >送出</v-btn
+              >
             </v-card-actions>
           </v-form>
         </v-card>
@@ -51,11 +68,12 @@ import { config } from "@/../config";
 export default {
   name: "Change_weight",
   data: () => ({
-    classification: [],
+    year: "",
+    selected_class: "",
+    class_list: ["甲班", "乙班", "綜高"],
     name: "",
-    account: "",
+    seat_num: "",
     school_id: "",
-    items: [],
   }),
   async created() {
     document.title = `匯入學生資料 || ${config.title}`;
@@ -69,24 +87,48 @@ export default {
     calculate_num(text) {
       return this.split_line(text).length - 1;
     },
-    async submit() {
+    is_valid() {
       if (
+        this.year == "" ||
+        this.selected_class == "" ||
         this.calculate_num(this.name) == 0 ||
-        this.calculate_num(this.account) == 0 ||
+        this.calculate_num(this.seat_num) == 0 ||
         this.calculate_num(this.school_id) == 0 ||
         !(
-          (this.calculate_num(this.name) == this.calculate_num(this.account)) ==
+          (this.calculate_num(this.name) ==
+            this.calculate_num(this.seat_num)) ==
           this.calculate_num(this.school_id)
         )
       ) {
-        return;
+        return false;
+      } else {
+        return true;
       }
+    },
+    async submit() {
       const name = this.split_line(this.name);
-      const account = this.split_line(this.account);
+      const seat_num = this.split_line(this.seat_num);
       const school_id = this.split_line(this.school_id);
-      console.log(name, account, school_id);
+      let selected_class;
+      switch (this.selected_class) {
+        case "甲班":
+          selected_class = "a";
+          break;
+        case "乙班":
+          selected_class = "b";
+          break;
+        default:
+          selected_class = "c";
+          break;
+      }
       try {
-        await api.import_student(name, account, school_id);
+        await api.import_student(
+          this.year,
+          selected_class,
+          name,
+          seat_num,
+          school_id
+        );
         this.$store.commit("show_popup", { s: "success", msg: "匯入成功" });
       } catch (error) {
         this.$store.commit("show_popup", { s: "err", msg: "匯入失敗" });

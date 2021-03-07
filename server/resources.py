@@ -615,20 +615,23 @@ class import_student(Resource):
             res = entities.check_token(request.headers["Authorization"])
             if res == None:
                 raise Exception("invalid token")
+            selected_class = data["selected_class"]
+            year = data["year"]
             name = data["name"]
-            account = data["account"]
+            seat_num = data["seat_num"]
             school_id = data["school_id"]
         except:
             return err.not_allow_error
         _, group = res
         if group != group_admin:
             return err.not_allow_error
-        for item in zip(name, account, school_id):
-            __name, __account, __school_id= item
-            if len(__name) * len(__account) * len(__school_id) == 0:
+        for item in zip(name, seat_num, school_id):
+            __name, __seat_num, __school_id= item
+            if len(__name) * len(__seat_num) * len(__school_id) == 0:
                 continue
+            __seat_num = "{:2d}".format("__seat_num")
             new_stu = Student(
-                username=__account,
+                username=f"{year}{selected_class}{__seat_num}",
                 password=__school_id,
                 school_id=__school_id,
                 name=__name,

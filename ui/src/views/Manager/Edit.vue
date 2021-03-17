@@ -341,7 +341,7 @@ export default {
     },
     async upload_image_to_server(title, file) {
       let formData = new FormData();
-      formData.append("image", file);
+      formData.append("file", file);
       formData.append("title", title);
       const res = await api.upload_image(formData);
       return res.data.link;

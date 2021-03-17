@@ -1,7 +1,11 @@
 # -*- encoding: utf8-*-
+from flask.signals import request_started
 from flask_restful import Resource, request, reqparse
 from model import *
-import entities, err, werkzeug, os
+import entities
+import err
+import werkzeug
+import os
 from sqlalchemy.sql.expression import func
 import scipy.stats as ss
 
@@ -10,65 +14,54 @@ group_teacher = "teacher"
 group_admin = "admin"
 
 
-class get_random_topics(Resource):
+class ranking(Resource):
     def get(self):
-        random_topics = (
-            Project.query.filter(
-                ~Project.name.ilike(""),
-                ~Project.motivation.ilike(""),
-            )
-            .order_by(func.rand())
-            .limit(12)
-            .all()
-        )
-        return list(map(lambda x: x.to_simple(), random_topics))
+        parser = reqparse.RequestParser()
+        parser.add_argument("year", type=int)
+        parser.add_argument("sort", type=int, required=True)
+        args = parser.parse_args()
+        results = Project.query
+        if args["year"] != None:
+            year = int(args["year"])
+            results = results.filter_by(year=year)
+        if args["sort"] != None:
+            cid = args["sort"]
+            results = list(filter(lambda x: list(filter(
+                lambda s: s.score_classification_id == cid, x.score))[0].score != 0, results.all()))
+            if len(results) == 0:
+                return []
+            score = [list(filter(lambda s: s.score_classification_id == cid, p.score))[
+                0].score for p in results]
+            score = list(map(lambda x: max(score)-x, score))
+            results = entities.to_simple_obj_list(results)
+            res = []
+            for i, rank in enumerate(ss.rankdata(score, method='min')):
+                if rank <= 8:
+                    results[i]["rank"] = int(rank)
+                    res.append(results[i])
+        return res
 
-
-class get_highlight_topics(Resource):
-    def get(self):
-        highlight = (
-            Project.query.filter(
-                ~Project.name.ilike(""),
-                ~Project.motivation.ilike(""),
-                Project.cover_img_id != 0,
-            )
-            .order_by(func.rand())
-            .limit(5)
-            .all()
-        )
-        return list(map(lambda x: x.to_simple(), highlight))
-
-class get_topics_by_classification(Resource):
-    def get(self, year, cid):
-        projects = Project.query.filter_by(year=year).all()
-        projects = list(filter(lambda x: list(filter(lambda s: s.score_classification_id == cid ,x.score))[0].score != 0, projects))
-        if len(projects) == 0:
-            return []
-        score = [ list(filter(lambda s: s.score_classification_id == cid ,p.score))[0].score for p in projects  ]
-        score = list(map(lambda x: max(score)-x, score))
-        projects = entities.to_simple_obj_list(projects)
-        result = []
-        for i, rank in enumerate(ss.rankdata(score, method='min')):
-            if rank <= 8:
-                projects[i]["rank"] = int(rank)
-                result.append(projects[i])
-        return result
 
 class login(Resource):
+    def get(self):
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        return {"status": "success"}
+
     def post(self):
         data = request.json
-        try:
-            username = data["username"]
-            password = data["password"]
-        except:
-            return err.account_error
+        username = data["username"]
+        password = data["password"]
         if (
-            Student.query.filter_by(username=username, password=password).first()
+            Student.query.filter_by(
+                username=username, password=password).first()
             != None
         ):
             return entities.generate_token(username, group=group_student)
         if (
-            Teacher.query.filter_by(username=username, password=password).first()
+            Teacher.query.filter_by(
+                username=username, password=password).first()
             != None
         ):
             return entities.generate_token(username, group=group_teacher)
@@ -77,18 +70,7 @@ class login(Resource):
         return err.account_error
 
 
-class is_login(Resource):
-    def post(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        return {"status": "success"}
-
-
-class toipcs(Resource):
+class projects(Resource):
     def get(self, id=None, uuid=None):
         if id != None:
             result = Project.query.get(id)
@@ -101,17 +83,87 @@ class toipcs(Resource):
                 return err.topic_not_found
             return result.to_detail()
         else:
-            return list(map(lambda x: x.to_obj(), Project.query.all()))
+            parser = reqparse.RequestParser()
+            parser.add_argument("random")
+            parser.add_argument("highlight")
+            parser.add_argument("keyword")
+            parser.add_argument("year", type=int)
+            parser.add_argument("search")
+            parser.add_argument("token")
+            args = parser.parse_args()
+            if args["random"] != None:
+                random_topics = (
+                    Project.query.filter(
+                        ~Project.name.ilike(""),
+                        ~Project.motivation.ilike(""),
+                    )
+                    .order_by(func.rand())
+                    .limit(12)
+                    .all()
+                )
+                return list(map(lambda x: x.to_simple(), random_topics))
+            if args["highlight"] != None:
+                highlight = (
+                    Project.query.filter(
+                        ~Project.name.ilike(""),
+                        ~Project.motivation.ilike(""),
+                        Project.cover_img_id != 0,
+                    )
+                    .order_by(func.rand())
+                    .limit(5)
+                    .all()
+                )
+                return list(map(lambda x: x.to_simple(), highlight))
+            if args["token"] != None:
+                token = args["token"]
+                res = entities.check_token(token)
+                if res == None:
+                    raise Exception("invalid token")
+                user, group = res
+                if group == group_student:
+                    stu_obj = Student.query.filter_by(username=user).first()
+                    return {"id": stu_obj.project_id}
+                elif group == group_teacher:
+                    topics = Project.query.filter_by(
+                        teacher_id=Teacher.query.filter_by(
+                            username=user).first().id
+                    ).all()
+                    topics = entities.to_detail_obj_list(topics)
+                    return topics
+                else:
+                    return err.not_allow_error
+            # filters
+            results = Project.query
+            if args["keyword"] != None:
+                word = args["keyword"]
+                utf8_word = "".join(["\\\\u%04x" % (ord(c)) for c in word])
+                results = results.filter(
+                    db.or_(
+                        Project.keywords.ilike(f"%{word}%"),
+                        Project.keywords.ilike(f"%{utf8_word}%"),
+                    )
+                )
+            if args["year"] != None:
+                y = int(args["year"])
+                results = results.filter_by(year=y)
+            if args["search"] != None:
+                text = str(args["search"])
+                results = results.filter(
+                    db.or_(
+                        Project.uuid.ilike(f"{text}"),
+                        Project.name.ilike(f"%{text}%"),
+                        Project.motivation.ilike(f"%{text}%"),
+                        Project.faqs.ilike(f"%{text}%"),
+                    )
+                )
+            return entities.to_obj_list(results.all())
 
     def post(self, id=None, uuid=None):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            data = data["data"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        data = data["data"]
         user, group = res
         if group != group_student:
             return err.account_error
@@ -121,18 +173,15 @@ class toipcs(Resource):
         stu_class = stu.username[:-2]
         if stu.project_id != -1:
             return err.not_allow_error
-        try:
-            uuid = data["uuid"]
-            name = data["title"]
-            if uuid == "" or name == "":
-                return err.not_allow_error
-            teacher = Teacher.query.filter_by(name=data["teacher"]).first()
-            if teacher == None:
-                return err.not_allow_error
-            students = data["students"]
-            teacher_id = teacher.id
-        except:
+        uuid = data["uuid"]
+        name = data["title"]
+        if uuid == "" or name == "":
             return err.not_allow_error
+        teacher = Teacher.query.filter_by(name=data["teacher"]).first()
+        if teacher == None:
+            return err.not_allow_error
+        students = data["students"]
+        teacher_id = teacher.id
         new_project = Project(
             uuid=uuid,
             name=name,
@@ -164,13 +213,10 @@ class toipcs(Resource):
 
     def put(self, id=None, uuid=None):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            data = data["data"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        data = data["data"]
         user, group = res
         if uuid != None:
             return err.not_allow_error
@@ -182,45 +228,56 @@ class toipcs(Resource):
             result = Project.query.get(id)
             if result == None:
                 return err.topic_not_found
-            try:
-                if group != group_student:
-                    result.uuid = data["uuid"]
-                result.name = data["title"]
-                result.keywords = [
-                    f"{entities.utf8_str_to_normal(k)}" for k in data["keywords"]
-                ]
-                result.motivation = data["description"]
-                result.faqs = data["faqs"]
-                result.videos_links = data["videos_links"]
-                result.cover_img_id = entities.links_to_imgs([data["cover"]])[0]
-                result.arch_imgs_id = entities.links_to_imgs(data["arch_imgs"])
-                result.results_imgs_id = entities.links_to_imgs(data["results_imgs"])
-                result.members_imgs_id = entities.links_to_imgs(data["members_imgs"])
-                result.report_file_id = (
-                    entities.links_to_files([data["report_file"]])[0]
-                    if data["report_file"] != ""
-                    else -1
-                )
-                result.presentation_file_id = (
-                    entities.links_to_files([data["presentation_file"]])[0]
-                    if data["presentation_file"] != ""
-                    else -1
-                )
-                result.program_file_id = (
-                    entities.links_to_files([data["program_file"]])[0]
-                    if data["program_file"] != ""
-                    else -1
-                )
-                db.session.commit()
-            except Exception as e:
-                print(e)
-                return err.not_allow_error
+            if group != group_student:
+                result.uuid = data["uuid"]
+            result.name = data["title"]
+            result.keywords = [
+                f"{entities.utf8_str_to_normal(k)}" for k in data["keywords"]
+            ]
+            result.motivation = data["description"]
+            result.faqs = data["faqs"]
+            result.videos_links = data["videos_links"]
+            result.cover_img_id = entities.links_to_imgs([data["cover"]])[0]
+            result.arch_imgs_id = entities.links_to_imgs(data["arch_imgs"])
+            result.results_imgs_id = entities.links_to_imgs(
+                data["results_imgs"])
+            result.members_imgs_id = entities.links_to_imgs(
+                data["members_imgs"])
+            result.report_file_id = (
+                entities.links_to_files([data["report_file"]])[0]
+                if data["report_file"] != ""
+                else -1
+            )
+            result.presentation_file_id = (
+                entities.links_to_files([data["presentation_file"]])[0]
+                if data["presentation_file"] != ""
+                else -1
+            )
+            result.program_file_id = (
+                entities.links_to_files([data["program_file"]])[0]
+                if data["program_file"] != ""
+                else -1
+            )
+            db.session.commit()
             return {"status": "success"}
         else:
             return err.not_allow_error
 
 
-class teacher(Resource):
+class years(Resource):
+    def get(self):
+        years = list(
+            map(
+                lambda x: int(x[0]),
+                Project.query.with_entities(Project.year)
+                .group_by(Project.year)
+                .all(),
+            )
+        )
+        return years
+
+
+class teachers(Resource):
     def get(self, id=None, name=None):
         t = Teacher.query
         if id != None:
@@ -237,78 +294,17 @@ class teacher(Resource):
             return entities.to_obj_list(t.filter_by(enable=True).all())
 
 
-class toipcs_by_year(Resource):
-    def get(self, y=None):
-        if y == None:
-            years = list(
-                map(
-                    lambda x: int(x[0]),
-                    Project.query.with_entities(Project.year)
-                    .group_by(Project.year)
-                    .all(),
-                )
-            )
-            return years
-        else:
-            results = Project.query.filter_by(year=y)
-            return entities.to_obj_list(results)
-
-
-class toipcs_by_keywords(Resource):
-    def get(self, word):
-        utf8_word = "".join(["\\\\u%04x" % (ord(c)) for c in word])
-        results = Project.query.filter(
-            db.or_(
-                Project.keywords.ilike(f"%{word}%"),
-                Project.keywords.ilike(f"%{utf8_word}%"),
-            )
-        ).all()
-        return entities.to_simple_obj_list(results)
-
-
-class search(Resource):
-    def get(self, text):
-        match_uuid = Project.query.filter(
-            db.or_(
-                Project.uuid.ilike(f"{text}"),
-            )
-        ).all()
-        match_title = Project.query.filter(
-            db.or_(
-                Project.name.ilike(f"%{text}%"),
-            )
-        ).all()
-        match_motivation = Project.query.filter(
-            db.or_(
-                Project.motivation.ilike(f"%{text}%"),
-            )
-        ).all()
-        match_faqs = Project.query.filter(
-            db.or_(
-                Project.faqs.ilike(f"%{text}%"),
-            )
-        ).all()
-        results = entities.remove_duplicates_preserving_order(
-            match_uuid + match_title + match_motivation + match_faqs
-        )
-        return entities.to_simple_obj_list(results)
-
-
 class upload(Resource):
     def post(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        parse = reqparse.RequestParser()
-        parse.add_argument(
-            "file", type=werkzeug.datastructures.FileStorage, location="files"
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "file", type=werkzeug.datastructures.FileStorage, location="files", required=True
         )
-        args = parse.parse_args()
-        if args["file"] == None:
-            return err.upload_error
+        parser.add_argument("type", required=True)
+        args = parser.parse_args()
         f = args["file"]
         fn = f.filename
         if entities.filename_validation(fn) == False:
@@ -323,43 +319,13 @@ class upload(Resource):
         )
         f.save(path)
         fn = entities.config.url_prefix + fn
-        db_f = File(location=fn)
-        db.session.add(db_f)
-        db.session.commit()
-        return {"status": "success", "link": fn}
-
-
-class upload_img(Resource):
-    def post(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        parse = reqparse.RequestParser()
-        parse.add_argument(
-            "image", type=werkzeug.datastructures.FileStorage, location="files"
-        )
-        parse.add_argument("title")
-        args = parse.parse_args()
-        if args["image"] == None or args["title"] == None:
-            return err.upload_error
-        f = args["image"]
-        fn = args["title"] + f.filename
-        if entities.filename_validation(fn) == False:
-            return err.upload_error
-        fn = entities.make_unique(fn)
-        fn = werkzeug.utils.secure_filename(fn)
-        path = os.path.join(
-            os.path.abspath(__file__ + "/.."),
-            "..",
-            entities.config.upload_path,
-            fn,
-        )
-        f.save(path)
-        fn = entities.config.url_prefix + fn
-        db_f = Image(path=fn, description="")
+        db_f = None
+        if args["type"] == "file":
+            db_f = File(location=fn)
+        elif args["type"] == "image":
+            db_f = Image(path=fn, description="")
+        else:
+            raise Exception("Type not define")
         db.session.add(db_f)
         db.session.commit()
         return {"status": "success", "link": fn}
@@ -368,18 +334,12 @@ class upload_img(Resource):
 class change_password(Resource):
     def post(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
         user, _ = res
-        try:
-            o_pass = data["original_pass"]
-            password = data["pass"]
-        except:
-            return err.not_allow_error
+        o_pass = data["original_pass"]
+        password = data["pass"]
         if (
             obj := Student.query.filter_by(username=user, password=o_pass).first()
         ) != None:
@@ -401,36 +361,11 @@ class change_password(Resource):
         return err.account_error
 
 
-class get_topic_by_token(Resource):
-    def post(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        user, group = res
-        if group == group_student:
-            stu_obj = Student.query.filter_by(username=user).first()
-            return {"status": "success", "id": stu_obj.project_id}
-        elif group == group_teacher:
-            topics = Project.query.filter_by(
-                teacher_id=Teacher.query.filter_by(username=user).first().id
-            ).all()
-            topics = entities.to_detail_obj_list(topics)
-            return {"status": "success", "data": topics}
-        else:
-            return err.not_allow_error
-
-
-class get_students_by_topic(Resource):
+class get_students_by_project(Resource):
     def get(self, uuid):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
         user, group = res
         if group != group_teacher:
             return err.not_allow_error
@@ -440,31 +375,59 @@ class get_students_by_topic(Resource):
                 Project.query.filter_by(uuid=uuid).first().students,
             )
         )
-        return {"status": "success", "data": stu_obj}
+        return stu_obj
 
 
-class get_students_by_year(Resource):
-    def get(self, year):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
-            return err.not_allow_error
-        __, _ = res
-        students = Student.query.filter(Student.username.ilike(f"{year}%")).all()
-        stu_obj = entities.to_obj_list(students)
-        return {"status": "success", "data": stu_obj}
-
-
-class score_weight(Resource):
+class students(Resource):
     def get(self):
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-        except:
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        __, _ = res
+        parser = reqparse.RequestParser()
+        parser.add_argument("year", type=int, required=True)
+        args = parser.parse_args()
+        year = args["year"]
+        students = Student.query.filter(
+            Student.username.ilike(f"{year}%")).all()
+        stu_obj = entities.to_obj_list(students)
+        return stu_obj
+
+    def post(self):
+        data = request.json
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        selected_class = data["selected_class"]
+        year = data["year"]
+        name = data["name"]
+        seat_num = data["seat_num"]
+        school_id = data["school_id"]
+        _, group = res
+        if group != group_admin:
             return err.not_allow_error
+        for item in zip(name, seat_num, school_id):
+            __name, __seat_num, __school_id = item
+            if len(__name) * len(__seat_num) * len(__school_id) == 0:
+                continue
+            __seat_num = "{:2d}".format("__seat_num")
+            new_stu = Student(
+                username=f"{year}{selected_class}{__seat_num}",
+                password=__school_id,
+                school_id=__school_id,
+                name=__name,
+                project_id=-1,
+            )
+            db.session.add(new_stu)
+            db.session.commit()
+        return {"status": "success"}
+
+
+class scores_weight(Resource):
+    def get(self):
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
         _, group = res
         if group != group_admin:
             return err.not_allow_error
@@ -473,13 +436,10 @@ class score_weight(Resource):
 
     def put(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            changed = data["data"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        changed = data["data"]
         _, group = res
         if group != group_admin:
             return err.not_allow_error
@@ -496,7 +456,7 @@ class score_weight(Resource):
         return {"status": "success"}
 
 
-class score_classification(Resource):
+class scores_classification(Resource):
     def get(self):
         classification_data = entities.to_obj_list(
             Score_classification.query.filter_by(enabled=True).all()
@@ -505,14 +465,11 @@ class score_classification(Resource):
 
     def post(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            description = data["description"]
-            is_global = bool(data["global"])
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        description = data["description"]
+        is_global = bool(data["global"])
         _, group = res
         if group != group_admin:
             return err.not_allow_error
@@ -525,15 +482,12 @@ class score_classification(Resource):
 
     def put(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            id = data["id"]
-            description = data["description"]
-            is_global = data["global"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        id = data["id"]
+        description = data["description"]
+        is_global = data["global"]
         _, group = res
         if group != group_admin:
             return err.not_allow_error
@@ -545,13 +499,10 @@ class score_classification(Resource):
 
     def delete(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            id = data["id"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        id = data["id"]
         _, group = res
         if group != group_admin:
             return err.not_allow_error
@@ -560,16 +511,13 @@ class score_classification(Resource):
         return {"status": "success"}
 
 
-class set_score(Resource):
+class set_scores(Resource):
     def post(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            changed = data["data"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        changed = data["data"]
         _, group = res
         if group != group_teacher:
             return err.not_allow_error
@@ -608,51 +556,15 @@ class set_score(Resource):
         return {"status": "success"}
 
 
-class import_student(Resource):
+class import_scores(Resource):
     def post(self):
         data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            selected_class = data["selected_class"]
-            year = data["year"]
-            name = data["name"]
-            seat_num = data["seat_num"]
-            school_id = data["school_id"]
-        except:
-            return err.not_allow_error
-        _, group = res
-        if group != group_admin:
-            return err.not_allow_error
-        for item in zip(name, seat_num, school_id):
-            __name, __seat_num, __school_id= item
-            if len(__name) * len(__seat_num) * len(__school_id) == 0:
-                continue
-            __seat_num = "{:2d}".format("__seat_num")
-            new_stu = Student(
-                username=f"{year}{selected_class}{__seat_num}",
-                password=__school_id,
-                school_id=__school_id,
-                name=__name,
-                project_id=-1,
-            )
-            db.session.add(new_stu)
-            db.session.commit()
-        return {"status": "success"}
-
-class import_score(Resource):
-    def post(self):
-        data = request.json
-        try:
-            res = entities.check_token(request.headers["Authorization"])
-            if res == None:
-                raise Exception("invalid token")
-            classification_id = data["id"]
-            group_data = data["group_data"]
-            score_data = data["score_data"]
-        except:
-            return err.not_allow_error
+        res = entities.check_token(request.headers["Authorization"])
+        if res == None:
+            raise Exception("invalid token")
+        classification_id = data["id"]
+        group_data = data["group_data"]
+        score_data = data["score_data"]
         _, group = res
         if group != group_admin:
             return err.not_allow_error

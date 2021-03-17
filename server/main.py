@@ -20,9 +20,9 @@ CORS(app)
 api = Api(app)
 
 
-# @app.errorhandler(Exception)
-# def handle_exception(e):
-#     return jsonify({"message": str(e)}), 400
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return jsonify({"message": str(e)}), 400
 
 
 api.add_resource(resources.login, "/api/auth")

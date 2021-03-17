@@ -53,7 +53,7 @@ class Score(db.Model):
     score_classification_id = db.Column(
         db.Integer, db.ForeignKey("score_classification.id")
     )
-    score = db.Column(db.Integer)
+    score = db.Column(db.Float)
 
     def __repr__(self):
         return f"<Score {self.id}>"
@@ -73,7 +73,7 @@ class Project_score(db.Model):
     score_classification_id = db.Column(
         db.Integer, db.ForeignKey("score_classification.id")
     )
-    score = db.Column(db.Integer)
+    score = db.Column(db.Float)
 
     def __repr__(self):
         return f"<P_Score {self.id}>"

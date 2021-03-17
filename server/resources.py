@@ -525,7 +525,7 @@ class set_scores(Resource):
             if c["student_id"] != -1:
                 student_id = int(c["student_id"])
                 classification_id = int(c["classification_id"])
-                score = int(c["score"])
+                score = float(c["score"])
                 Score.query.filter_by(
                     student_id=student_id, score_classification_id=classification_id
                 ).delete()
@@ -539,7 +539,7 @@ class set_scores(Resource):
             elif c["uuid"] != -1:
                 uuid = c["uuid"]
                 classification_id = int(c["classification_id"])
-                score = int(c["score"])
+                score = float(c["score"])
                 project_id = Project.query.filter_by(uuid=uuid).first().id
                 Project_score.query.filter_by(
                     project_id=project_id, score_classification_id=classification_id

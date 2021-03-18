@@ -410,7 +410,7 @@ class students(Resource):
             __name, __seat_num, __school_id = item
             if len(__name) * len(__seat_num) * len(__school_id) == 0:
                 continue
-            __seat_num = "{:2d}".format("__seat_num")
+            __seat_num = "{:02d}".format(int(__seat_num))
             new_stu = Student(
                 username=f"{year}{selected_class}{__seat_num}",
                 password=__school_id,

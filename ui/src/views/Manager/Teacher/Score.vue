@@ -144,7 +144,7 @@ export default {
     let res;
     try {
       res = await api.get_score_classification();
-      const all_classification = res.data.data;
+      const all_classification = res.data;
       this.project_classification = _.filter(all_classification, {
         global: true,
       });
@@ -153,7 +153,7 @@ export default {
       });
       this.classification = _.sortBy(this.classification, ["id"]);
       res = await api.get_topic_by_token();
-      this.topics = res.data.data;
+      this.topics = res.data;
       res = await api.get_all_year();
       this.year_list = res.data;
       this.year_list = _.reverse(this.year_list.sort());
@@ -178,11 +178,11 @@ export default {
     },
     async selected_year(value) {
       this.selected_projects = _.filter(this.topics, { year: value });
-      console.log(value);
+      console.log(this.selected_projects);
     },
     async students_in_topic(uuid) {
       const res = await api.get_students_by_topic(uuid);
-      this.students = res.data.data;
+      this.students = res.data;
       this.students = _.sortBy(this.students, ["id"]);
     },
     get_score_by_classification(scores, id) {

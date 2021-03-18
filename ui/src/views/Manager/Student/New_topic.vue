@@ -110,7 +110,7 @@ export default {
     });
     const year = api.get_username().slice(0, -3);
     res = await api.get_students_by_year(year);
-    this.classmates = res.data.data;
+    this.classmates = res.data;
     this.stu_class = _.map(this.classmates, (i) =>
       i.username.slice(-3, -2).toUpperCase()
     );

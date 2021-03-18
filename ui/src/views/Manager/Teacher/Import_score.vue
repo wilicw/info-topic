@@ -73,7 +73,7 @@ export default {
     let res;
     try {
       res = await api.get_score_classification();
-      this.classification = res.data.data;
+      this.classification = res.data;
       this.classification = _.filter(this.classification, { global: true });
       this.items = _.map(this.classification, (i) => i.description);
     } catch (error) {

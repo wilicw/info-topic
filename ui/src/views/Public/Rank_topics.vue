@@ -64,7 +64,7 @@ export default {
     let res = await api.get_all_year();
     this.year_list = _.reverse(res.data);
     res = await api.get_score_classification();
-    this.classifications = _.filter(res.data.data, { global: true });
+    this.classifications = _.filter(res.data, { global: true });
     this.classification_list = _.map(this.classifications, "description");
     let year = this.$route.params.y;
     if (_.indexOf(this.year_list, parseInt(year)) == -1) {

@@ -53,9 +53,9 @@ export default {
       let res;
       try {
         res = await api.get_score_weight();
-        this.score_data = res.data.data;
+        this.score_data = res.data;
         res = await api.get_score_classification();
-        this.classification = res.data.data;
+        this.classification = res.data;
       } catch (error) {
         console.log(error);
         this.$router.go(-1);

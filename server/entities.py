@@ -7,6 +7,10 @@ import scipy.stats as ss
 conf = ConfigParser()
 conf.read("config.ini", encoding="utf-8")
 
+group_student = "stu"
+group_teacher = "teacher"
+group_admin = "admin"
+
 
 class config:
     db_config = conf["db"]
@@ -127,20 +131,19 @@ def _calculate_ranking():
             score_weight = {k: v for d in score_weight for k, v in d.items()}
             score = list(
                 map(
-                    lambda x: 
-                        sum(
-                            [
-                                (
-                                    i["score"]
-                                    * score_weight[str(i["score_classification_id"])]
-                                )
-                                for i in x["score"]
-                            ]
-                        ),
+                    lambda x: sum(
+                        [
+                            (
+                                i["score"]
+                                * score_weight[str(i["score_classification_id"])]
+                            )
+                            for i in x["score"]
+                        ]
+                    ),
                     projects,
                 )
             )
-            score = list(map(lambda x: max(score)-x, score))
+            score = list(map(lambda x: max(score) - x, score))
             rank = ss.rankdata(score, method="min")
             for i, r in enumerate(rank):
                 Project.query.get(projects[i]["id"]).rank = r

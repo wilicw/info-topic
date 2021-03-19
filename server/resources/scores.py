@@ -20,7 +20,7 @@ class scores_weight(Resource):
         if group != entities.group_admin:
             return err.not_allow_error
         weight_data = entities.to_obj_list(model.Score_weight.query.all())
-        return {"status": "success", "data": weight_data}
+        return weight_data
 
     def put(self):
         data = request.json
@@ -49,7 +49,7 @@ class scores_classification(Resource):
         classification_data = entities.to_obj_list(
             model.Score_classification.query.filter_by(enabled=True).all()
         )
-        return {"status": "success", "data": classification_data}
+        return classification_data
 
     def post(self):
         data = request.json

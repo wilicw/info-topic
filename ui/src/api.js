@@ -9,6 +9,8 @@ const client = axios.create({
 }
 )
 
+console.log(config.api)
+
 export default {
   upload_image: async function (formData) {
     const _token = this.get_token();

@@ -34,22 +34,7 @@ def test_years_with_1_item(client):
     new_project = main.model.Project(
         uuid="G110B02",
         name="meow",
-        teacher_id=-1,
         year=110,
-        presentation_order=0,
-        motivation="",
-        faqs="",
-        keywords=[],
-        classification="",
-        arch_imgs_id=[],
-        cover_img_id=-1,
-        members_imgs_id=[],
-        results_imgs_id=[],
-        videos_links=[],
-        report_file_id=-1,
-        presentation_file_id=-1,
-        program_file_id=-1,
-        rank=0,
     )
     db.session.add(new_project)
     db.session.commit()
@@ -66,44 +51,14 @@ def test_years_with_multi_item(client):
         main.model.Project(
             uuid="G108B01",
             name="meow",
-            teacher_id=-1,
             year=108,
-            presentation_order=0,
-            motivation="",
-            faqs="",
-            keywords=[],
-            classification="",
-            arch_imgs_id=[],
-            cover_img_id=-1,
-            members_imgs_id=[],
-            results_imgs_id=[],
-            videos_links=[],
-            report_file_id=-1,
-            presentation_file_id=-1,
-            program_file_id=-1,
-            rank=0,
         )
     )
     db.session.add(
         main.model.Project(
             uuid="G109B02",
             name="meow",
-            teacher_id=-1,
             year=109,
-            presentation_order=0,
-            motivation="",
-            faqs="",
-            keywords=[],
-            classification="",
-            arch_imgs_id=[],
-            cover_img_id=-1,
-            members_imgs_id=[],
-            results_imgs_id=[],
-            videos_links=[],
-            report_file_id=-1,
-            presentation_file_id=-1,
-            program_file_id=-1,
-            rank=0,
         )
     )
 
@@ -112,7 +67,9 @@ def test_years_with_multi_item(client):
     db.drop_all()
     db.create_all()
     data = json.loads(rv.data)
-    assert 109 in data and 108 in data
+    assert len(data) == 2
+    assert 109 in data
+    assert 108 in data
 
 
 def test_login_success_student(client):
@@ -122,9 +79,6 @@ def test_login_success_student(client):
     db.session.add(main.model.Student(
         username=username,
         password=password,
-        school_id="123456",
-        name="cat",
-        project_id=-1,
     ))
     db.session.commit()
     rv = client.post("/api/auth", data=json.dumps(dict(
@@ -141,8 +95,6 @@ def test_login_success_teacher(client):
     db.session.add(main.model.Teacher(
         username=username,
         password=password,
-        name="123456",
-        description="cat",
     ))
     db.session.commit()
     rv = client.post("/api/auth", data=json.dumps(dict(
@@ -176,9 +128,6 @@ def test_login_failed_student(client):
     db.session.add(main.model.Student(
         username=username,
         password=password,
-        school_id="123456",
-        name="cat",
-        project_id=-1,
     ))
     db.session.commit()
     rv = client.post("/api/auth", data=json.dumps(dict(
@@ -196,8 +145,6 @@ def test_login_failed_teacher(client):
     db.session.add(main.model.Teacher(
         username=username,
         password=password,
-        name="123456",
-        description="cat",
     ))
     db.session.commit()
     rv = client.post("/api/auth", data=json.dumps(dict(
@@ -231,9 +178,6 @@ def test_change_password_student(client):
     db.session.add(main.model.Student(
         username=username,
         password=password,
-        school_id="123456",
-        name="cat",
-        project_id=-1,
     ))
     db.session.commit()
     rv = client.post("/api/auth", data=json.dumps(dict(
@@ -242,7 +186,7 @@ def test_change_password_student(client):
     )), content_type='application/json')
     jwt = json.loads(rv.data)
     rv = client.post("/api/change_password", data=json.dumps({
-        "original_pass":password,
-        "pass":password
+        "original_pass": password,
+        "pass": password
     }), content_type='application/json', headers={'Authorization': jwt})
     assert rv.status_code == 200

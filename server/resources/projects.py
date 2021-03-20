@@ -130,20 +130,6 @@ class projects(Resource):
             name=name,
             teacher_id=teacher_id,
             year=int(stu_class[:-1]),
-            presentation_order=0,
-            motivation="",
-            faqs="",
-            keywords=[],
-            classification="",
-            arch_imgs_id=[],
-            cover_img_id=-1,
-            members_imgs_id=[],
-            results_imgs_id=[],
-            videos_links=[],
-            report_file_id=-1,
-            presentation_file_id=-1,
-            program_file_id=-1,
-            score=0,
         )
         model.db.session.add(new_project)
         model.db.session.commit()

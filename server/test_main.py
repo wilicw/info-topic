@@ -173,9 +173,11 @@ def test_login_failed_admin(client):
 
 def test_change_password_student(client):
     """ Change password with correct student token and password  """
+    user_model = main.model.Student
     username = "meow123"
     password = "123@C@t"
-    db.session.add(main.model.Student(
+    new_password = "C@t__me0w"
+    db.session.add(user_model(
         username=username,
         password=password,
     ))
@@ -187,6 +189,58 @@ def test_change_password_student(client):
     jwt = json.loads(rv.data)
     rv = client.post("/api/change_password", data=json.dumps({
         "original_pass": password,
-        "pass": password
+        "pass": new_password
     }), content_type='application/json', headers={'Authorization': jwt})
+    assert user_model.query.filter_by(
+        username=username).first().password == new_password
+    assert rv.status_code == 200
+
+
+def test_change_password_teacher(client):
+    """ Change password with correct teacher token and password  """
+    user_model = main.model.Teacher
+    username = "meow123"
+    password = "123@C@t"
+    new_password = "C@t__me0w"
+    db.session.add(user_model(
+        username=username,
+        password=password,
+    ))
+    db.session.commit()
+    rv = client.post("/api/auth", data=json.dumps(dict(
+        username=username,
+        password=password
+    )), content_type='application/json')
+    jwt = json.loads(rv.data)
+    rv = client.post("/api/change_password", data=json.dumps({
+        "original_pass": password,
+        "pass": new_password
+    }), content_type='application/json', headers={'Authorization': jwt})
+    assert user_model.query.filter_by(
+        username=username).first().password == new_password
+    assert rv.status_code == 200
+
+
+def test_change_password_admin(client):
+    """ Change password with correct admin token and password  """
+    user_model = main.model.Admin
+    username = "meow123"
+    password = "123@C@t"
+    new_password = "C@t__me0w"
+    db.session.add(user_model(
+        username=username,
+        password=password,
+    ))
+    db.session.commit()
+    rv = client.post("/api/auth", data=json.dumps(dict(
+        username=username,
+        password=password
+    )), content_type='application/json')
+    jwt = json.loads(rv.data)
+    rv = client.post("/api/change_password", data=json.dumps({
+        "original_pass": password,
+        "pass": new_password
+    }), content_type='application/json', headers={'Authorization': jwt})
+    assert user_model.query.filter_by(
+        username=username).first().password == new_password
     assert rv.status_code == 200

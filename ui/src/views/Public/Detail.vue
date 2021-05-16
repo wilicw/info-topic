@@ -33,32 +33,34 @@
               </div>
             </div>
 
-            <v-btn
-              v-if="topic.presentation_file"
-              @click="download(topic.presentation_file)"
-              plain
-              class="font-weight-bold"
-            >
-              <v-icon small class="mr-3">mdi-download</v-icon> 簡報
-            </v-btn>
+            <div v-if="is_internal()">
+              <v-btn
+                v-if="topic.presentation_file"
+                @click="download(topic.presentation_file)"
+                plain
+                class="font-weight-bold"
+              >
+                <v-icon small class="mr-3">mdi-download</v-icon> 簡報
+              </v-btn>
 
-            <v-btn
-              v-if="topic.report_file"
-              @click="download(topic.report_file)"
-              plain
-              class="font-weight-bold"
-            >
-              <v-icon small class="mr-3">mdi-download</v-icon> 報告
-            </v-btn>
+              <v-btn
+                v-if="topic.report_file"
+                @click="download(topic.report_file)"
+                plain
+                class="font-weight-bold"
+              >
+                <v-icon small class="mr-3">mdi-download</v-icon> 報告
+              </v-btn>
 
-            <v-btn
-              v-if="topic.program_file"
-              @click="download(topic.program_file)"
-              plain
-              class="font-weight-bold"
-            >
-              <v-icon small class="mr-3">mdi-download</v-icon> 程式
-            </v-btn>
+              <v-btn
+                v-if="topic.program_file"
+                @click="download(topic.program_file)"
+                plain
+                class="font-weight-bold"
+              >
+                <v-icon small class="mr-3">mdi-download</v-icon> 程式
+              </v-btn>
+            </div>
           </div>
           <LazyImage
             v-if="topic.cover"
@@ -276,6 +278,10 @@ export default {
     },
     lazy_load_img(url) {
       return api.lazy_load_img(url);
+    },
+    is_internal() {
+      let domain = window.location.hostname
+      return domain == "localhost" || domain.includes("10.0.13.");
     },
   },
 };

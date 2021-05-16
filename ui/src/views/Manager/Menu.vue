@@ -73,6 +73,11 @@ export default {
           icon: "mdi-application-import",
         },
         {
+          text: "編輯指導老師",
+          url: "change_teachers",
+          icon: "mdi-android-studio",
+        },
+        {
           text: "匯入學生資料",
           url: "import_student",
           icon: "mdi-account-lock",

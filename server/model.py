@@ -35,7 +35,7 @@ class Teacher(db.Model):
         return f"<Teacher {self.id} {self.name}>"
 
     def to_obj(self):
-        return {"id": self.id, "name": self.name, "description": self.description}
+        return {"id": self.id, "name": self.name, "description": self.description, "enable": self.enable}
 
     def to_detail(self):
         return dict(

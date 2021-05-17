@@ -76,6 +76,9 @@ class upload(Resource):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
             raise Exception("invalid token")
+        user, _ = res
+        stu_obj = model.Student.query.filter_by(username=user).first()
+        uuid = stu_obj.project.uuid
         parser = reqparse.RequestParser()
         parser.add_argument(
             "file",
@@ -91,12 +94,15 @@ class upload(Resource):
             return err.upload_error
         fn = entities.make_unique(fn)
         fn = werkzeug.utils.secure_filename(fn)
-        path = os.path.join(
+        folder = os.path.join(
             os.path.abspath(__file__ + "/.."),
-            "..",
+            "../..",
             entities.config.upload_path,
-            fn,
+            uuid
         )
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        path = os.path.join(folder, fn)
         f.save(path)
         fn = entities.config.url_prefix + fn
         db_f = None

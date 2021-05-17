@@ -80,8 +80,8 @@ export default {
   get_topics_search: async (word) =>
     client.get(`/projects?search=${word}`)
   ,
-  get_teachers: async () =>
-    client.get("/teachers")
+  get_teachers: async (all=false) =>
+    (all ? client.get("/teachers?all") : client.get("/teachers"))
   ,
   get_topic: async (id) =>
     client.get(`/projects/${id}`)
@@ -228,4 +228,15 @@ export default {
       }
     })
   },
+  edit_teachers: async function (changed_data) {
+    const _token = this.get_token();
+    return client.put("/teachers", {
+      data: changed_data
+    }, {
+      headers: {
+        Authorization: _token,
+      }
+    })
+  }
+  ,
 }

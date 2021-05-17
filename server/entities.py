@@ -1,11 +1,14 @@
 from configparser import ConfigParser
 from uuid import uuid4
-import jwt, pangu, json
+import jwt
+import pangu
+import json
+import os
 import threading
 import scipy.stats as ss
 
 conf = ConfigParser()
-conf.read("config.ini", encoding="utf-8")
+conf.read(os.path.join(os.path.dirname(__file__), 'config.ini'), encoding="utf-8")
 
 group_student = "stu"
 group_teacher = "teacher"
@@ -117,14 +120,17 @@ def _calculate_ranking():
     with app.app_context():
         from model import Project, Score_weight, db
 
-        year = Project.query.with_entities(Project.year).group_by(Project.year).all()
+        year = Project.query.with_entities(
+            Project.year).group_by(Project.year).all()
         for y in year:
             y = y[0]
             projects = to_obj_list(Project.query.filter_by(year=y).all())
-            score_weight = to_obj_list(Score_weight.query.filter_by(year=y).all())
+            score_weight = to_obj_list(
+                Score_weight.query.filter_by(year=y).all())
             score_weight = list(
                 map(
-                    lambda x: ({str(x["score_classification_id"]): x["weight"]}),
+                    lambda x: (
+                        {str(x["score_classification_id"]): x["weight"]}),
                     score_weight,
                 )
             )

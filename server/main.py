@@ -17,7 +17,7 @@ app.config["PROPAGATE_EXCEPTIONS"] = True
 model.db.init_app(app)
 CORS(app)
 api = Api(app)
-
+app.url_map.strict_slashes = False
 
 @app.errorhandler(Exception)
 def handle_exception(e):

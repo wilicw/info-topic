@@ -104,7 +104,7 @@ class upload(Resource):
             os.mkdir(folder)
         path = os.path.join(folder, fn)
         f.save(path)
-        fn = entities.config.url_prefix + fn
+        fn = os.path.join(entities.config.url_prefix, f"./{uuid}/", fn)
         db_f = None
         if args["type"] == "file":
             db_f = model.File(location=fn)

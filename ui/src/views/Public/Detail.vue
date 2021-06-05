@@ -281,7 +281,7 @@ export default {
     },
     is_internal() {
       let domain = window.location.hostname
-      return domain == "localhost" || domain.includes("10.0.13.");
+      return this.$store.state.is_login || domain == "localhost" || domain.includes("10.0.13.");
     },
   },
 };

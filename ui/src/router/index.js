@@ -26,7 +26,8 @@ const routes = [
   { path: '/rank/:y', component: () => import('../views/Public/Rank_topics.vue') },
   { path: '/import_student', component: () => import('../views/Manager/Teacher/Import_students.vue') },
   { path: '/change_teachers', component: () => import('../views/Manager/Teacher/Change_teachers.vue') },
-  { path: '/year/latest', component: () => import('../views/Public/Year_topics.vue') }
+  { path: '/year/latest', component: () => import('../views/Public/Year_topics.vue') },
+  { path: '/:path(.*)', component: () => import('../views/Public/Not_found.vue') },
 ]
 
 const router = new VueRouter({

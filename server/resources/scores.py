@@ -38,7 +38,13 @@ class scores_weight(Resource):
             score_obj = model.Score_weight.query.filter_by(
                 year=year, score_classification_id=classification_id
             ).first()
-            score_obj.weight = weight
+            if score_obj == None:
+                new_score_obj = model.Score_weight(
+                    year=year, score_classification_id=classification_id, weight=weight
+                )
+                model.db.session.add(new_score_obj)
+            else:
+                score_obj.weight = weight
             model.db.session.commit()
         entities.calculate_ranking()
         return {"status": "success"}

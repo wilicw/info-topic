@@ -41,9 +41,7 @@
                 </v-col>
                 <v-col>
                   <p class="mb-1">姓名</p>
-                  <p class="text--secondary mb-0">
-                    已輸入 {{ calculate_num(name) }} 筆
-                  </p>
+                  <p class="text--secondary mb-0">已輸入 {{ calculate_num(name) }} 筆</p>
                   <v-textarea auto-grow v-model="name"></v-textarea>
                 </v-col>
               </v-row>
@@ -95,9 +93,8 @@ export default {
         this.calculate_num(this.seat_num) == 0 ||
         this.calculate_num(this.school_id) == 0 ||
         !(
-          (this.calculate_num(this.name) ==
-            this.calculate_num(this.seat_num)) ==
-          this.calculate_num(this.school_id)
+          this.calculate_num(this.name) == this.calculate_num(this.seat_num) &&
+          this.calculate_num(this.seat_num) == this.calculate_num(this.school_id)
         )
       ) {
         return false;
@@ -122,13 +119,7 @@ export default {
           break;
       }
       try {
-        await api.import_student(
-          this.year,
-          selected_class,
-          name,
-          seat_num,
-          school_id
-        );
+        await api.import_student(this.year, selected_class, name, seat_num, school_id);
         this.$store.commit("show_popup", { s: "success", msg: "匯入成功" });
       } catch (error) {
         this.$store.commit("show_popup", { s: "err", msg: "匯入失敗" });

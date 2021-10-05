@@ -268,6 +268,7 @@ export default {
       document.title = `${this.topic.title} || ${config.title}`;
     } catch (err) {
       console.log(err);
+      this.$router.push("/404");
       return;
     }
     this.loading = false;
@@ -280,8 +281,12 @@ export default {
       return api.lazy_load_img(url);
     },
     is_internal() {
-      let domain = window.location.hostname
-      return this.$store.state.is_login || domain == "localhost" || domain.includes("10.0.13.");
+      let domain = window.location.hostname;
+      return (
+        this.$store.state.is_login ||
+        domain == "localhost" ||
+        domain.includes("10.0.13.")
+      );
     },
   },
 };

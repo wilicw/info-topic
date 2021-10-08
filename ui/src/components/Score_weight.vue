@@ -1,13 +1,15 @@
 <template>
   <v-card>
     <v-form>
-      <v-card-title class="font-weight-bold">修改分數權重</v-card-title>
+      <v-card-title class="font-weight-bold">
+        修改分數權重
+        <v-spacer></v-spacer>
+        <v-btn @click="dialog_new_year = !dialog_new_year" icon small>
+          <v-icon small>mdi-plus</v-icon>
+        </v-btn>
+      </v-card-title>
       <v-card-text>
-        <v-select
-          :items="year_list"
-          v-model="selected_year"
-          label="年度"
-        ></v-select>
+        <v-select :items="year_list" v-model="selected_year" label="年度"></v-select>
         <div v-if="selected_year != ''">
           <v-divider></v-divider>
           <v-text-field
@@ -25,8 +27,21 @@
         <v-btn color="primary" @click="submit()">送出</v-btn>
       </v-card-actions>
     </v-form>
+    <v-dialog v-model="dialog_new_year" max-width="500px">
+      <v-card>
+        <v-card-title>新增年度</v-card-title>
+        <v-card-text>
+          <v-text-field label="年度" v-model="new_year_input"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="dialog_new_year = false">取消</v-btn>
+          <v-btn color="primary" @click="new_year">儲存</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
-</template> 
+</template>
 
 <script>
 import _ from "lodash";
@@ -36,6 +51,8 @@ export default {
   name: "Change_weight",
   props: ["classification", "score_data", "year_list"],
   data: () => ({
+    dialog_new_year: null,
+    new_year_input: "",
     selected_year: "",
     changed: [],
     rules: [
@@ -77,6 +94,10 @@ export default {
       } catch (error) {
         this.$store.commit("show_popup", { s: "err", msg: "修改失敗" });
       }
+    },
+    new_year() {
+      this.$emit("new_year", this.new_year_input);
+      this.dialog_new_year = false;
     },
   },
 };

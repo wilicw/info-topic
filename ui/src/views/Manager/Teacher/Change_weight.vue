@@ -11,6 +11,7 @@
         <Score_weight
           :score_data="score_data"
           :year_list="year_list"
+          @new_year="new_year"
           :classification="classification"
         />
       </v-col>
@@ -63,6 +64,12 @@ export default {
       }
       this.score_data = _.groupBy(this.score_data, "year");
       this.year_list = _.keys(this.score_data);
+      this.year_list = _.uniq(this.year_list);
+      this.year_list = _.reverse(this.year_list.sort());
+    },
+    new_year(y) {
+      this.year_list.push(y);
+      this.year_list = _.uniq(this.year_list);
       this.year_list = _.reverse(this.year_list.sort());
     },
   },

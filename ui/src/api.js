@@ -111,7 +111,7 @@ export default {
   },
   get_students_by_year: async function (y) {
     const _token = this.get_token();
-    return client.get(`/students/year?=${y}`, {
+    return client.get(`/students?year=${y}`, {
       headers: {
         Authorization: _token,
       }

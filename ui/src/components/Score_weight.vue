@@ -29,15 +29,22 @@
     </v-form>
     <v-dialog v-model="dialog_new_year" max-width="500px">
       <v-card>
-        <v-card-title>新增年度</v-card-title>
-        <v-card-text>
-          <v-text-field label="年度" v-model="new_year_input"></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog_new_year = false">取消</v-btn>
-          <v-btn color="primary" @click="new_year">儲存</v-btn>
-        </v-card-actions>
+        <v-form @submit.prevent="new_year">
+          <v-card-title>新增年度</v-card-title>
+          <v-card-text>
+            <v-text-field label="年度" v-model="new_year_input"></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="dialog_new_year = false">取消</v-btn>
+            <v-btn
+              color="primary"
+              :disabled="isNaN(parseInt(new_year_input))"
+              type="submit"
+              >儲存</v-btn
+            >
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
   </v-card>
@@ -52,7 +59,7 @@ export default {
   props: ["classification", "score_data", "year_list"],
   data: () => ({
     dialog_new_year: null,
-    new_year_input: "",
+    new_year_input: new Date().getFullYear() - 1911 + 1,
     selected_year: "",
     changed: [],
     rules: [
@@ -96,8 +103,10 @@ export default {
       }
     },
     new_year() {
+      this.new_year_input = parseInt(this.new_year_input);
       this.$emit("new_year", this.new_year_input);
       this.dialog_new_year = false;
+      this.selected_year = this.new_year_input;
     },
   },
 };

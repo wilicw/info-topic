@@ -122,7 +122,7 @@ class set_scores(Resource):
                 student_id = int(c["student_id"])
                 classification_id = int(c["classification_id"])
                 score = float(c["score"])
-                model.Scorequery.filter_by(
+                model.Score.query.filter_by(
                     student_id=student_id, score_classification_id=classification_id
                 ).delete()
                 new_score = model.Score(

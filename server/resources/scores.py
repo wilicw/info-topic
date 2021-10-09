@@ -279,6 +279,7 @@ class export_scores(Resource):
                             original_score = csv_data[i + bias]
                             if csv_header[i] == "貢獻度":
                                 adding += original_score
+                                continue
                             sum_score += original_score * w
                             sum_w += w
 

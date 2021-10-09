@@ -256,7 +256,7 @@ class export_scores(Resource):
                     if uuid != "":
                         for i in classification:
                             score_obj = (
-                                project["scores"] if i["global"] else stu["scores"]
+                                project["score"] if i["global"] else stu["scores"]
                             )
 
                             __score = list(

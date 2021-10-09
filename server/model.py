@@ -246,7 +246,7 @@ class Project(db.Model):
                 "program_file": File.query.get(self.program_file_id).location
                 if self.program_file_id > 0
                 else "",
-                "scores": list(map(lambda x: x.to_obj(), self.score)),
+                "score": list(map(lambda x: x.to_obj(), self.score)),
             },
         )
 

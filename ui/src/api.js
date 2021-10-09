@@ -239,4 +239,14 @@ export default {
     })
   }
   ,
+  export_score: async function (year) {
+    const _token = this.get_token();
+    return client.post(`/export_scores?year=${year}`, {}, {
+      headers: {
+        Authorization: _token,
+      },
+      responseType: 'blob'
+    })
+  }
+  ,
 }

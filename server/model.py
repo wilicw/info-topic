@@ -35,7 +35,12 @@ class Teacher(db.Model):
         return f"<Teacher {self.id} {self.name}>"
 
     def to_obj(self):
-        return {"id": self.id, "name": self.name, "description": self.description, "enable": self.enable}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "enable": self.enable,
+        }
 
     def to_detail(self):
         return dict(
@@ -241,7 +246,7 @@ class Project(db.Model):
                 "program_file": File.query.get(self.program_file_id).location
                 if self.program_file_id > 0
                 else "",
-                "score": list(map(lambda x: x.to_obj(), self.score)),
+                "scores": list(map(lambda x: x.to_obj(), self.score)),
             },
         )
 

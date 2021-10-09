@@ -82,6 +82,11 @@ export default {
           url: "import_student",
           icon: "mdi-account-lock",
         },
+        {
+          text: "匯出總成績",
+          url: "export_score",
+          icon: "mdi-export-variant",
+        },
       ],
     },
   }),

@@ -12,96 +12,97 @@
                 label="年度"
               ></v-select>
               <v-expansion-panels focusable>
-                <v-expansion-panel
-                  v-for="topic in selected_projects"
-                  :key="topic.id"
-                >
-                  <v-expansion-panel-header
-                    @click="students_in_topic(topic.uuid)"
-                  >
+                <v-expansion-panel v-for="topic in selected_projects" :key="topic.id">
+                  <v-expansion-panel-header @click="students_in_topic(topic.uuid)">
                     {{ topic.title }}
                     <span class="text--secondary mx-1"> {{ topic.uuid }}</span>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <br />
-
-                    <v-row>
-                      <v-col
-                        v-for="score in project_classification"
-                        :key="score.id"
-                      >
-                        <v-text-field
-                          @change="
-                            push_changed($event, score.id, -1, topic.uuid)
-                          "
-                          :value="get_topic_score(topic.uuid, score.id)"
-                          :label="score.description"
-                          :rules="rules"
-                          disabled
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-col>
-                        <p class="mt-4 ml-4 subtitle-1">姓名</p>
-                      </v-col>
-                      <v-col v-for="c in classification" :key="c.id">
-                        <p class="mt-4 ml-4 subtitle-1">
-                          {{ c.description }}
-                        </p>
-                      </v-col>
-                    </v-row>
-                    <v-row
-                      v-for="(s, i) in students"
-                      :key="s.id"
-                      :class="{
-                        'grey lighten-2': i % 2 == 0,
-                        'grey lighten-3': i % 2,
-                      }"
+                    <div
+                      style="overflow-x: auto; overflow-y: hidden; white-space: nowrap"
                     >
-                      <v-col>
-                        <p class="mt-4 ml-4 subtitle-1">{{ s.name }}</p>
-                      </v-col>
-                      <v-col v-for="c in classification" :key="c.id">
-                        <v-text-field
-                          @change="push_changed($event, c.id, s.id)"
-                          :value="get_score_by_classification(s.scores, c.id)"
-                          :rules="rules"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-divider class="my-5"></v-divider>
-                    <v-row align="center">
-                      <v-col>
-                        <v-btn
-                          plain
-                          block
-                          @click="download(topic.presentation_file)"
-                          :disabled="topic.presentation_file == ''"
-                          ><v-icon>mdi-download</v-icon>簡報</v-btn
-                        >
-                      </v-col>
-                      <v-col>
-                        <v-btn
-                          plain
-                          block
-                          @click="download(topic.report_file)"
-                          :disabled="topic.report_file == ''"
-                          ><v-icon>mdi-download</v-icon>報告</v-btn
-                        >
-                      </v-col>
-                      <v-col>
-                        <v-btn
-                          plain
-                          block
-                          :disabled="topic.program_file == ''"
-                          @click="download(topic.program_file)"
-                        >
-                          <v-icon>mdi-download</v-icon>程式</v-btn
-                        >
-                      </v-col>
-                    </v-row>
+                      <br />
+
+                      <v-row>
+                        <v-col v-for="score in project_classification" :key="score.id">
+                          <v-text-field
+                            @change="push_changed($event, score.id, -1, topic.uuid)"
+                            :value="get_topic_score(topic.uuid, score.id)"
+                            :label="score.description"
+                            :rules="rules"
+                            disabled
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col>
+                          <p class="mt-4 ml-4 subtitle-1">姓名</p>
+                        </v-col>
+                        <v-col v-for="c in classification" :key="c.id">
+                          <p class="mt-4 ml-4 subtitle-1">
+                            {{ c.description }}
+                          </p>
+                        </v-col>
+                      </v-row>
+                      <v-row
+                        v-for="(s, i) in students"
+                        :key="s.id"
+                        :class="
+                          $vuetify.theme.dark
+                            ? {
+                                'grey darken-2': i % 2 == 0,
+                                'grey darken-3': i % 2,
+                              }
+                            : {
+                                'grey lighten-2': i % 2 == 0,
+                                'grey lighten-3': i % 2,
+                              }
+                        "
+                      >
+                        <v-col>
+                          <p class="mt-4 ml-4 subtitle-1">{{ s.name }}</p>
+                        </v-col>
+                        <v-col v-for="c in classification" :key="c.id">
+                          <v-text-field
+                            @change="push_changed($event, c.id, s.id)"
+                            :value="get_score_by_classification(s.scores, c.id)"
+                            :rules="rules"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-divider class="my-5"></v-divider>
+                      <v-row align="center">
+                        <v-col>
+                          <v-btn
+                            plain
+                            block
+                            @click="download(topic.presentation_file)"
+                            :disabled="topic.presentation_file == ''"
+                            ><v-icon>mdi-download</v-icon>簡報</v-btn
+                          >
+                        </v-col>
+                        <v-col>
+                          <v-btn
+                            plain
+                            block
+                            @click="download(topic.report_file)"
+                            :disabled="topic.report_file == ''"
+                            ><v-icon>mdi-download</v-icon>報告</v-btn
+                          >
+                        </v-col>
+                        <v-col>
+                          <v-btn
+                            plain
+                            block
+                            :disabled="topic.program_file == ''"
+                            @click="download(topic.program_file)"
+                          >
+                            <v-icon>mdi-download</v-icon>程式</v-btn
+                          >
+                        </v-col>
+                      </v-row>
+                    </div>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -133,9 +134,7 @@ export default {
     changed: [],
     project_classification: [],
     rules: [
-      (value) =>
-        (!!value && !isNaN(value) && parseInt(value) >= 0) ||
-        "此欄位不可空白！",
+      (value) => (!!value && !isNaN(value) && parseInt(value) >= 0) || "此欄位不可空白！",
     ],
   }),
   async created() {

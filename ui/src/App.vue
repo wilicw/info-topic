@@ -13,10 +13,10 @@
           alt="Logo"
           class="shrink mr-3"
           contain
-          :src="logo"
+          :src="$vuetify.theme.dark ? logo_dark : logo"
           transition="scale-transition"
           width="25"
-        />
+        ></v-img>
         <p class="headline mt-3 hover">
           <span class="font-weight-bold" v-if="!$vuetify.breakpoint.mobile"
             >大安資訊
@@ -42,9 +42,13 @@
         </span>
       </div>
 
+      <v-btn @click="toggle_theme" icon class="px-2">
+        <v-icon>mdi-theme-light-dark</v-icon>
+      </v-btn>
+
       <v-app-bar-nav-icon
         v-if="$vuetify.breakpoint.mobile"
-        class="ml-2"
+        class="mx-1"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
     </v-app-bar>
@@ -141,7 +145,9 @@ export default {
     },
   },
   async created() {
+    this.$vuetify.theme.dark = window.localStorage.getItem("dark") == "true";
     this.logo = config.logo;
+    this.logo_dark = config.logo_dark;
     if (await api.is_login()) {
       this.$store.commit("login");
       this.login();
@@ -160,11 +166,15 @@ export default {
       this.nav_link[6].text = "個人頁面";
       this.nav_link[6].url = "/menu";
     },
+    toggle_theme() {
+      window.localStorage.setItem("dark", !this.$vuetify.theme.dark);
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    },
   },
 };
 </script>
 
-<style >
+<style>
 .transparent {
   background-color: transparent;
 }

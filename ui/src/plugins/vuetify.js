@@ -11,6 +11,14 @@ export default new Vuetify({
         secondary: '#232C33',
         accent: '#8c9eff',
         error: '#b71c1c',
+        background: '#fbfdfc'
+      },
+      dark: {
+        primary: '#71a3a2',
+        secondary: '#fcfcfc',
+        accent: '#8c9eff',
+        error: '#db4444',
+        background: '#141413'
       },
     },
   },

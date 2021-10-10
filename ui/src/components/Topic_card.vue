@@ -11,19 +11,13 @@
       >
         <LazyImage :src="cover" :full="true" />
 
-        <v-card-text class="font-weight-bold black--text">{{
-          title
-        }}</v-card-text>
+        <v-card-text class="font-weight-bold secondary--text">{{ title }}</v-card-text>
 
         <v-card-text>{{ text_truncate(description) }}</v-card-text>
 
         <v-card-actions class="pa-3">
           <v-spacer></v-spacer>
-          <v-btn
-            plain
-          >
-            檢視專題
-          </v-btn>
+          <v-btn plain> 檢視專題 </v-btn>
           <!-- <v-chip class="mt-3 ml-3 rounded-0 font-weight-bold" label small dark>{{
         year
       }}</v-chip> -->

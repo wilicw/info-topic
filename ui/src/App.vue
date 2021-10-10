@@ -145,7 +145,7 @@ export default {
     },
   },
   async created() {
-    this.$vuetify.theme.dark = window.localStorage.getItem("dark") != "false";
+    this.$vuetify.theme.dark = window.localStorage.getItem("dark") == "true";
     this.logo = config.logo;
     this.logo_dark = config.logo_dark;
     if (await api.is_login()) {

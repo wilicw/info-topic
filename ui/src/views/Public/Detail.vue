@@ -3,9 +3,7 @@
     <v-col cols="12" lg="8" sm="10">
       <v-card class="rounded-0 mt-2 pa-3">
         <div v-if="loading">
-          <v-skeleton-loader
-            type="card, avatar, article, article"
-          ></v-skeleton-loader>
+          <v-skeleton-loader type="card, avatar, article, article"></v-skeleton-loader>
         </div>
         <div v-else>
           <div>
@@ -70,16 +68,12 @@
             :class="$vuetify.breakpoint.mobile ? 'mx-0' : ''"
           />
           <v-row>
-            <v-col
-              cols="12"
-              sm="5"
-              :class="$vuetify.breakpoint.mobile ? 'pa-3' : 'pa-8'"
-            >
+            <v-col cols="12" sm="5" :class="$vuetify.breakpoint.mobile ? 'pa-3' : 'pa-8'">
               <v-card flat class="grey--text">
                 <v-divider class="my-3"></v-divider>
                 編號
                 <v-icon color="primary">mdi-slash-forward</v-icon>
-                <span class="black--text font-weight-medium text-uppercase">
+                <span class="secondary--text font-weight-medium text-uppercase">
                   {{ topic.uuid }}
                 </span>
                 <v-divider class="my-3"></v-divider>
@@ -87,45 +81,39 @@
                 <v-icon color="primary">mdi-slash-forward</v-icon>
                 <span
                   @click="$router.push(`/teachers/${topic.teacher}`)"
-                  class="black--text font-weight-medium hover"
+                  class="secondary--text font-weight-medium hover"
                 >
                   {{ topic.teacher }}
                 </span>
                 <v-divider class="my-3"></v-divider>
                 組員
                 <v-icon color="primary">mdi-slash-forward</v-icon>
-                <span class="black--text font-weight-medium"
+                <span class="secondary--text font-weight-medium"
                   >{{ topic.students.join("、") }}
                 </span>
                 <v-divider class="my-3"></v-divider>
                 關鍵字
                 <v-icon color="primary">mdi-slash-forward</v-icon>
                 <span
-                  class="black--text font-weight-medium"
+                  class="secondary--text font-weight-medium"
                   v-if="topic.keywords.length"
                   >{{ topic.keywords.join("、") }}
                 </span>
-                <span class="black--text font-weight-medium" v-else>無 </span>
+                <span class="secondary--text font-weight-medium" v-else>無 </span>
                 <v-divider class="my-3"></v-divider>
                 年度
                 <v-icon color="primary">mdi-slash-forward</v-icon>
-                <span class="black--text font-weight-medium"
-                  >{{ topic.year }}
-                </span>
+                <span class="secondary--text font-weight-medium">{{ topic.year }} </span>
                 <v-divider class="my-3"></v-divider>
                 成績
                 <v-icon color="primary">mdi-slash-forward</v-icon>
-                <span class="black--text font-weight-medium"
+                <span class="secondary--text font-weight-medium"
                   >{{ topic.rank != -1 ? `第 ${topic.rank} 名` : "佳作" }}
                 </span>
                 <v-divider class="my-3"></v-divider>
               </v-card>
             </v-col>
-            <v-col
-              cols="12"
-              sm="7"
-              :class="$vuetify.breakpoint.mobile ? 'pa-5' : 'pa-8'"
-            >
+            <v-col cols="12" sm="7" :class="$vuetify.breakpoint.mobile ? 'pa-5' : 'pa-8'">
               <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 動機
               </p>
@@ -154,11 +142,7 @@
                   v-for="img in topic.arch_imgs"
                   :key="img"
                 >
-                  <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                  >
+                  <v-row class="fill-height ma-0" align="center" justify="center">
                     <LazyImage :src="img" />
                   </v-row>
                 </v-col>
@@ -175,11 +159,7 @@
                   v-for="img in topic.results_imgs"
                   :key="img"
                 >
-                  <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                  >
+                  <v-row class="fill-height ma-0" align="center" justify="center">
                     <LazyImage :src="img" />
                   </v-row>
                 </v-col>
@@ -196,11 +176,7 @@
                   v-for="img in topic.members_imgs"
                   :key="img"
                 >
-                  <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                  >
+                  <v-row class="fill-height ma-0" align="center" justify="center">
                     <LazyImage :src="img" />
                   </v-row>
                 </v-col>
@@ -283,9 +259,7 @@ export default {
     is_internal() {
       let domain = window.location.hostname;
       return (
-        this.$store.state.is_login ||
-        domain == "localhost" ||
-        domain.includes("10.0.13.")
+        this.$store.state.is_login || domain == "localhost" || domain.includes("10.0.13.")
       );
     },
   },

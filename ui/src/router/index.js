@@ -20,6 +20,7 @@ const routes = [
   { path: '/new', component: () => import('../views/Manager/Student/New_topic.vue') },
   { path: '/edit_topics', component: () => import('../views/Manager/Teacher/All_topics.vue') },
   { path: '/score', component: () => import('../views/Manager/Teacher/Score.vue') },
+  { path: '/export_score', component: () => import('../views/Manager/Teacher/Export_score.vue') },
   { path: '/import', component: () => import('../views/Manager/Teacher/Import_score.vue') },
   { path: '/reference', component: () => import('../views/Public/Reference.vue') },
   { path: '/year/:y', component: () => import('../views/Public/Year_topics.vue') },

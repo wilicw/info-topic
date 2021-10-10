@@ -111,7 +111,7 @@ export default {
   },
   get_students_by_year: async function (y) {
     const _token = this.get_token();
-    return client.get(`/students/year?=${y}`, {
+    return client.get(`/students?year=${y}`, {
       headers: {
         Authorization: _token,
       }
@@ -236,6 +236,16 @@ export default {
       headers: {
         Authorization: _token,
       }
+    })
+  }
+  ,
+  export_score: async function (year) {
+    const _token = this.get_token();
+    return client.post(`/export_scores?year=${year}`, {}, {
+      headers: {
+        Authorization: _token,
+      },
+      responseType: 'blob'
     })
   }
   ,

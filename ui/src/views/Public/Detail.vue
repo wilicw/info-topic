@@ -186,16 +186,20 @@
               <p class="display-1 font-weight-medium secondary--text">
                 <v-icon class="mb-1" color="primary">mdi-pound</v-icon> 影片
               </p>
-              <v-card flat min-height="800">
+              <v-responsive
+                :aspect-ratio="4 / 2.5"
+                class="mt-5"
+                v-for="id in topic.videos_links"
+                :key="id"
+              >
                 <iframe
-                  v-for="id in topic.videos_links"
-                  :key="id"
-                  style="height: 100%; width: 100%; position: absolute"
+                  width="100%"
+                  height="100%"
                   :src="`https://www.youtube.com/embed/${id}`"
                   frameborder="0"
                   allowfullscreen
                 ></iframe>
-              </v-card>
+              </v-responsive>
             </div>
           </div>
         </div>

@@ -18,10 +18,12 @@
           width="25"
         ></v-img>
         <p class="headline mt-3 hover">
-          <span class="font-weight-bold" v-if="!$vuetify.breakpoint.mobile"
-            >大安資訊
+          <span class="font-weight-bold" v-if="!$vuetify.breakpoint.mobile">
+            {{ prefix }}
           </span>
-          <span>專題網</span>
+          <span>
+            {{ name }}
+          </span>
         </p>
       </div>
 
@@ -99,6 +101,8 @@ export default {
   data: () => ({
     drawer: false,
     logo: "",
+    prefix: "",
+    name: "",
     nav_link: [
       {
         text: "首頁",
@@ -148,6 +152,8 @@ export default {
     this.$vuetify.theme.dark = window.localStorage.getItem("dark") == "true";
     this.logo = config.logo;
     this.logo_dark = config.logo_dark;
+    this.prefix = config.prefix;
+    this.name = config.name;
     if (await api.is_login()) {
       this.$store.commit("login");
       this.login();

@@ -7,7 +7,7 @@ run:
 
 dev:
 	make ui &
-	make serve
+	make server
 
 server:
 	cd server && .env/bin/python3 main.py
@@ -22,6 +22,7 @@ init:
 	cd ui && yarn install
 	cd server && python3 -m venv ./.env
 	touch server/config.ini
+	make pip
 
 test:
 	./server/.env/bin/pytest -v

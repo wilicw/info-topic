@@ -8,5 +8,3 @@ pangu
 PyJWT
 PyMySQL
 uwsgi
-scipy
-cryptography

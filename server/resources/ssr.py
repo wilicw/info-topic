@@ -57,7 +57,7 @@ def ui_render(path):
   elif page[0] == "login":
     seo.title = f"登入 || {config.title}"
     seo.description = f"登入{config.title}"
-  elif page[0] == "topic":
+  elif len(page) > 1 and page[0] == "topic":
     uuid = str(page[1])
     result = model.Project.query.filter_by(uuid=uuid).first()
     if result != None:

@@ -33,7 +33,7 @@ def send_css(path):
 def ui_render(path):
   path = os.path.split(path)
   page = list(filter(lambda x: len(x) > 0, path))
-  if len(page) == 0:
+  if page == None or len(page) == 0:
     page = ['']
   seo = SEO()
   if page[0] == "":

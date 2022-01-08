@@ -23,15 +23,18 @@ class ranking(Resource):
             results = results.filter_by(year=year)
         if args["sort"] != None:
             cid = args["sort"]
-            results = list(
-                filter(
-                    lambda x: list(
-                        filter(lambda s: s.score_classification_id == cid, x.score)
-                    )[0].score
-                    != 0,
-                    results.all(),
+            try:
+                results = list(
+                    filter(
+                        lambda x: list(
+                            filter(lambda s: s.score_classification_id == cid, x.score)
+                        )[0].score
+                        != 0,
+                        results.all(),
+                    )
                 )
-            )
+            except:
+                return []
             if len(results) == 0:
                 return []
             score = [

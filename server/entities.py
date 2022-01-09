@@ -5,6 +5,7 @@ import pangu
 import json
 import os
 import threading
+import datetime
 import scipy.stats as ss
 
 conf = ConfigParser()
@@ -55,7 +56,12 @@ def to_detail_obj_list(ll):
 
 def generate_token(username, group):
   return jwt.encode(
-      {"username": str(username), "group": group}, config.secret, algorithm="HS256"
+      {
+        "username": str(username), 
+        "group": group,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=5)
+      },
+      config.secret, algorithm="HS256"
   )
 
 

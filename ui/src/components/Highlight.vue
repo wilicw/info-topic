@@ -27,12 +27,7 @@
     >
       <v-icon>mdi-chevron-left</v-icon>
     </v-btn>
-    <v-row
-      align="center"
-      justify="center"
-      class="mt-5"
-      style="min-height: 80vh"
-    >
+    <v-row align="center" justify="center" class="mt-5" style="min-height: 80vh">
       <v-col cols="10" md="5" class="mx-10">
         <p class="subtitle-1 mb-5 ml-1">{{ topic.year }} 級專題製作</p>
         <h1 class="display-3 font-weight-bold mb-7">
@@ -41,9 +36,7 @@
         <p class="subheading font-weight-regular">
           {{ text_truncate(topic.description) }}
         </p>
-        <span
-          @click="$router.push(`topic/${topic.uuid}`)"
-          class="grey--text hover"
+        <span @click="$router.push(`topic/${topic.uuid}`)" class="grey--text hover"
           >檢視完整專題</span
         >
       </v-col>
@@ -58,7 +51,7 @@
           :alt="topic.title"
           contain
           :src="topic.cover"
-          class="cover"
+          :class="$vuetify.theme.dark ? 'white-shadow' : 'black-shadow'"
           :max-height="$vuetify.breakpoint.mobile ? '20em' : '45em'"
           v-touch="{
             left: () => next_topic(),
@@ -68,10 +61,7 @@
       </v-col>
     </v-row>
     <div style="text-align: center" class="floating mx-0">
-      <span
-        class="mt-3 hover body-2 grey--text"
-        @click="$vuetify.goTo('#all_topics')"
-      >
+      <span class="mt-3 hover body-2 grey--text" @click="$vuetify.goTo('#all_topics')">
         更多專題 <v-icon small>mdi-chevron-double-down</v-icon>
       </span>
     </div>
@@ -134,8 +124,12 @@ export default {
   left: 3em;
 }
 
-.cover {
+.black-shadow {
   filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5));
+}
+
+.white-shadow {
+  filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(255, 255, 255, 0.5));
 }
 
 .floating {

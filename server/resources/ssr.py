@@ -52,7 +52,7 @@ def ui_render(path):
     seo.title = f"指導老師 || {config.title}"
     seo.description = "當年度指導老師列表"
   elif page[0] == "reference":
-    seo.title[0] = f"參考資料 || {config.title}"
+    seo.title = f"參考資料 || {config.title}"
     seo.description = "專題製作參考資料"
   elif page[0] == "login":
     seo.title = f"登入 || {config.title}"

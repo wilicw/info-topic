@@ -1,6 +1,6 @@
 #!.env/bin/python
 from werkzeug.exceptions import HTTPException
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint
 from flask_restful import Api
 import model
 from entities import config
@@ -24,7 +24,7 @@ def handle_exception(e):
     return jsonify({"message": str(e)}), 400
 
 
-from resources import basic, projects, ranking, scores, students, teachers, years
+from resources import basic, projects, ranking, scores, students, teachers, years, ssr
 
 app.register_blueprint(basic.api_bp)
 app.register_blueprint(projects.api_bp)
@@ -34,5 +34,7 @@ app.register_blueprint(students.api_bp)
 app.register_blueprint(teachers.api_bp)
 app.register_blueprint(years.api_bp)
 
+app.register_blueprint(ssr.api_bp)
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(debug=True)

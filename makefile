@@ -1,13 +1,10 @@
-.PHONY: server dev pip init ui run
-image: dockerfile ui/ server/
+.PHONY: server dev pip init ui run image
+
+image:
 	docker build -t="wilicw/topic-web" .
 
 run:
 	docker run --rm -it -p 8080:80 -v $(shell pwd)/_file:/app/_file/ -v $(shell pwd)/server/config.ini:/app/server/config.ini wilicw/topic-web
-
-dev:
-	make ui &
-	make serve
 
 server:
 	cd server && .env/bin/python3 main.py
@@ -19,9 +16,10 @@ ui:
 	cd ui && yarn serve
 
 init:
-	cd ui && yarn install
 	cd server && python3 -m venv ./.env
 	touch server/config.ini
+	cd ui && yarn install
+	make pip
 
 test:
 	./server/.env/bin/pytest -v

@@ -212,7 +212,7 @@ export default {
       const score = _.head(
         _.filter(topic.score, { score_classification_id: classification_id })
       );
-      return score.score;
+      return score == undefined ? "尚未評分" : score.score;
     },
   },
 };

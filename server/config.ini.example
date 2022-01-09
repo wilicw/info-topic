@@ -7,6 +7,11 @@ user = root
 pass = toor
 db_name = topic
 
+[ui]
+; for vuejs files
+title = 大安資訊專題網
+static_path = /app/cli/dist
+
 [jwt]
 secret=000
 

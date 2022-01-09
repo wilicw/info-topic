@@ -78,7 +78,7 @@
             </p>
             <v-file-input
               label="選擇檔案"
-              accept="image/png, image/jpeg"
+              accept="image/*"
               :disabled="files.uploading"
               @change="cover_upload"
             ></v-file-input>
@@ -108,7 +108,7 @@
             </p>
             <v-file-input
               label="選擇檔案"
-              accept="image/png, image/jpeg"
+              accept="image/*"
               :disabled="files.uploading"
               @change="arch_upload"
             ></v-file-input>
@@ -143,7 +143,7 @@
             </p>
             <v-file-input
               label="選擇檔案"
-              accept="image/png, image/jpeg"
+              accept="image/*"
               :disabled="files.uploading"
               @change="results_upload"
             ></v-file-input>
@@ -178,7 +178,7 @@
             </p>
             <v-file-input
               label="選擇檔案"
-              accept="image/png, image/jpeg"
+              accept="image/*"
               :disabled="files.uploading"
               @change="members_upload"
             ></v-file-input>

@@ -1,11 +1,72 @@
+<div align="center">
+
 # 大安高工資訊科專題網
+
+---
+
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-vue.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-cat-gifs.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/powered-by-oxygen.svg)](https://forthebadge.com)
+
+> 大安高工資訊科學生專題製作展示與成果發表之平臺。
+
+---
+
+</div>
+
+## Demo
+
+![](https://i.imgur.com/VahfqN5.png)
 
 ## Project's Structure
 
 - `server` folder is for flask api.
 - `ui` folder is for vuejs front-end pages.
 
-Web is deploy via docker. `docker-compose.yml` has some example code for this.
+| File | Function description |
+|:----:|:---------------------|
+| `docker-compose.yml` | Docker compose example file. |
+| `Dockerfile` | Dockerfile for building container. |
+| `makefile` | Makefile for building and configuring project. |
+| `nginx.conf` | Production environment nginx config file. |
+| `README.md` | This file. |
+| `server/` | Flask api. |
+| `ui/` | Vuejs front-end pages. |
+
+### Server structure
+
+| File | Function description |
+|:----:|:---------------------|
+| `config.ini` | Project config file. |
+| `entities.py` | Config file parser, jwt processing, ranking, Chinese layout, file processing and validation functions. |
+| `err.py` | Define several Http error messages. |
+| `main.py` | Main file for flask server. | 
+| `model.py` | Define database tables and columns. |
+| `requirements.txt` | Pip requirements packages. |
+| `startup.sh` | For docker container startup script. |
+| `test_main.py` | Testing script. (incomplete) |
+| `uwsgi.ini` | For production environment setting. |
+| `resources/basic.py` | Blueprint for login, logout, change password and uploading files. |
+| `resources/project.py` | Blueprint for project management and filtering. |
+| `resources/ranking.py` | Blueprint for calculating projects' rank. |
+| `resources/scores.py` | Blueprint for teachers to score projects. |
+| `resources/ssr.py` | Blueprint for server side rendering preform better SEO. |
+| `resiurces/students.py` | Blueprint for management students account. |
+| `resources/teachers.py` | Blueprint for management teachers account. |
+| `resources/years.py` | Blueprint for searching projects by year. |
+
+### UI structure
+
+| File | Function description |
+|:----:|:---------------------|
+| `public/` | Static files. |
+| `src/` | Vuejs source files. |
+| `configs.js` | Project config files. |
+| `vue.config.js` | Vuejs config files. |
+| `src/api.js` | Flask api interface. |
+| `src/App.vue` | Vuejs main file. |
+| `src/views/` | Vuejs pages. |
+| `src/components/` | Vuejs components. |
+| `src/router/` | Vuejs router. |
+| `src/styles/` | Pages' stylesheet. |
 
 ## Configuration File
 

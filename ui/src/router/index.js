@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: () => import('../views/Public/Home.vue') },
+  { path: '/cat', component: () => import('../views/Public/Catgif.vue') },
   { path: '/login', component: () => import('../views/Public/Login.vue') },
   { path: '/teachers', component: () => import('../views/Public/Teachers.vue') },
   { path: '/teachers/:id', component: () => import('../views/Public/Teachers_topics.vue') },

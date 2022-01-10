@@ -202,7 +202,7 @@ class get_students_by_project(Resource):
         stu_obj = list(
             map(
                 lambda x: x.to_detail_scores(),
-                model.Project.query.filter_by(uuid=entities.normilize_uuid(uuid).first().students,
+                model.Project.query.filter_by(uuid=entities.normilize_uuid(uuid)).first().students,
             )
         )
         return stu_obj

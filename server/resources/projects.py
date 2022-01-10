@@ -20,7 +20,7 @@ class projects(Resource):
                 return err.topic_not_found
             return result.to_detail()
         elif uuid != None:
-            result = model.Project.query.filter_by(uuid=uuid).first()
+            result = model.Project.query.filter_by(uuid=entities.normilize_uuid(uuid)).first()
             if result == None:
                 return err.topic_not_found
             return result.to_detail()
@@ -116,7 +116,7 @@ class projects(Resource):
         stu_class = stu.username[:-2]
         if stu.project_id != -1:
             return err.not_allow_error
-        uuid = data["uuid"]
+        uuid = entities.normilize_uuid(data["uuid"])
         name = data["title"]
         if uuid == "" or name == "":
             return err.not_allow_error
@@ -158,7 +158,7 @@ class projects(Resource):
             if result == None:
                 return err.topic_not_found
             if group != entities.group_student:
-                result.uuid = data["uuid"]
+                result.uuid = entities.normilize_uuid(data["uuid"])
             result.name = data["title"]
             result.keywords = [
                 f"{entities.utf8_str_to_normal(k)}" for k in data["keywords"]
@@ -202,7 +202,7 @@ class get_students_by_project(Resource):
         stu_obj = list(
             map(
                 lambda x: x.to_detail_scores(),
-                model.Project.query.filter_by(uuid=uuid).first().students,
+                model.Project.query.filter_by(uuid=entities.normilize_uuid(uuid)).first().students,
             )
         )
         return stu_obj

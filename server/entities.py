@@ -119,6 +119,10 @@ def utf8_str_to_normal(a):
   return json.loads(json.dumps({"a": a}))["a"]
 
 
+def normilize_uuid(uuid):
+  return uuid.strip().upper()
+
+
 def calculate_ranking():
   t = threading.Thread(target=_calculate_ranking)
   t.start()

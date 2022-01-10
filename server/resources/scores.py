@@ -159,12 +159,12 @@ class import_scores(Resource):
         if res == None:
             raise Exception("invalid token")
         classification_id = data["id"]
-        entities.group_data = data["entities.group_data"]
+        group_data = data["group_data"]
         score_data = data["score_data"]
         _, group = res
         if group != entities.group_admin:
             return err.not_allow_error
-        for item in zip(entities.group_data, score_data):
+        for item in zip(group_data, score_data):
             __group, __score = item
             if len(__group) * len(__score) == 0:
                 continue

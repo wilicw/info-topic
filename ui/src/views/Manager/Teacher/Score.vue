@@ -134,7 +134,8 @@ export default {
     changed: [],
     project_classification: [],
     rules: [
-      (value) => (!!value && !isNaN(value) && parseInt(value) >= 0) || "此欄位不可空白！",
+      (value) =>
+        (!!value && !isNaN(value) && parseFloat(value) >= 0) || "此欄位不可空白！",
     ],
   }),
   async created() {
@@ -201,7 +202,7 @@ export default {
       });
       this.changed.push({
         student_id: student_id,
-        score: parseInt(score),
+        score: parseFloat(score),
         classification_id: classification_id,
         uuid: uuid === null ? -1 : uuid,
       });

@@ -268,7 +268,7 @@ class export_scores(Resource):
                             if len(__score) > 0:
                                 __score = __score[0]["score"]
                             else:
-                                __score = -1
+                                __score = 0
                             csv_data.append(__score)
 
                         bias = 4
@@ -276,15 +276,15 @@ class export_scores(Resource):
                         sum_score = 0
                         sum_w = 0
                         for i, w in enumerate(csv_header_weight[4:-2]):
-                            original_score = csv_data[i + bias]
-                            if csv_header[i] == "貢獻度":
+                            index = i + bias
+                            original_score = csv_data[index]
+                            if csv_header[index] == "貢獻度":
                                 adding += original_score
                                 continue
                             sum_score += original_score * w
                             sum_w += w
-
                         weight_score = (sum_score / sum_w) + adding
-                        csv_data.append("{:.2f}".format(weight_score))
+                        csv_data.append("{:.5f}".format(weight_score))
                         csv_data.append(project["teacher"])
                     writer.writerow(csv_data)
                 except Exception as e:

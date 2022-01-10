@@ -54,6 +54,7 @@
             <v-col cols="12" sm="6">
               <v-combobox
                 v-model="topic.videos_links"
+                @change="prase_youtube_url(topic.videos_links)"
                 label="專題影片連結（選取或直接輸入）"
                 multiple
                 small-chips
@@ -248,6 +249,7 @@
 
 <script>
 import api from "@/api";
+import _ from "lodash";
 import { config } from "@/../config";
 
 export default {
@@ -279,6 +281,24 @@ export default {
     this.loading = false;
   },
   methods: {
+    prase_youtube_url(url) {
+      this.topic.videos_links = _.uniq(_.map(url, i => {
+        try {
+          const yt = new URL(i);
+          switch (yt.host) {
+            case "www.youtube.com":
+            case "youtube.com":
+              return yt.searchParams.get("v");
+            case "youtu.be":
+              return yt.pathname.slice(1);
+            default:
+              return null;
+          }
+        } catch (err) {
+          return i;
+        }
+      }));
+    },
     is_student() {
       return api.get_group() == "stu";
     },

@@ -20,7 +20,7 @@ class projects(Resource):
                 return err.topic_not_found
             return result.to_detail()
         elif uuid != None:
-            result = model.Project.query.filter_by(uuid=entities.normilize_uuid(uuid).first()
+            result = model.Project.query.filter_by(uuid=entities.normilize_uuid(uuid)).first()
             if result == None:
                 return err.topic_not_found
             return result.to_detail()

@@ -11,7 +11,7 @@ api_bp = Blueprint("ranking", __name__, url_prefix="/api/ranking")
 api = Api(api_bp)
 
 
-class ranking(Resource):
+class Ranking(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument("year", type=int)
@@ -53,5 +53,5 @@ class ranking(Resource):
         return res
 
 
-api.add_resource(ranking, "/")
+api.add_resource(Ranking, "/")
 app.register_blueprint(api_bp)

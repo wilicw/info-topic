@@ -11,7 +11,7 @@ api_bp = Blueprint("students", __name__, url_prefix="/api/students")
 api = Api(api_bp)
 
 
-class students(Resource):
+class Students(Resource):
     def get(self):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
@@ -57,6 +57,6 @@ class students(Resource):
         return {"status": "success"}
 
 
-api.add_resource(students, "/")
+api.add_resource(Students, "/")
 
 app.register_blueprint(api_bp)

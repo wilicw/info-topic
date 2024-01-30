@@ -17,7 +17,7 @@ group_teacher = "teacher"
 group_admin = "admin"
 
 
-class config:
+class Config:
   db_config = conf["db"]
   ui_config = conf["ui"]
   jwt_config = conf["jwt"]
@@ -61,13 +61,13 @@ def generate_token(username, group):
         "group": group,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(days=5)
       },
-      config.secret, algorithm="HS256"
+      Config.secret, algorithm="HS256"
   )
 
 
 def decode_token(token):
   try:
-    obj = jwt.decode(token, config.secret, algorithms=["HS256"])
+    obj = jwt.decode(token, Config.secret, algorithms=["HS256"])
     user = obj["username"]
     group = obj["group"]
   except:
@@ -78,7 +78,7 @@ def decode_token(token):
 
 def filename_validation(fn):
   fn = str(fn)
-  if fn.split(".")[-1] not in config.allow_file_type:
+  if fn.split(".")[-1] not in Config.allow_file_type:
     return False
   else:
     return True
@@ -132,7 +132,7 @@ def _calculate_ranking():
   from main import app
 
   with app.app_context():
-    from model import Project, Score_weight, db
+    from model import Project, ScoreWeight, db
 
     year = Project.query.with_entities(
         Project.year).group_by(Project.year).all()
@@ -140,7 +140,7 @@ def _calculate_ranking():
       y = y[0]
       projects = to_obj_list(Project.query.filter_by(year=y).all())
       score_weight = to_obj_list(
-          Score_weight.query.filter_by(year=y).all())
+          ScoreWeight.query.filter_by(year=y).all())
       score_weight = list(
           map(
               lambda x: (

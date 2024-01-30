@@ -12,7 +12,7 @@ api_bp = Blueprint("basic", __name__, url_prefix="/api")
 api = Api(api_bp)
 
 
-class login(Resource):
+class Login(Resource):
     def get(self):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
@@ -41,7 +41,7 @@ class login(Resource):
         return err.account_error
 
 
-class change_password(Resource):
+class ChangePassword(Resource):
     def post(self):
         data = request.json
         res = entities.check_token(request.headers["Authorization"])
@@ -71,7 +71,7 @@ class change_password(Resource):
         return err.account_error
 
 
-class upload(Resource):
+class Upload(Resource):
     def post(self):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
@@ -100,14 +100,14 @@ class upload(Resource):
         folder = os.path.join(
             os.path.abspath(__file__ + "/.."),
             "../..",
-            entities.config.upload_path,
+            entities.Config.upload_path,
             uuid,
         )
         if not os.path.exists(folder):
             os.mkdir(folder)
         path = os.path.join(folder, fn)
         f.save(path)
-        fn = os.path.join(entities.config.url_prefix, f"./{uuid}/", fn)
+        fn = os.path.join(entities.Config.url_prefix, f"./{uuid}/", fn)
         db_f = None
         if args["type"] == "file":
             db_f = model.File(location=fn)
@@ -120,7 +120,7 @@ class upload(Resource):
         return {"status": "success", "link": fn}
 
 
-api.add_resource(login, "/auth")
-api.add_resource(upload, "/upload")
-api.add_resource(change_password, "/change_password")
+api.add_resource(Login, "/auth")
+api.add_resource(Upload, "/upload")
+api.add_resource(ChangePassword, "/change_password")
 app.register_blueprint(api_bp)

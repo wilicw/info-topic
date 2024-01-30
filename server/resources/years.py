@@ -9,7 +9,7 @@ api_bp = Blueprint("years", __name__, url_prefix="/api/years")
 api = Api(api_bp)
 
 
-class years(Resource):
+class Years(Resource):
     def get(self):
         years = list(
             map(
@@ -22,6 +22,6 @@ class years(Resource):
         return years
 
 
-api.add_resource(years, "/")
+api.add_resource(Years, "/")
 
 app.register_blueprint(api_bp)

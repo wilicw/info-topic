@@ -71,7 +71,7 @@ class Score(db.Model):
         }
 
 
-class Project_score(db.Model):
+class ProjectScore(db.Model):
     __tablename__ = "project_score"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     project_id = db.Column(db.Integer, db.ForeignKey("projects.id"))
@@ -92,7 +92,7 @@ class Project_score(db.Model):
         }
 
 
-class Score_classification(db.Model):
+class ScoreClassification(db.Model):
     __tablename__ = "score_classification"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     description = db.Column(db.String)
@@ -110,7 +110,7 @@ class Score_classification(db.Model):
         }
 
 
-class Score_weight(db.Model):
+class ScoreWeight(db.Model):
     __tablename__ = "score_weight"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     year = db.Column(db.Integer)

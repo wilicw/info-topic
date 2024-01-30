@@ -12,7 +12,7 @@ api_bp = Blueprint("projects", __name__, url_prefix="/api/projects")
 api = Api(api_bp)
 
 
-class projects(Resource):
+class Projects(Resource):
     def get(self, id=None, uuid=None):
         if id != None:
             result = model.Project.query.get(id)
@@ -191,7 +191,7 @@ class projects(Resource):
             return err.not_allow_error
 
 
-class get_students_by_project(Resource):
+class GetStudentsByProject(Resource):
     def get(self, uuid):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
@@ -208,6 +208,6 @@ class get_students_by_project(Resource):
         return stu_obj
 
 
-api.add_resource(projects, "/", "/<int:id>", "/<string:uuid>")
-api.add_resource(get_students_by_project, "/<string:uuid>/students")
+api.add_resource(Projects, "/", "/<int:id>", "/<string:uuid>")
+api.add_resource(GetStudentsByProject, "/<string:uuid>/students")
 app.register_blueprint(api_bp)

@@ -11,7 +11,7 @@ api_bp = Blueprint("teahers", __name__, url_prefix="/api/teachers")
 api = Api(api_bp)
 
 
-class teachers(Resource):
+class Teachers(Resource):
     def get(self, id=None, name=None):
         parser = reqparse.RequestParser()
         parser.add_argument("all")
@@ -57,7 +57,7 @@ class teachers(Resource):
 
 
 api.add_resource(
-    teachers,
+    Teachers,
     "/",
     "/<int:id>",
     "/<string:name>",

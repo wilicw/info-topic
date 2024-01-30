@@ -13,7 +13,7 @@ api_bp = Blueprint("scores", __name__, url_prefix="/api")
 api = Api(api_bp)
 
 
-class scores_weight(Resource):
+class ScoresWeight(Resource):
     def get(self):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
@@ -21,7 +21,7 @@ class scores_weight(Resource):
         _, group = res
         if group != entities.group_admin:
             return err.not_allow_error
-        weight_data = entities.to_obj_list(model.Score_weight.query.all())
+        weight_data = entities.to_obj_list(model.ScoreWeight.query.all())
         return weight_data
 
     def put(self):
@@ -37,11 +37,11 @@ class scores_weight(Resource):
             year = int(c["year"])
             classification_id = int(c["classification_id"])
             weight = int(c["weight"])
-            score_obj = model.Score_weight.query.filter_by(
+            score_obj = model.ScoreWeight.query.filter_by(
                 year=year, score_classification_id=classification_id
             ).first()
             if score_obj == None:
-                new_score_obj = model.Score_weight(
+                new_score_obj = model.ScoreWeight(
                     year=year, score_classification_id=classification_id, weight=weight
                 )
                 model.db.session.add(new_score_obj)
@@ -52,10 +52,10 @@ class scores_weight(Resource):
         return {"status": "success"}
 
 
-class scores_classification(Resource):
+class ScoresClassification(Resource):
     def get(self):
         classification_data = entities.to_obj_list(
-            model.Score_classification.query.filter_by(enabled=True).all()
+            model.ScoreClassification.query.filter_by(enabled=True).all()
         )
         return classification_data
 
@@ -69,7 +69,7 @@ class scores_classification(Resource):
         _, group = res
         if group != entities.group_admin:
             return err.not_allow_error
-        score_classification_obj = model.Score_classification(
+        score_classification_obj = model.ScoreClassification(
             description=description, is_global=is_global, enabled=True
         )
         model.db.session.add(score_classification_obj)
@@ -87,7 +87,7 @@ class scores_classification(Resource):
         _, group = res
         if group != entities.group_admin:
             return err.not_allow_error
-        score_classification_obj = model.Score_classification.query.get(id)
+        score_classification_obj = model.ScoreClassification.query.get(id)
         score_classification_obj.description = description
         score_classification_obj.is_global = is_global
         model.db.session.commit()
@@ -102,12 +102,12 @@ class scores_classification(Resource):
         _, group = res
         if group != entities.group_admin:
             return err.not_allow_error
-        model.Score_classification.query.filter_by(id=id).first().enabled = False
+        model.ScoreClassification.query.filter_by(id=id).first().enabled = False
         model.db.session.commit()
         return {"status": "success"}
 
 
-class set_scores(Resource):
+class SetScores(Resource):
     def post(self):
         data = request.json
         res = entities.check_token(request.headers["Authorization"])
@@ -137,10 +137,10 @@ class set_scores(Resource):
                 classification_id = int(c["classification_id"])
                 score = float(c["score"])
                 project_id = model.Project.query.filter_by(uuid=uuid).first().id
-                model.Project_score.query.filter_by(
+                model.ProjectScore.query.filter_by(
                     project_id=project_id, score_classification_id=classification_id
                 ).delete()
-                new_score = model.Project_score(
+                new_score = model.ProjectScore(
                     project_id=project_id,
                     score_classification_id=classification_id,
                     score=score,
@@ -152,7 +152,7 @@ class set_scores(Resource):
         return {"status": "success"}
 
 
-class import_scores(Resource):
+class ImportScores(Resource):
     def post(self):
         data = request.json
         res = entities.check_token(request.headers["Authorization"])
@@ -169,10 +169,10 @@ class import_scores(Resource):
             if len(__group) * len(__score) == 0:
                 continue
             project_id = model.Project.query.filter_by(uuid=__group).first().id
-            model.Project_score.query.filter_by(
+            model.ProjectScore.query.filter_by(
                 project_id=project_id, score_classification_id=classification_id
             ).delete()
-            new_score = model.Project_score(
+            new_score = model.ProjectScore(
                 project_id=project_id,
                 score_classification_id=classification_id,
                 score=__score,
@@ -183,7 +183,7 @@ class import_scores(Resource):
         return {"status": "success"}
 
 
-class export_scores(Resource):
+class ExportScores(Resource):
     def post(self):
         res = entities.check_token(request.headers["Authorization"])
         if res == None:
@@ -202,10 +202,10 @@ class export_scores(Resource):
             list(map(lambda x: x.to_detail_scores(), students)),
             key=lambda x: x["username"],
         )
-        weight = entities.to_obj_list(model.Score_weight.query.filter_by(year=year))
+        weight = entities.to_obj_list(model.ScoreWeight.query.filter_by(year=year))
 
         classification = entities.to_obj_list(
-            model.Score_classification.query.filter_by(enabled=True)
+            model.ScoreClassification.query.filter_by(enabled=True)
         )
 
         csv_header = (
@@ -293,9 +293,9 @@ class export_scores(Resource):
         return send_from_directory(csv_dir, csv_file, as_attachment=True)
 
 
-api.add_resource(scores_weight, "/scores/weight")
-api.add_resource(scores_classification, "/scores/classification")
-api.add_resource(set_scores, "/scores")
-api.add_resource(import_scores, "/import_scores")
-api.add_resource(export_scores, "/export_scores")
+api.add_resource(ScoresWeight, "/scores/weight")
+api.add_resource(ScoresClassification, "/scores/classification")
+api.add_resource(SetScores, "/scores")
+api.add_resource(ImportScores, "/import_scores")
+api.add_resource(ExportScores, "/export_scores")
 app.register_blueprint(api_bp)
